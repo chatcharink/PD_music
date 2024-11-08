@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pd music</title>
+    <link rel="icon" href="<%= APP_CONFIG[:application_path] %>/pictures/logo-removebg.png" type="image/icon type">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+  </head>
+
+  <body>
+    <% unless session["current_user"].blank? %>
+      <%= render partial: "layouts/nav_bar" %>
+    <% end %>
+
+    <% unless params[:controller] == "login" %>
+      <div class="div-side-menu pt-3 position-absolute">
+        <%= render partial: "layouts/nav_side_menu" %>
+      </div>
+      <%= render partial: "layouts/session_timeout_dialog" %>
+    <% end %>
+
+    <%= render partial: "layouts/flash_alert" %>
+
+    <div class="div-body">
+      <%= yield %>
+    </div>
+    <%= hidden_field_tag :application_path, "#{APP_CONFIG[:application_path]}", id: "application-path" %>
+  </body>
+</html>

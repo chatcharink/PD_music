@@ -1,0 +1,92 @@
+<div class="mb-5">
+    <%= render partial: "progress_signup", locals: {progress: 65, state_1: "active", state_2: "active", state_3: "active", state_4: ""} %>
+</div>
+<h2 class="mb-3 title-signup name" style="font-weight: 600;">ข้อมูลส่วนตัวผู้ใช้และผู้ปกครอง</h2>
+<%= form_for :form_login, url: login_register_path(format: :json, signup_state: 3, token: token), method: :POST, html: { data: { "action": "submit->signup#onPostSuccessParent" } } do |f| %>
+    <!--
+    <div class="me-3 mb-3">
+        <span>ที่อยู่ <i>- (optional)</span>
+    </div>
+    <div class="row me-3">
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="address-name" class="form-label">บ้านเลขที่/หมู่บ้าน/คอนโด :</i></label>
+                <%= f.text_field :address_name, value: params[:address_name], class: "form-control", id: "address-name" %>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="mb-3">
+                <label for="address-moo" class="form-label">หมู่ :</label>
+                <%= f.text_field :address_moo, value: params[:address_moo], class: "form-control", id: "address-moo" %>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="mb-3">
+                <label for="address-soi" class="form-label">ตรอก/ซอย :</label>
+                <%= f.text_field :address_soi, value: params[:address_soi], class: "form-control", id: "address-soi" %>
+            </div>
+        </div>
+    </div>
+    <div class="row me-3">
+        <div class="col">
+            <div class="mb-3">
+                <label for="address-subdistrict" class="form-label">แขวง/ตำบล :</label>
+                <%= f.text_field :address_subdistrict, value: params[:address_subdistrict], class: "form-control", id: "address-subdistrict" %>
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="address-district" class="form-label">เขต/อำเภอ :</label>
+                <%= f.select :address_district, [], { prompt: '-- โปรดเลือกเขตหรืออำเภอ --' }, class: "form-select", id: "address-district", disabled: true %>
+            </div>
+        </div>
+    </div>
+
+    <div class="row me-3">
+        <div class="col">
+            <div class="mb-3">
+                <label for="address-province" class="form-label">จังหวัด :</label>
+                <%= f.select :address_province, province, { prompt: '-- โปรดเลือกจังหวัด --' }, class: "form-select", id: "address-province", data: { action: "change->signup#selectProvince", "signup-target": "province"} %>
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="zipcode" class="form-label">รหัสไปรษณีย์ :</label>
+                <%= f.text_field :zipcode, value: params[:zipcode], class: "form-control", id: "zipcode" %>
+            </div>
+        </div>
+    </div> -->
+    
+    <div class="row me-3">
+        <div class="col">
+            <div class="mb-3">
+                <label for="firstname" class="form-label">ชื่อผู้ปกครอง :</label>
+                <%= f.text_field :firstname, value: params[:firstname], class: "form-control", id: "firstname" %>
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="lastname" class="form-label">นามสกุล :</label>
+                <%= f.text_field :lastname, value: params[:lastname], class: "form-control", id: "lastname" %>
+            </div>
+        </div>
+    </div>
+    <div class="row me-3 mb-5">
+        <div class="col">
+            <div class="mb-3">
+                <label for="phone_number" class="form-label">เบอร์โทรศัพท์ :</label>
+                <%= f.text_field :phone_number, value: params[:phone_number], class: "form-control", id: "phone_number" %>
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="lastname" class="form-label">ความสัมพันธ์ :</label>
+                <%= f.select :relation, relation, { prompt: '-- โปรดเลือกความสัมพันธ์ --' }, class:"form-select", id: "relation" %>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-3 me-3 text-center">
+        <%= f.submit "ลงทะเบียน", class: "btn btn-primary w-50" %>
+    </div>
+<% end %>

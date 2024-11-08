@@ -1,0 +1,30 @@
+<div class="mb-3">
+    <div class="btn-group" role="group" aria-label="filter-date">
+        <input type="radio" class="btn-check" name="btnradio" id="today-filter" autocomplete="off" data-action="change->dashboard#selectDateRange" data-dashboard-date-param="week" data-dashboard-url-param="<%= dashboard_filter_path %>" checked>
+        <label class="btn btn-outline-primary" for="today-filter">Week</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="week-filter" autocomplete="off" data-action="change->dashboard#selectDateRange" data-dashboard-date-param="month" data-dashboard-url-param="<%= dashboard_filter_path %>">
+        <label class="btn btn-outline-primary" for="week-filter">Month</label>
+
+        <div class="btn-group dropright">
+            <input type="radio" class="btn-check" name="btnradio" id="date-range-filter" autocomplete="off" data-action="change->dashboard#showDateRange" >
+            <label class="btn btn-outline-primary rounded-end" for="date-range-filter">Date Rage</label>
+
+            <div class="dropdown-menu dropdown-date-range row px-2 py-2" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(85px, 25px, 0px);">
+                <%= form_for :form_date_filter, url: dashboard_filter_path(format: :json), method: :POST, html: { data: { "action": "submit->dashboard#filterDateRange" } } do |f|%>
+                    <div class="mb-3">
+                        <label for="date-from" class="form-label">Date form :</label>
+                        <%= f.date_field :date_from, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: "form-control", id: "date-from" %>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date-to" class="form-label">To: </label>
+                        <%= f.date_field :date_to, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: "form-control", id: "date-to" %>
+                    </div>
+                    <div class="mb-2 text-center">
+                        <%= f.submit "Search", class: "btn btn-primary" %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>    
+</div>

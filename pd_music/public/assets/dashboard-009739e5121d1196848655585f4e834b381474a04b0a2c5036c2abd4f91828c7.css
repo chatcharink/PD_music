@@ -1,0 +1,462 @@
+/* line 1, app/assets/stylesheets/dashboard.scss */
+.nav-item {
+  width: 90px;
+}
+
+/* line 5, app/assets/stylesheets/dashboard.scss */
+.nav-link {
+  color: #3b3c66 !important;
+  background-color: #fff !important;
+  border-right: 1px solid #dee2e6 !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  border-radius: 0px !important;
+  cursor: pointer;
+}
+
+/* line 14, app/assets/stylesheets/dashboard.scss */
+.nav-link.active {
+  color: #fff !important;
+  background-color: #6C6DE8 !important;
+  border-bottom: 1px solid #6C6DE8 !important;
+  border-radius: 0px !important;
+}
+
+/* line 21, app/assets/stylesheets/dashboard.scss */
+.z-index-99 {
+  z-index: 99;
+}
+
+/* line 25, app/assets/stylesheets/dashboard.scss */
+.nav-tabs-dashboard {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 99;
+}
+
+/* line 35, app/assets/stylesheets/dashboard.scss */
+.div-filter-content {
+  position: absolute;
+  width: 100%;
+  background-color: #fff;
+  height: 0px;
+  transition: .5s;
+}
+
+/* line 43, app/assets/stylesheets/dashboard.scss */
+.div-filter-content.active {
+  height: 140px;
+  transition: .5s;
+}
+
+/* line 48, app/assets/stylesheets/dashboard.scss */
+.filter-icon {
+  margin-top: 0px;
+  transition: .5s;
+}
+
+/* line 51, app/assets/stylesheets/dashboard.scss */
+.filter-icon button {
+  background: #44DBDC !important;
+}
+
+/* line 56, app/assets/stylesheets/dashboard.scss */
+.filter-icon.active {
+  margin-top: 140px;
+  transition: .5s;
+}
+
+/* line 61, app/assets/stylesheets/dashboard.scss */
+.filter-select-by {
+  visibility: hidden;
+}
+
+/* line 65, app/assets/stylesheets/dashboard.scss */
+.summary-box {
+  height: 200px;
+  width: 33%;
+  border-radius: 20px;
+  background-color: #fff;
+  border: 1px solid #d7d7d7;
+}
+
+/* line 71, app/assets/stylesheets/dashboard.scss */
+.summary-box span {
+  font-size: 16px;
+  color: #fff;
+}
+
+/* line 77, app/assets/stylesheets/dashboard.scss */
+.summary-box.overdue-work, .cat-box.overdue-work {
+  background-color: #e74c3c;
+  border: 1px solid #e74c3c;
+  width: 85% !important;
+}
+
+/* line 84, app/assets/stylesheets/dashboard.scss */
+.all-work span, .all-work h1 {
+  color: #6C6DE8 !important;
+}
+
+/* line 90, app/assets/stylesheets/dashboard.scss */
+.done-work span, .done-work h1 {
+  color: #58A4E2 !important;
+}
+
+/* line 96, app/assets/stylesheets/dashboard.scss */
+.remain-work span, .remain-work h1 {
+  color: #44DBDC !important;
+}
+
+/* line 102, app/assets/stylesheets/dashboard.scss */
+.overdue-work span, .overdue-work p {
+  color: #fff !important;
+}
+
+/* line 105, app/assets/stylesheets/dashboard.scss */
+.overdue-work h1 {
+  color: #fff !important;
+  font-size: 4rem !important;
+  margin-top: 20px;
+}
+
+/* line 112, app/assets/stylesheets/dashboard.scss */
+.summary-box.all-score {
+  width: 85% !important;
+  min-height: 345px;
+  max-height: 345px;
+  overflow: auto;
+}
+
+/* line 117, app/assets/stylesheets/dashboard.scss */
+.summary-box.all-score span {
+  color: #3b3c66;
+}
+
+/* line 123, app/assets/stylesheets/dashboard.scss */
+.summary-value:not(.overdue-work) h1 {
+  color: #3b3c66 !important;
+  font-size: 2.5rem !important;
+  transform: translateY(-6.4rem);
+}
+
+/* line 131, app/assets/stylesheets/dashboard.scss */
+.overdue-text p {
+  font-size: 14px !important;
+}
+
+/* line 134, app/assets/stylesheets/dashboard.scss */
+#chart-1, #chart-2, #chart-3 {
+  margin: auto;
+  margin-top: 0.5rem;
+}
+
+/* line 139, app/assets/stylesheets/dashboard.scss */
+.btn-check + .btn {
+  background-color: #fff !important;
+  border: 1px solid #6C6DE8 !important;
+  color: #6C6DE8 !important;
+}
+
+/* line 145, app/assets/stylesheets/dashboard.scss */
+.btn-check:checked + .btn {
+  background-color: #6C6DE8 !important;
+  border: 1px solid #6C6DE8 !important;
+  color: #fff !important;
+}
+
+/* line 151, app/assets/stylesheets/dashboard.scss */
+.div-graph {
+  background-color: #fff !important;
+  border: 1px solid #d7d7d7;
+  border-radius: 20px;
+}
+
+/* line 157, app/assets/stylesheets/dashboard.scss */
+.div-table {
+  background-color: #fff !important;
+  border: 1px solid #d7d7d7;
+  max-height: 500px;
+  overflow: auto;
+  border-radius: 20px;
+}
+
+/* line 165, app/assets/stylesheets/dashboard.scss */
+.div-table thead th, #table-behaviour-comment-list thead th {
+  background-color: #6C6DE8 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* line 168, app/assets/stylesheets/dashboard.scss */
+.div-table thead th span, #table-behaviour-comment-list thead th span {
+  color: #fff !important;
+}
+
+/* line 172, app/assets/stylesheets/dashboard.scss */
+.dashboard-hw-table > :not(caption) > * > * {
+  padding: 0.5rem 1.5rem !important;
+}
+
+/* line 176, app/assets/stylesheets/dashboard.scss */
+.table-status-open {
+  color: #44DBDC;
+}
+
+/* line 180, app/assets/stylesheets/dashboard.scss */
+.table-status-send {
+  color: #58A4E2;
+}
+
+/* line 184, app/assets/stylesheets/dashboard.scss */
+.table-status-reject {
+  color: #e74c3c;
+}
+
+/* line 188, app/assets/stylesheets/dashboard.scss */
+.table-status-checked {
+  color: #6C6DE8;
+}
+
+/* line 192, app/assets/stylesheets/dashboard.scss */
+.dashbaord-icon-error {
+  background-color: #e74c3c;
+  color: #fff;
+  font-size: 12px;
+  animation: blink 2s steps(5, start) infinite;
+  -webkit-animation: blink 1s steps(5, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* line 209, app/assets/stylesheets/dashboard.scss */
+.dashbaord-icon-warning {
+  color: #ff6004;
+}
+
+/* line 213, app/assets/stylesheets/dashboard.scss */
+.cat-box {
+  height: 160px;
+  width: 33%;
+  border-radius: 20px;
+  background-color: #fff;
+  border: 1px solid #d7d7d7;
+}
+
+/* line 219, app/assets/stylesheets/dashboard.scss */
+.cat-box span {
+  font-size: 16px;
+  color: #fff;
+}
+
+/* line 225, app/assets/stylesheets/dashboard.scss */
+.cat-score {
+  width: 85% !important;
+  min-height: 345px;
+  max-height: 345px;
+  overflow: auto;
+}
+
+/* line 230, app/assets/stylesheets/dashboard.scss */
+.cat-score span {
+  color: #3b3c66;
+}
+
+/* line 235, app/assets/stylesheets/dashboard.scss */
+.all-cat-task {
+  background-color: #6C6DE8;
+}
+
+/* line 237, app/assets/stylesheets/dashboard.scss */
+.all-cat-task span, .all-cat-task h1 {
+  color: #fff !important;
+}
+
+/* line 242, app/assets/stylesheets/dashboard.scss */
+.done-cat-task {
+  background-color: #58A4E2;
+}
+
+/* line 244, app/assets/stylesheets/dashboard.scss */
+.done-cat-task span, .done-cat-task h1 {
+  color: #fff !important;
+}
+
+/* line 249, app/assets/stylesheets/dashboard.scss */
+.remain-cat-task {
+  background-color: #44DBDC;
+}
+
+/* line 251, app/assets/stylesheets/dashboard.scss */
+.remain-cat-task span, .remain-cat-task h1 {
+  color: #fff !important;
+}
+
+/* line 257, app/assets/stylesheets/dashboard.scss */
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+/* line 262, app/assets/stylesheets/dashboard.scss */
+.stars svg {
+  color: #e6e6e6;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* line 268, app/assets/stylesheets/dashboard.scss */
+.stars svg.active, table tbody td .rating-icon.active {
+  color: #ff9c1a;
+}
+
+/* line 271, app/assets/stylesheets/dashboard.scss */
+.student-name-comment {
+  font-size: 14px !important;
+  font-weight: 400;
+}
+
+/* line 276, app/assets/stylesheets/dashboard.scss */
+.truncate {
+  max-width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 283, app/assets/stylesheets/dashboard.scss */
+.dashboard-comment.truncate {
+  max-width: 150px !important;
+}
+
+/* line 287, app/assets/stylesheets/dashboard.scss */
+#behaviour-dashboard-table thead .column-0 {
+  width: 90% !important;
+}
+
+/* line 288, app/assets/stylesheets/dashboard.scss */
+#behaviour-dashboard-table thead .column-0 {
+  width: 10% !important;
+}
+
+/* line 290, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead .column-0 {
+  width: 20% !important;
+}
+
+/* line 291, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead .column-1 {
+  width: 20% !important;
+}
+
+/* line 292, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead .column-2 {
+  width: 23% !important;
+}
+
+/* line 293, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead .column-3 {
+  width: 17% !important;
+}
+
+/* line 294, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead .column-4 {
+  width: 20% !important;
+}
+
+/* line 296, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list-admin thead .column-0 {
+  width: 25% !important;
+}
+
+/* line 297, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list-admin thead .column-1 {
+  width: 15% !important;
+}
+
+/* line 298, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list-admin thead .column-2 {
+  width: 22% !important;
+}
+
+/* line 299, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list-admin thead .column-3 {
+  width: 25% !important;
+}
+
+/* line 300, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list-admin thead .column-4 {
+  width: 22% !important;
+}
+
+/* line 302, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead th, #table-behaviour-comment-list-admin thead th {
+  background-color: #6C6DE8 !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* line 305, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead th span, #table-behaviour-comment-list-admin thead th span {
+  color: #fff !important;
+}
+
+/* line 309, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead th:first-child, #table-behaviour-comment-list-admin thead th:first-child {
+  border-top-left-radius: 10px;
+}
+
+/* line 313, app/assets/stylesheets/dashboard.scss */
+#table-behaviour-comment-list thead th:last-child, #table-behaviour-comment-list-admin thead th:last-child {
+  border-top-right-radius: 10px;
+}
+
+/* line 317, app/assets/stylesheets/dashboard.scss */
+svg.icon {
+  cursor: pointer;
+}
+
+/* line 321, app/assets/stylesheets/dashboard.scss */
+svg.icon:hover {
+  color: #6C6DE8 !important;
+}
+
+/* line 325, app/assets/stylesheets/dashboard.scss */
+#scroll-container {
+  background-color: #ff9c1a;
+  border: none;
+  overflow: hidden;
+}
+
+/* line 331, app/assets/stylesheets/dashboard.scss */
+#scroll-text {
+  /* animation properties */
+  color: #fff;
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  transform: translateX(100%);
+  animation: my-animation 60s linear infinite;
+}
+
+/* for Firefox */
+
+/* for Chrome */
+
+@keyframes my-animation {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

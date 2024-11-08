@@ -1,0 +1,193 @@
+import { Controller } from "@hotwired/stimulus"
+import $ from 'jquery'
+import DataTable from 'datatables.net-bs5'
+
+export default class extends Controller {
+    connect() {
+        document.getElementById("food-list-menu").classList.add("active");
+        let participation_side = document.getElementById("foodMenu");
+        if (!participation_side.classList.contains("show")){
+            participation_side.classList.add("show");
+        }
+    }
+
+    clickFileUpload(){
+        document.getElementById("upload-restaurant-pic").click();
+    }
+
+    uploadAvatar(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        const wrapper = event.target.closest(".canva-profile-photo");
+
+
+        reader.onloadend = () => {
+            document.getElementById('avatar_profile').src = reader.result;
+            document.getElementById('avatar_profile').style.width = "498px";
+            document.getElementById('avatar_profile').style.height = "264px";
+        };
+
+        if (file) {
+        reader.readAsDataURL(file);
+        // this.saveAvatar(file, wrapper);
+        }
+    }
+
+    createRestaurant(event){
+        event.preventDefault();
+
+        let name = document.getElementById("restaurant");
+        let status = document.getElementById("select-status");
+        let telephone = document.getElementById("telephone");
+        let line = document.getElementById("line");
+
+        let arr_valid = [];
+        if (name.value == ""){
+            name.style.border = "1px solid #d31414";
+            name.style.background = "#f7caca";
+            arr_valid.push(false);
+        }else{
+            name.style.border = "1px solid #dee2e6";
+            name.style.background = "#fff";
+            arr_valid.push(true);
+        }
+
+        if (!arr_valid.includes(false)){
+        
+            const create_restaurant = fetch(event.target.action, {
+                method: 'POST',
+                body: new FormData(event.target),
+            }).then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+            });
+
+            create_restaurant.then((data) => {
+                try{
+                    result = JSON.parse(data);
+                    this.alert(result["status"], result["message"]);
+                } catch {
+                    $(".div-restaurant").html("");
+                    $(".div-restaurant").html(data);
+                    $("#close-add-reataurant").click();
+                    // Clear value in dialog
+                    this.alert("success", "Add restaurant "+name.value+" successfully");
+                }
+            });
+        }
+    }
+
+    addRestaurantId(event){
+        document.getElementById("add-menu-restaurant-id").value = event.params["id"];
+    }
+
+    settingOrder(event){
+        let url = event.params["url"];
+        let pre_order = document.getElementById("pre-order");
+        let time_order = document.getElementById("times-order");
+
+        const setting = fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": this.getCsrfToken()
+            },
+            body: JSON.stringify({ "pre_order": pre_order.value, "times": time_order.value}),
+        }).then(response => {
+            if (response.ok) {
+                return response.text();
+            }
+        });
+
+        setting.then((data) => {
+            let result = JSON.parse(data);
+            this.alert(result["status"], result["message"]);
+        });
+    }
+
+    exportOrder(event){
+        // let url = event.params["url"];
+        // let date_from = document.getElementById("date_from");
+        // let date_to = document.getElementById("date_to");
+
+        // const export_data = fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "X-CSRF-Token": this.getCsrfToken()
+        //     },
+        //     body: JSON.stringify({ "date_from": date_from.value, "date_to": date_to.value}),
+        // }).then(response => {
+        //     if (response.ok) {
+        //         return response.text();
+        //     }
+        // });
+
+        // export_data.then((data) => {
+        //     try{
+        //         let result = JSON.parse(data);
+        //         this.alert(result["status"], result["message"]);
+        //     } catch{
+                this.alert("success", "Export order successfully");
+        //     }
+        // });
+    }
+
+    alert(type, message){
+        let toast_container = document.getElementsByClassName("toast-container")[0];
+    
+        let toast = document.createElement("div");
+        toast.setAttribute("class", "toast show");
+        toast.setAttribute("role", "alert");
+        toast.setAttribute("aria-live", "assertive");
+        toast.setAttribute("aria-atomic", "true");
+    
+        let toast_header = document.createElement("div");
+        toast_header.setAttribute("class", "toast-header toast-header-js");
+        let icon = this.alert_icon(type);
+        toast_header.innerHTML += icon;
+    
+        let toast_header_title = document.createElement("strong");
+        let alert_title = type.charAt(0).toUpperCase() + type.slice(1);
+        toast_header_title.setAttribute("class", "me-auto ms-2 text-"+type);
+        toast_header_title.innerHTML += alert_title;
+        toast_header.appendChild(toast_header_title);
+    
+        let close_icon = document.createElement("button");
+        close_icon.setAttribute("type", "button");
+        close_icon.setAttribute("class", "btn-close");
+        close_icon.setAttribute("data-bs-dismiss", "toast");
+        close_icon.setAttribute("aria-label", "Close");
+        toast_header.appendChild(close_icon);
+    
+        let div_message = document.createElement("div");
+        div_message.setAttribute("class", "toast-body toast-body-"+type);
+        div_message.innerHTML += message;
+    
+        toast.appendChild(toast_header);
+        toast.appendChild(div_message);
+        toast_container.appendChild(toast);
+    
+        setTimeout(function(){
+            toast.remove();
+        }, 5000);
+    }
+    
+    alert_icon(state){
+        let icon = ""
+        switch(state){
+            case "success":
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill alert-icon-success" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>';
+                break;
+            case "error":
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill alert-icon-error" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/></svg>';
+                break;
+        }
+        return icon
+    }
+
+    getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]').content;
+    }
+};

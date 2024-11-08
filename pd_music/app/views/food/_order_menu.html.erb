@@ -1,0 +1,96 @@
+<button type="button" class="btn btn-primary d-none" id="btn-open-order-menu-detail" data-bs-toggle="modal" data-bs-target="#orderMenuBackdrop">
+    Order
+</button>
+
+<div class="modal fade" id="orderMenuBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderMenuBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header m-auto border-0">
+                <div class="div-header-menu">
+                    <%= image_tag("#{image_path}", id: "menu_profile", class: "img-profile rounded-circle", width: "150px", height: "150px") %>
+                </div>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="mb-3 row">
+                    <div class="col-9">
+                        <h5><b>Menu :</b> <%= menu_name %></h5>
+                        <%= hidden_field_tag :menu_id, menu_id, class: "form-control", id: "menu_id" %>
+                    </div>
+                    <div class="col-3">
+                        <h5 class="d-inline" id="order-price"><%= price %></h5><span> บาท</span>
+                    </div>
+                </div>
+                <hr>
+
+                <% arr_category = [] %>
+                <% option.sort_by! { |k| k["category"] } %>
+                <% option.each_with_index do |op, index| %>
+                    <% if index == 0 %>
+                        <div class="mb-3 d-inline dropdown">
+                            <span><b>Option: </b></span>
+                        </div>
+                    <% end %>
+                    <% id = op["id"].to_i %>
+                    <% if !arr_category.include?(op["category"]) %>
+                        <div class="mt-2 menu-options-list" id="<%= op["category"] %>-choices">
+                            <span><b><%= op["category"] %></b></span>
+                        </div>
+                        <% arr_category << op["category"] %>
+                    <% end %>
+                    <% if op["checked"] %>
+                        <div class="mb-2 mx-2 row option-choices">
+                            <div class="col-9">
+                                <div class="form-check">
+                                    <input class="form-check-input check-options" type="radio" value="<%= id %>" name="<%= op["category"] %>Radio" id="check-<%= id %>" data-action="change->order#countPrice" data-price="<%= @option_menu[id]["price"] %>" data-category="<%= op["category"] %>">
+                                    <label class="form-check-label" for="check-<%= id %>">
+                                        <%= @option_menu[id]["menu_name"] %>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3"><span>+ <%= @option_menu[id]["price"] %> บาท</span></div>
+                        </div>
+                    <% end %>
+                <% end %>
+
+                <div class="mb-3">
+                    <span><b>More detail : </b></span>
+                    <%= text_area_tag :detail, "", rows: 2, class: "form-control", id: "detail" %>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="secondDish" data-action="change->order#selectSecondDish">
+                    <label class="form-check-label" for="secondDish">
+                        Second dish
+                    </label>
+                </div>
+
+                <div class="mb-3" id="div-second-choices" style="display: none;">
+                    <% @second_dish.each do |sd| %>
+                        <div class="mb-2 mx-2 row option-second-choices">
+                            <div class="col-9">
+                                <div class="form-check">
+                                    <input class="form-check-input check-second-options" type="radio" value="<%= sd.id %>" name="secondDishRadio" id="check-second-<%= sd.id %>" data-action="change->order#countPrice" data-price="<%= sd.price %>">
+                                    <label class="form-check-label" for="check-second-<%= sd.id %>">
+                                        <%= sd.menu_name %>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3"><span>+ <%= sd.price %> บาท</span></div>
+                        </div>
+                    <% end %>
+                </div>
+                <%# f.hidden_field :restaurant_id, value: restaurant_id, id: "add-menu-restaurant-id" %>
+            </div>
+            <div class="modal-footer d-block">
+                <div class="row mb-3">
+                    <div class="col-9"><span><b>Total :</b></span></div>
+                    <div class="col-3"><h5 id="total-selected"><%= price %> บาท</h5></div>
+                </div>
+                <div class="float-end">
+                    <button type="button" class="btn btn-primary" data-action="click->order#confirmOrder" data-order-url-param="<%= food_order_confirm_path() %>" data-bs-dismiss="modal">Confirm</button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+.btn-permission-setting{
+    height: 75px;
+    text-align: start !important;
+    font-weight: 500 !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.form-check-input{
+    cursor: pointer;
+}
+
+.form-check-input:checked{
+    background-color: #6C6DE8 !important;
+    border-color: #6C6DE8 !important;
+}

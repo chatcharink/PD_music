@@ -1,0 +1,30 @@
+<table class="table behaviour-dashboard-table">
+    <thead>
+        <tr>
+            <th class="column-0" scope="col">Student name</th>
+            <th class="column-1" scope="col">Times</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if behaviour.present? %>
+            <% behaviour.each do |k, v| %>
+            <%  if v["negative_times"] >= 3 
+                    bg_color = "#f8d7da"
+                elsif v["negative_times"] > 0 && v < 3
+                    bg_color = "#fff5d7"
+                else
+                    bg_color = "#ffffff"
+                end
+            %>
+            <tr>
+                <td class="td-show-comment-<%= v["id"] %>" style="background-color: <%= bg_color %>"><%= k %></td>
+                <td class="td-show-comment-<%= v["id"] %>" style="background-color: <%= bg_color %>"><%= v["negative_times"] %></td>
+            </tr>
+            <% end %>
+        <% else %>
+            <tr>
+                <td class="text-center" colspan=2>No negative comments</td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

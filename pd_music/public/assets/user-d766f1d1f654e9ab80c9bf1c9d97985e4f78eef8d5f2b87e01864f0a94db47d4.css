@@ -1,0 +1,130 @@
+/* line 8, app/assets/stylesheets/user.scss */
+.btn-filter-user {
+  background-color: #44dbdc !important;
+  color: #fff !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+/* line 15, app/assets/stylesheets/user.scss */
+#table-user-list_paginate {
+  float: right;
+}
+
+/* line 19, app/assets/stylesheets/user.scss */
+.page-link.active, .active > .page-link {
+  background-color: #6c6de8 !important;
+  color: #fff;
+}
+
+/* line 29, app/assets/stylesheets/user.scss */
+#table-user-list > tbody > tr > * {
+  align-content: center !important;
+}
+
+/* line 33, app/assets/stylesheets/user.scss */
+#user_profile_pic {
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* line 39, app/assets/stylesheets/user.scss */
+#user_profile_pic::file-selector-button {
+  background-color: #6c6de8 !important;
+  color: #fff;
+  border: 1px solid #6c6de8;
+  border-radius: .5rem;
+}
+
+/* line 46, app/assets/stylesheets/user.scss */
+#table-user-list {
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+/* line 51, app/assets/stylesheets/user.scss */
+#table-user-list tbody tr {
+  box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border-radius: .75rem;
+}
+
+/* line 57, app/assets/stylesheets/user.scss */
+#table-user-list tbody tr:hover td {
+  background-color: #e2e2ff !important;
+}
+
+/* line 60, app/assets/stylesheets/user.scss */
+#table-user-list thead th {
+  background-color: #6C6DE8 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* line 63, app/assets/stylesheets/user.scss */
+#table-user-list thead th span {
+  color: #fff !important;
+}
+
+/* line 67, app/assets/stylesheets/user.scss */
+#table-user-list thead th:first-child, #table-user-list tbody tr td:first-child {
+  border-top-left-radius: .75rem;
+  border-bottom-left-radius: .75rem;
+}
+
+/* line 72, app/assets/stylesheets/user.scss */
+#table-user-list thead th:last-child, #table-user-list tbody tr td:last-child {
+  border-top-right-radius: .75rem;
+  border-bottom-right-radius: .75rem;
+}
+
+/* line 77, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-0 {
+  width: 10%;
+}
+
+/* line 78, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-1 {
+  width: 30%;
+}
+
+/* line 79, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-2 {
+  width: 15%;
+}
+
+/* line 80, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-3 {
+  width: 15%;
+}
+
+/* line 81, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-4 {
+  width: 20%;
+}
+
+/* line 82, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-5 {
+  width: 5%;
+}
+
+/* line 83, app/assets/stylesheets/user.scss */
+#table-user-list thead th.column-6 {
+  width: 5%;
+}
+
+/* line 85, app/assets/stylesheets/user.scss */
+.user-active-icon {
+  color: #44dbdc !important;
+}
+
+/* line 89, app/assets/stylesheets/user.scss */
+.user-inactive-icon {
+  color: #a8a8a8 !important;
+}
+
+/* line 93, app/assets/stylesheets/user.scss */
+.approve-user {
+  background-color: #f7caca !important;
+}

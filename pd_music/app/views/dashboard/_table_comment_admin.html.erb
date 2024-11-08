@@ -1,0 +1,32 @@
+<%= content_tag :table, class: "table table-striped dashboard-hw-table", id: "table-behaviour-comment-list-admin", width: "100%" do %>
+    <thead>
+        <tr>
+            <th class="text-start column-0">Student name</th>
+            <th class="text-center column-1">Negative</th>
+            <th class="text-start column-2">Status</th>
+            <th class="text-start column-3">Latest comment</th>
+            <th class="text-center column-4">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% behaviour.each do |k, v| %>
+        <tr>
+            <td class="text-start truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= k %></span>">
+                <%= k %>
+            </td>
+            <td class="text-center"><%= v["negative_times"] %></td>
+            <td class="text-start" id="behaviour-status-<%= v["id"] %>"><%= v["status"] %></td>
+            <td class="text-start"><%= v["latest_comment"].strftime("%d/%m/%Y") %></td>
+            <td class="text-center" id="action-<%= v["id"] %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill icon" viewBox="0 0 16 16" data-bs-target="#showCommentClassRoom" data-action="click->dashboard#showToolsTip click->dashboard#expandComment click->dashboard#viewUser" data-dashboard-url-param="<%= dashboard_view_user_comment_path() %>" data-dashboard-id-param="<%= v["id"] %>" data-bs-toggle="modal" data-bs-dismiss="modal">
+                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square icon" viewBox="0 0 16 16" data-action="click->dashboard#editStatus" data-dashboard-id-param="<%= v["id"] %>">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+<% end %>

@@ -1,0 +1,30 @@
+<% is_user_logged_in? %>
+
+<div class="menu-div h-100">
+    <div class="m-auto w-75 mt-3 mb-4">
+        <h5 class="title-menu d-inline"><%= @restaurant.restaurant_name %> Menu :</h5>
+
+        <% if can_view_menu?([34]) %>
+        <button type="button" class="btn btn-primary float-end" style="width: 15%" data-bs-toggle="modal" data-bs-target="#addMenuBackdrop">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-plus icon me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5"/>
+                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+            </svg> Add menu
+        </button>
+        <% end %>
+    </div>
+    <div class="div-table-menu h-100" data-controller="menu">
+        <% if @restaurant.menu_name.blank? %>
+            <div class="no-subject-image h-90 m-auto w-75 border text-center" style="align-content: center;">
+                <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+                <p>No menu, Please add the menu in <%= @restaurant.restaurant_name %></p>
+            </div>
+            <%= render partial: "add_menu_dialog", locals: {page: "menu", restaurant_id: params["id"]} %>
+        <% else %>
+            <%= render partial: "table_menu", locals: {restaurant_id: params["id"]}  %>
+        <% end %>
+    </div>
+</div>
+
+<input type="hidden" id="permission-edit" value="<%= can_view_menu?([35]) %>" />

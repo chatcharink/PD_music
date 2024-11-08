@@ -1,0 +1,46 @@
+<% if data.present? %>
+    <% data.each do |sj| %>
+        <div class="col">
+            <div class="card mb-3 me-3">
+                <% id = type == "subject" ? sj.subject_id : sj.event_id %>
+                <% name = type == "subject" ? sj.subject_name : sj.event_name %>
+                <div class="delete-subject position-absolute end-0 pe-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill text-white icon delete" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal" data-action="click->participation#setDeleteId" data-participation-subject-id-param="<%= id %>" data-participation-name-param="<%= name %>" data-participation-type-param="<%= type %>">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                    </svg>
+                </div>
+                <% rand_img = rand(1..5) %>
+                <img src="<%= APP_CONFIG[:application_path] %>/pictures/banners/music_banner_<%= rand_img %>.png" class="card-img-top">
+                <div class="card-body div-card-body-parti">
+                    <div class="user-created-profile">
+                        <%= image_tag(sj.profile_pic.attached? ? url_for(sj.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "img-profile-subject-parti rounded-circle position-absolute end-0 me-3", width: "100px", height: "100px") %>
+                    </div>
+                    <h5 class="card-title"><%= name %></h5>
+                    <p class="card-text"><%= sj.description %></p>
+                    <% date = type == "subject" ? sj.created_at : sj.event_date %>
+                    <p class="card-text position-absolute bottom-0"><small class="text-muted"><%= date.strftime("%d/%m/%Y") %></small></p>
+                    <p class="float-end position-absolute bottom-0 end-0">
+                        <% if can_view_menu?(permission) %>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-plus-fill icon mx-2" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#addUserToSubject" data-action="click->participation#openAddUserModal" data-participation-subject-id-param="<%= id %>" data-participation-type-param="<%= type %>" data-participation-url-param="<%= participation_subject_get_user_path() %>">
+                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                            </svg>
+                        <% end %>
+                        <% if can_view_menu?(permission) %>
+                            <%= link_to edit_participation_path(id: id, type: type) do %>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-ui-checks icon mx-2" viewBox="0 0 16 16">
+                                <path d="M7 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zM2 1a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 8a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2zm.854-3.646a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647 1.646-1.647a.5.5 0 1 1 .708.708zm0 8a.5.5 0 0 1-.708 0l-1-1a.5.5 0 0 1 .708-.708l.646.647 1.646-1.647a.5.5 0 0 1 .708.708zM7 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                            </svg>
+                            <% end %>
+                        <% end %>
+                    </p>
+                </div>
+            </div>
+        </div>
+    <% end %>
+<% else %>
+    <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+        <p>No subject, Please add the subject</p>
+    </div>
+<% end %>

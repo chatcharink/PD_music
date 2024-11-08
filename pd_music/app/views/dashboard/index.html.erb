@@ -1,0 +1,54 @@
+<% is_user_logged_in? %>
+
+<% if session["current_user"]["first_login"] == 0 %>
+    <div id="div-profile-pic-upload-dialog">
+        <%= render partial: "upload_picture_dialog" %>
+    </div>
+<% end %>
+<div class="h-100" data-controller="dashboard">
+    <%# <h5 class="title-menu mb-3">Dashboard</h5> %>
+    <ul class="nav nav-tabs nav-tabs-dashboard z-index-99">
+        <li class="nav-item text-center">
+            <a class="nav-link dashboard-tab active" id="dashboard-tab-all" aria-current="page" data-action="click->dashboard#selectTab" data-dashboard-tab-param="all" data-dashboard-id-param="" data-dashboard-url-param="<%= dashboard_change_tab_path() %>">All</a>
+        </li>
+        <% @category.each do |k, v| %>
+            <li class="nav-item text-center">
+                <a class="nav-link dashboard-tab" id="dashboard-tab-<%= v["name_en"] %>" data-action="click->dashboard#selectTab" data-dashboard-tab-param="<%= v["name_en"] %>" data-dashboard-id-param="<%= v["id"] %>" data-dashboard-url-param="<%= dashboard_change_tab_path() %>"><%= v["name_en"].capitalize %></a>
+            </li>
+        <% end %>
+    </ul>
+
+    <% if session["current_user"]["role"] != 3 %>
+        <div class="div-filter-content border w-100 z-index-99">
+            <%= render partial: "filter_for_teacher" %>
+        </div>
+        <div class="filter-icon text-center position-absolute start-50 z-index-99">
+            <button class="btn btn-primary rounded-bottom" style="border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;" data-controller="dashboard" data-action="click->dashboard#clickFilter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                </svg> Filter
+            </button>
+        </div>
+        <div class="div-filter-dashboard ms-4 mt-3">
+            <h5 class="title-dashboard"><span>Result of </span><span class="title-group-name" id="title-group-name">class : <%= session["current_user"]["study_class"] %></span></h5>
+        </div>
+        <input type="hidden" id="hide-select-state" data-select="group_id" value="" >
+        <input type="hidden" id="hide-select-class" value="<%= session["current_user"]["study_class"] %>">
+        <input type="hidden" id="hide-select-exam-date" value="">
+    <% else %>
+        <div class="w-100" id="scroll-container">
+            <div id="scroll-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-megaphone-fill me-3" viewBox="0 0 16 16">
+                    <path d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0zm-1 .724c-2.067.95-4.539 1.481-7 1.656v6.237a25 25 0 0 1 1.088.085c2.053.204 4.038.668 5.912 1.56zm-8 7.841V4.934c-.68.027-1.399.043-2.008.053A2.02 2.02 0 0 0 0 7v2c0 1.106.896 1.996 1.994 2.009l.496.008a64 64 0 0 1 1.51.048m1.39 1.081q.428.032.85.078l.253 1.69a1 1 0 0 1-.983 1.187h-.548a1 1 0 0 1-.916-.599l-1.314-2.48a66 66 0 0 1 1.692.064q.491.026.966.06"/>
+                </svg>  Announcement: You exam date is <%= session["current_user"]["exam_date"].strftime("%d %B %Y") %>
+            </div>
+        </div>
+        <input type="hidden" id="hide-select-state" data-select="id" value="<%= session["current_user"]["id"] %>" >
+    <% end %>
+
+    <input type="hidden" id="hide-category" value="" />
+
+    <div class="div-dashboard mt-3 mb-5" id="div-dashboard">
+        <%= render partial: "summary_box" %>
+    </div>
+</div>

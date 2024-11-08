@@ -1,0 +1,18 @@
+<div class="row p-3 border-bottom" id="div-filter-user" style="width: 100%; display: none;">
+    <label for="search-name" class="col-sm-2 col-form-label text-end">Firstname or Lastname: </label>
+    <div class="col-3 div-filter-select">
+        <%= text_field_tag(:search_name, nil, class: "form-control", id: "search-name", "data-action": "keyup->user#searchUser" ) %>
+        <%# select_tag :subject, options_for_select(@subject.pluck(:subject_name, :id), @default_subject.id), { class: "form-select", id: "select-subject", data: { action: "change->report-participation#filterReportSubject"}, "data-url": participation_filter_report_path() } %>
+    </div>
+    <label for="search-status" class="col-sm-1 col-form-label text-end">Status: </label>
+    <div class="col-2 div-filter-select">
+        <%= select_tag "status", options_for_select([ "Active", "Inactive", "Deleted"]), include_blank: "Please select status", class: "form-select", id: "search-status", "data-action": "change->user#searchUser" %>
+    </div>
+</div>
+<div class="text-center">
+    <button class="btn rounded-bottom btn-filter-user" data-action="click->user#filter">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+        </svg> Filter
+    </button>
+</div>

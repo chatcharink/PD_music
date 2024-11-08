@@ -1,0 +1,37 @@
+<% if @hash_order.blank? %>
+    <div class="no-subject-image h-90 m-auto w-75 border text-center" style="align-content: center;">
+        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+        <p>No order, Please click + order button to order</p>
+    </div>
+<% else %>
+    <% @hash_order.each do |key, val| %>
+        <div class="title-date m-auto"><h5><b>Date: <%= key %></b></h5></div>
+        <% val.each do |v| %>
+        <div class="row mb-3 border rounded-3 m-auto div-ordered p-3" style="align-items: center;">
+            <div class="col-2">
+            <%= image_tag(v[:menu_image].attached? ? url_for(v[:menu_image]) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", id: "avatar_profile", class: "img-profile rounded-circle", width: "150px", height: "150px") %>
+            </div>
+            <div class="col-8">
+                <h5><b>[<%= v[:meal] %>]</b></h5>
+                <h5>ร้าน : <%= v[:restaurant] %></h5>
+                <h5>เมนู : <%= v[:menu_name] %></h5>
+                <% if v[:option].present? %>
+                    <% JSON.parse(v[:option]).each do |op| %>
+                        <p class="mb-1"><%= op["category"] %> : <%= @option[op["id"].to_i]["menu_name"] %></p>
+                    <% end %>
+                <% end %>
+                <% if v[:second_menu_id].present? %>
+                    <p>+ <%= @option[v[:second_menu_id]]["menu_name"] %></p>
+                <% end %>
+                <% if v[:more_detail].present? %>
+                    <p>(<%= v[:more_detail] %>)</p>
+                <% end %>
+            </div>
+            <div class="col-2">
+                <%# <h5>Price</h5> %>
+                <h5><%= v[:price] %> บาท</h5>
+            </div>
+        </div>
+        <% end %>
+    <% end %>
+<% end %>

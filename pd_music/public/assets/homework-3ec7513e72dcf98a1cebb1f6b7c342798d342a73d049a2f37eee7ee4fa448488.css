@@ -1,0 +1,206 @@
+/* line 1, app/assets/stylesheets/homework.scss */
+.div-add-subject .icon {
+  color: #6C6DE8 !important;
+  cursor: pointer;
+}
+
+/* line 6, app/assets/stylesheets/homework.scss */
+.div-add-subject .icon:hover {
+  color: rgba(108, 109, 232, 0.5) !important;
+}
+
+/* line 10, app/assets/stylesheets/homework.scss */
+.img-profile-subject {
+  transform: translateY(-50px);
+  -webkit-transform: translateY(-50px);
+}
+
+/* line 15, app/assets/stylesheets/homework.scss */
+.div-card-body {
+  cursor: pointer;
+}
+
+/* line 19, app/assets/stylesheets/homework.scss */
+.div-card-body:hover {
+  background-color: #e2e2ff !important;
+  color: #ffffff;
+}
+
+/* line 24, app/assets/stylesheets/homework.scss */
+.table-homework-list {
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+/* line 29, app/assets/stylesheets/homework.scss */
+.table-homework-list tbody tr {
+  box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border-radius: .75rem;
+}
+
+/* line 35, app/assets/stylesheets/homework.scss */
+.table-homework-list tbody tr:hover td {
+  background-color: #e2e2ff !important;
+}
+
+/* line 39, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th {
+  background-color: #6C6DE8 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* line 42, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th span {
+  color: #fff !important;
+}
+
+/* line 46, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th:first-child, .table-homework-list tbody tr td:first-child {
+  border-top-left-radius: .75rem;
+  border-bottom-left-radius: .75rem;
+}
+
+/* line 51, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th:last-child, .table-homework-list tbody tr td:last-child {
+  border-top-right-radius: .75rem;
+  border-bottom-right-radius: .75rem;
+}
+
+/* line 56, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th.column-0 {
+  width: 45%;
+}
+
+/* line 57, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th.column-1 {
+  width: 15%;
+}
+
+/* line 58, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th.column-2 {
+  width: 15%;
+}
+
+/* line 59, app/assets/stylesheets/homework.scss */
+.table-homework-list thead th.column-3 {
+  width: 25%;
+}
+
+/* line 61, app/assets/stylesheets/homework.scss */
+.tab-kind {
+  width: 100px;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+  color: #3b3c66;
+  border: 1px solid #dee2e6;
+  border-top: none !important;
+}
+
+/* line 73, app/assets/stylesheets/homework.scss */
+.tab-kind.active {
+  background-color: #6C6DE8;
+  border: 1px solid #dee2e6;
+  border-bottom: none !important;
+  color: #fff;
+}
+
+/* line 81, app/assets/stylesheets/homework.scss */
+.warning-invalid-chord-icon {
+  color: #ff220f;
+  cursor: pointer;
+}
+
+/* line 86, app/assets/stylesheets/homework.scss */
+.div-select-chord {
+  min-height: 150px;
+}
+
+/* line 90, app/assets/stylesheets/homework.scss */
+.no-chord-choices {
+  font-weight: 300 !important;
+}
+
+/* line 94, app/assets/stylesheets/homework.scss */
+.add-choice {
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-size: 12px;
+  font-style: normal;
+  color: #53d81e;
+  cursor: pointer;
+}
+
+/* line 101, app/assets/stylesheets/homework.scss */
+.add-choice svg {
+  color: #53d81e;
+}
+
+/* line 104, app/assets/stylesheets/homework.scss */
+.remove-choice {
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-size: 12px;
+  font-style: normal;
+  color: #ff220f;
+  cursor: pointer;
+}
+
+/* line 111, app/assets/stylesheets/homework.scss */
+.remove-choice svg {
+  color: #ff220f;
+}
+
+/* line 114, app/assets/stylesheets/homework.scss */
+.question-media, .answer-media {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+/* line 120, app/assets/stylesheets/homework.scss */
+.div-audio.active, .div-audio-answer.active {
+  background-color: #f2f3f4 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* line 127, app/assets/stylesheets/homework.scss */
+.delete-chord-x-icon {
+  transform: translate(-100%, -140%) !important;
+  padding: 2px 5px 3px 5px !important;
+  background-color: #dee2e6 !important;
+  color: #3b3c66 !important;
+  cursor: pointer;
+}
+
+/* line 135, app/assets/stylesheets/homework.scss */
+.div-upload-reveal {
+  background-color: rgba(108, 109, 232, 0.5) !important;
+  color: #3b3c66;
+  border: 2px dashed #3b3c66 !important;
+  cursor: pointer;
+  display: none;
+}
+
+/* line 143, app/assets/stylesheets/homework.scss */
+.div-upload-reveal.active {
+  display: block;
+  transition: 2s;
+}
+
+/* line 148, app/assets/stylesheets/homework.scss */
+.div-lock-homework {
+  color: #3b3c66 !important;
+  cursor: pointer;
+}
+
+/* line 153, app/assets/stylesheets/homework.scss */
+.div-lock-homework:hover {
+  color: #6C6DE8 !important;
+}

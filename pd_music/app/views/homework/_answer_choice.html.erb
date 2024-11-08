@@ -1,0 +1,51 @@
+<div class="sub-choice mb-3 d-flex" id="sub-choice-<%= question_no %>-<%= answer_no %>">
+    <div class="div-show-answer-media d-flex" id="div-display-media-answer-<%= question_no %>-<%= answer_no %>" style="align-items: center;">
+        <label for="form-homework-input-choice-<%= question_no %>-<%= answer_no %> me-3"><%= answer_no %>.</label>
+        <%= text_field_tag "form_questions[question#{question_no}][answers][choices_#{answer_no}]", params["choice_1"], class: "form-control w-100 d-inline ms-3 media-answer-value-#{question_no}-#{answer_no}", id: "form-homework-input-choice-#{question_no}-#{answer_no}" %>
+        <img id="answer-image-<%= question_no %>-<%= answer_no %>"/>
+    </div>
+    
+    <div class="dropdown d-inline ms-3" style="align-content: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+        </svg>
+
+        <ul class="dropdown-menu">
+            <li>
+                <button class="dropdown-item" data-action="click->homework#createInputText" data-homework-question-no-param="<%= question_no %>" data-homework-answer-no-param="<%= answer_no %>" id="answer-text-<%= question_no %>-<%= answer_no %>" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fonts me-3" viewBox="0 0 16 16">
+                        <path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479z"/>
+                    </svg> Text
+                </button>
+            </li>
+            <li>
+                <label class="dropdown-item" for="answer-picture-<%= question_no %>-<%= answer_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                    </svg> Picture
+                </label>
+                <%= file_field_tag "form_questions[question#{question_no}][answers][choices_#{answer_no}]", accept: ".png, .jpg, .jpeg", data: { action: "change->homework#uploadAnswerPicture" }, "data-homework-answer-no-param": "#{answer_no}", "data-homework-question-no-param": "#{question_no}", class: "answer-media media-answer-value-#{question_no}-#{answer_no}", id: "answer-picture-#{question_no}-#{answer_no}" %>
+            </li>
+            <li>
+                <label class="dropdown-item" for="answer-video-<%= question_no %>-<%= answer_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                        <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                    </svg> Video
+                </label>
+                <%= file_field_tag "form_questions[question#{question_no}][answers][choices_#{answer_no}]", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->homework#uploadAnswerVideo" }, "data-homework-answer-no-param": "#{answer_no}", "data-homework-question-no-param": "#{question_no}", class: "answer-media media-answer-value-#{question_no}-#{answer_no}", id: "answer-video-#{question_no}-#{answer_no}" %>
+            </li>
+            <li>
+                <label class="dropdown-item" for="answer-audio-<%= question_no %>-<%= answer_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                        <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                        <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                        <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                        <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                    </svg> Audio
+                </label>
+                <%= file_field_tag "form_questions[question#{question_no}][answers][choices_#{answer_no}]", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->homework#uploadAnswerAudio" }, "data-homework-answer-no-param": "#{answer_no}", "data-homework-question-no-param": "#{question_no}", class: "answer-media media-answer-value-#{question_no}-#{answer_no}", id: "answer-audio-#{question_no}-#{answer_no}" %>
+            </li>
+        </ul>
+    </div>
+</div>

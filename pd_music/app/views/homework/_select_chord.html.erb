@@ -1,0 +1,13 @@
+<div class="form-floating mb-3" data-controller="homework">
+    <%= text_field_tag "chord_name", params["chord"], class: "form-control w-25 d-inline", id: "form_homework_input_chord_#{question_no}", data: { action: "keydown.enter->homework#addChord"}, "data-homework-no-param": question_no %>
+    <label for="form_homework_input_chord_<%= question_no %>">Enter chord name</label>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill ms-3 warning-invalid-chord-icon" id="warning-invalid-chord-<%= question_no %>" style="display:none;" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+    </svg>
+</div>
+<div class="div-select-chord border rounded-3 p-3 text-center" id="div-select-chord-<%= question_no %>">
+    <span class="no-chord-choices" id="no-chord-<%= question_no %>">No chord choices</span>
+</div>
+
+<%= hidden_field_tag "form_questions[question#{question_no}][answers]", "", id: "all-chord-#{question_no}" %>
