@@ -2,7 +2,7 @@
 <% @order.each do |order| %>
     <div class="row mb-3" style="align-items: center;">
         <div class="col-2">
-            <%= image_tag(order.menu_picture.attached? ? url_for(order.menu_picture) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", id: "avatar_profile", class: "img-profile rounded-circle", width: "100%", height: "100%") %>
+            <%= image_tag(order.menu_picture.attached? ? url_for(order.menu_picture) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", id: "avatar_profile", class: "img-profile rounded-circle", width: "150px", height: "150px") %>
         </div>
         <div class="col-5">
             <h5><%= order.menu_name %></h5>
