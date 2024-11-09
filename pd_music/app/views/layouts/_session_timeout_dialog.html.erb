@@ -1,0 +1,22 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="session-timeout-btn" data-bs-toggle="modal" data-bs-target="#sessionTimeout" style="display: none;" data-controller="session">
+  Session timeout
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="sessionTimeout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sessionTimeoutLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sessionTimeoutLabel">Session Timeout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span>Your session was expired. Please try to login again.</span>
+      </div>
+      <div class="modal-footer">
+        <%= link_to "OK", login_path(), class:"btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

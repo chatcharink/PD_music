@@ -1,0 +1,69 @@
+<div class="modal fade" id="optionCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="optionCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="optionCategoryModalLabel">Option category</h1>
+                <button class="btn btn-primary" style="margin-left: 13.4rem;" id="btn-add-option-dialog" data-bs-target="#addOptionCategory" data-bs-toggle="modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                    </svg> Add group
+                </button>
+            </div>
+            <div class="modal-body">
+            
+                <% if @option_category.blank? %>
+                    <div class="no-subject-image h-90 m-auto w-75 text-center" style="align-content: center;">
+                        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+                        <p>No option, Please add the option</p>
+                    </div>
+                <% else %>
+                    <% @option_category.each do |op| %>
+                    <button class="btn btn-option-menu border w-100 mb-3" type="button" data-action="click->menu#editOption" data-menu-id-param="<%= op.id %>" data-menu-category-param="<%= op.option_category %>" data-menu-url-param="<%= food_menu_get_option_path() %>">
+                        <span class="d-inline"><%= op.option_category %></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right mt-1 float-end" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </button>
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addOptionCategory" aria-hidden="true" aria-labelledby="addOptionCategoryLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left icon me-3" id="back-to-option-dialog" viewBox="0 0 16 16" data-bs-target="#optionCategoryModal" data-bs-toggle="modal" data-action="click->menu#setDefaultOption">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+                <h1 class="modal-title fs-5" id="addOptionCategoryLabel">Add option category</h1>
+                <%# <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> %>
+            </div>
+            <div class="modal-body">
+                <div class="border rounded-3 px-3 mb-3">
+                    <div class="my-3 row">
+                        <label for="category" class="col-sm-2 col-form-label">Category:</label>
+                        <div class="col-sm-10">
+                            <%= text_field_tag :category, "", class: "form-control", id: "category" %>
+                        </div>
+                        <%= hidden_field_tag :id, "", id: "update-option-id" %>
+                    </div>
+                </div>
+
+                <div class="border rounded-3 mb-3" id="div-option">
+                    <div class="div-option-choice w-100 border-bottom py-3 mb-3"><span class="ps-3">Option</span></div>
+                    <div id="div-btn-add-choice"><button class="btn btn-outline-primary w-100 text-center rounded-bottom" data-action="click->menu#addOptionChoice">+ Add</button></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary d-none" id="btn-close-add-option" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary w-25" data-action="click->menu#saveOption" data-menu-url-param="<%= food_menu_option_create_path() %>">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

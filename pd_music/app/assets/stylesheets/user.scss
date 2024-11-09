@@ -1,0 +1,109 @@
+// #table-user-list thead th{
+//     background-color: #6c6de8;
+//     color: #fff;
+//     font-family: "Athiti", sans-serif !important;
+//     font-weight: 500;
+//     font-style: normal;
+// }
+.btn-filter-user{
+    background-color: #44dbdc !important;
+    color: #fff !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+#table-user-list_paginate{
+    float: right;
+}
+
+.page-link.active, .active > .page-link{
+    background-color: #6c6de8 !important;
+    color: #fff;
+}
+
+// .table-striped > tbody > tr:nth-of-type(odd) > * {
+//     --bs-table-color-type: #3b3c66 !important;
+//     --bs-table-bg-type: #fff !important;
+// }
+
+#table-user-list > tbody > tr > * {
+    align-content: center !important;
+}
+
+#user_profile_pic{
+    font-family: "Athiti", sans-serif !important;
+    font-weight: 500;
+    font-style: normal;
+}
+
+#user_profile_pic::file-selector-button{
+    background-color: #6c6de8 !important;
+    color: #fff;
+    border: 1px solid #6c6de8;
+    border-radius: .5rem;
+}
+
+#table-user-list{
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+#table-user-list tbody tr{
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    border-radius: .75rem;
+}
+
+#table-user-list tbody tr:hover td{
+    background-color: #e2e2ff !important;
+}
+#table-user-list thead th {
+    background-color: #6C6DE8 !important;
+    color: #fff !important;
+    span{ color: #fff !important; }
+    font-weight: 700;
+}
+
+#table-user-list thead th:first-child, #table-user-list tbody tr td:first-child {
+    border-top-left-radius: .75rem;
+    border-bottom-left-radius: .75rem;
+}
+
+#table-user-list thead th:last-child, #table-user-list tbody tr td:last-child {
+    border-top-right-radius: .75rem;
+    border-bottom-right-radius: .75rem;
+}
+
+#table-user-list thead th.column-0{ width: 10%;}
+#table-user-list thead th.column-1{ width: 30%;}
+#table-user-list thead th.column-2{ width: 15%;}
+#table-user-list thead th.column-3{ width: 15%;}
+#table-user-list thead th.column-4{ width: 20%;}
+#table-user-list thead th.column-5{ width: 5%;}
+#table-user-list thead th.column-6{ width: 5%;}
+
+.user-active-icon{
+    color: #44dbdc !important;
+}
+
+.user-inactive-icon{
+    color: #a8a8a8 !important;
+}
+
+.approve-user{
+    background-color: #f7caca !important;
+}
+
+.div-table-user{
+    width: 75%;
+}
+
+.div-form-user{
+    width: 50%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .div-table-user, .div-form-user{
+        width: 90% !important;
+    }
+}

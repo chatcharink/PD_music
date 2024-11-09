@@ -1,0 +1,64 @@
+/* line 1, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead .column-0 {
+  width: 25% !important;
+}
+
+/* line 2, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead .column-1 {
+  width: 18% !important;
+}
+
+/* line 3, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead .column-2 {
+  width: 10% !important;
+}
+
+/* line 4, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead .column-3 {
+  width: 5% !important;
+}
+
+/* line 5, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead .column-4 {
+  width: 30% !important;
+}
+
+/* line 6, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead .column-5 {
+  width: 12% !important;
+}
+
+/* line 8, app/assets/stylesheets/activity_log.scss */
+#table-activity-list {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+/* line 19, app/assets/stylesheets/activity_log.scss */
+#table-activity-list tbody tr:hover td {
+  background-color: #e2e2ff !important;
+}
+
+/* line 22, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead th {
+  background-color: #6C6DE8 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* line 25, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead th span {
+  color: #fff !important;
+}
+
+/* line 29, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead th:first-child, #table-activity-list tbody tr td:first-child {
+  border-top-left-radius: .75rem;
+  border-bottom-left-radius: .75rem;
+}
+
+/* line 34, app/assets/stylesheets/activity_log.scss */
+#table-activity-list thead th:last-child, #table-activity-list tbody tr td:last-child {
+  border-top-right-radius: .75rem;
+  border-bottom-right-radius: .75rem;
+}

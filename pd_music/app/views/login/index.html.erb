@@ -1,0 +1,41 @@
+<style>
+    .div-body{
+        margin-left: 0px !important;
+    }
+</style>
+
+<div class="background-div">
+    <div class="m-auto" id="div-login" data-controller="login">
+        <div class="text-center rounded-circle">
+            <%# <img src="/pictures/logo.png" class="position-absolute rounded-circle" id="logo-login" width="100px" /> %>
+        </div>
+        <div class="px-5 py-3" id="login-box">
+            <div class="text-center mb-3">
+                <img src="<%= APP_CONFIG[:application_path] %>/pictures/logo.png" class="d-inline" id="logo-login" width="175px" />
+                <%# <h5 class="d-inline" id="welcome-text">Welcome to PD music school</h5> %>
+            </div>
+            <%= form_for :form_login, url: login_authenicate_path(format: :json), method: :POST do |f| %>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username or Email :</label>
+                    <%= f.text_field :username, value: params[:username], class: "form-control", id: "username", tabindex: "1" %>
+                </div>
+               
+                <div class="mb-1">
+                    <label for="password" class="form-label">Password :</label>
+                    <%= f.text_field :password, type: "password", value: params[:password], class: "form-control", id: "password", tabindex: "2" %>
+                </div>
+
+                <div class="mb-3 text-end">
+                    <span><button type="button" id="forgot-password-btn" class="btn" data-url="<%= login_forgot_password_path %>" data-action="click->login#forgotPassword">Forgot Password?</button></span>
+                </div>
+        
+                <div class="mb-5 text-center">
+                    <%= f.submit "Login", class: "btn btn-primary w-50", tabindex: "3" %>
+                </div>
+            <% end %>
+            <div class="mb-1">
+                <p>Do you have an account? <%= link_to "Register Now", login_signup_path(), id: "register-link" %></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<% if @hash_order.blank? %>
+    <div class="no-subject-image h-90 m-auto w-75 border text-center" style="align-content: center;">
+        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+        <p>No order, Please click + order button to order</p>
+    </div>
+<% else %>
+    <div class="mb-3 w-90 border rounded-3 p-3 m-auto" style="padding-bottom: 4rem !important;">
+        <%= content_tag :table, class: "table table-hover table-summary-order", id: "table-summary-order", width: "100%" do %>
+            <thead>
+                <tr>
+                    <th class="column-0"></th>
+                    <th class="column-1">Name</th>
+                    <% (date_from..date_to).each do |date| %>
+                        <th class="text-center thead-date-summary"><%= date.strftime("%d/%m/%Y") %></th>
+                    <% end %>
+                </tr>
+            </thead>
+            <tbody>
+                <% @hash_order.each do |key, value| %>
+                <tr>
+                    <td class="text-center"><%= image_tag(value["profile_pic"].attached? ? url_for(value["profile_pic"]) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", id: "avatar_profile", class: "img-profile rounded-circle", width: "75px", height: "75px") %></td>
+                    <td><%= key %></td>
+                    
+                    <% (date_from..date_to).each do |date| %>
+                        <% menu = [] %>
+                        <% meal = [] %>
+                        <% total_price = 0 %>
+                        <% if value[date.strftime("%d/%m/%Y")].present? %>
+                            <% value[date.strftime("%d/%m/%Y")].each do |order| %>
+                                <% menu << order[:menu] %>
+                                <% meal << order[:meal] %>
+                                <% total_price += order[:price].to_i %>
+                            <% end %>
+                            <td>
+                                <p>Total: <%= total_price %></p>
+                                <% menu.each_with_index do |m, index| %>
+                                    <p><b>[<%= meal[index] %>]</b> <%= m.join(" ") %></p>
+                                <% end %>
+                            </td>
+                        <% else %>
+                            <td class="text-center">-</td>
+                        <% end %>
+                    <% end %>
+                </tr>
+                <% end %>
+            </tbody>
+        <% end %>
+    </div>
+<% end %>

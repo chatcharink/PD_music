@@ -1,0 +1,7 @@
+---
+pre_order: '3'
+times_per_day: '3'
+meal:
+- เช้า
+- กลางวัน
+- เย็น

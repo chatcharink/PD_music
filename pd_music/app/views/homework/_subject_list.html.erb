@@ -1,0 +1,19 @@
+<% @subject.each do |sj| %>
+    <div class="col">
+        <div class="card mb-3 me-3">
+            <img src="<%= APP_CONFIG[:application_path] %>/pictures/37130.jpg" class="card-img-top">
+            <div class="card-body div-card-body" data-action="click->homework#showHomework" data-homework-subject-param="<%= sj.subject_name %>" data-homework-url-param="<%= homework_path(id: sj.id) %>">
+                <div class="user-created-profile">
+                    <% if sj.profile_pic.blank? %>
+                        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "img-profile-subject border rounded-circle position-absolute end-0 me-3", width: "100px", height: "100px") %>
+                    <% else %>    
+                        <%= image_tag(sj.profile_pic.attached? ? url_for(sj.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "img-profile-subject rounded-circle position-absolute end-0 me-3", width: "100px", height: "100px") %>
+                    <% end %>
+                </div>
+                <h5 class="card-title"><%= sj.subject_name %></h5>
+                <p class="card-text"><%= sj.description %></p>
+                <p class="card-text float-end"><small class="text-muted"><%= sj.created_at.strftime("%d/%m/%Y") %></small></p>
+            </div>
+        </div>
+    </div>
+<% end %>

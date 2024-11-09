@@ -1,0 +1,20 @@
+<div class="permission-div">
+    <div class="m-auto w-75 mt-3 mb-4" data-controller="notification">
+        <h5 class="title-menu d-inline">Notification setting</h5>
+        <button type="button" class="btn btn-primary float-end" style="width: 15%" data-action="click->notification#save_notification" data-notification-url-param="<%= settings_save_notification_path() %>">Save</button>
+    </div>
+    <div class="m-auto w-75 border rounded-3 p-3">
+        <div class="text-center">
+        <% @notification.each do |key, val| %>
+            <button class="btn btn-permission-setting border w-90 mb-3" type="button">
+                <% id, function_name = key.split("_")%>
+                <h5 class="noti-function-name d-inline"><%= function_name %></h5>
+                <% checked = val.blank? ? "" : "checked" %>
+                <div class="form-check form-switch form-check-inline float-end">
+                    <input class="form-check-input noti-toggle-checkbox" type="checkbox" data-id="<%= val %>" data-permission-id="<%= id %>" id="notiStatus" <%= checked %> >
+                </div>
+            </button>
+        <% end %>
+        </div>
+    </div>
+</div>

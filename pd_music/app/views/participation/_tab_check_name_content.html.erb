@@ -1,0 +1,14 @@
+<% if @participation_in_class.present? %>
+    <% json_data = @participation_in_class.first.participation.blank? ? {} : JSON.parse(@participation_in_class.first.participation) %>
+<% else %>
+    <% json_data = {} %>
+<% end %>
+
+<div class="row mb-5 mt-3 h-100">
+    <div class="col-9">
+        <%= render partial: "graph_name" %>
+    </div>
+    <div class="col-3 d-inline-flex" style="flex-direction: column">
+        <%= render partial: "summary", locals: {json_data: json_data} %>
+    </div>
+</div>

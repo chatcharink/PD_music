@@ -1,0 +1,167 @@
+
+.div-add-subject-parti .icon{
+    color: #6C6DE8 !important;
+    cursor: pointer;
+}
+
+.div-add-subject-parti .icon:hover{
+    color: rgba(108,109,232, .5) !important;
+}
+
+.img-profile-subject-parti{
+    transform: translateY(-75px);
+    -webkit-transform: translateY(-75px);
+}
+
+.div-card-body-parti{
+    min-height: 130px !important;
+}
+
+button.nav-link{
+    font-family: "Athiti", sans-serif !important;
+    font-weight: 500;
+    font-style: normal;
+    color: #3b3c66;
+}
+
+#nav-individual, #nav-class{
+    max-height: 500px;
+    overflow: auto;
+}
+
+.div-user-list, .div-class-list{
+    cursor: pointer;
+}
+
+.div-user-list.active, .div-user-list.active:hover, .div-class-list.active, .div-class-list.active:hover {
+    background: #6C6DE8;
+    color: #ffffff;
+    span {color: #ffffff;}
+}
+
+.div-user-list.selected, .div-user-list.selected:hover{
+    background: #f3f3f3;
+    color: lightgray;
+    span {color: lightgray;}
+    cursor: not-allowed;
+}
+
+.div-user-list:hover, .div-class-list:hover{
+    background: #e2e2ff;
+}
+
+.table-check-list thead th.column-0 { width: 10%; }
+.table-check-list thead th.column-1 { width: 30%; }
+.table-check-list thead th.column-2 { width: 15%; }
+.table-check-list thead th.column-3 { width: 15%; }
+.table-check-list thead th.column-4 { width: 15%; }
+.table-check-list thead th.column-5 { width: 15%; }
+
+.table-check-list > tbody > tr > * , .table-detail > tbody > tr > * {
+    align-content: center !important;
+}
+
+.table-check-list tbody tr:hover td, .table-detail tbody tr:hover td{
+    background-color: #e2e2ff !important;
+}
+
+.table-check-list thead th, .table-detail thead th {
+    // background-color: #6C6DE8 !important;
+    // color: #fff !important;
+    font-weight: 600;
+}
+
+.div-filter-select {
+    align-content: center;
+}
+
+.report-box{
+    height: 200px;
+    width: 33%;
+    border-radius: 20px;
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    span{
+        font-size: 16px;
+        color: #3b3c66;
+    }
+}
+
+.report-box.students{
+    background-color: #58A4E2 !important;
+    span{ color: #fff; }
+}
+
+.summary-parti.students h1{ color: #ffffff !important; }
+
+.summary-parti h3{
+    color: #3b3c66;
+    font-size: 2rem !important;
+    transform: translateY(-6rem);
+}
+
+// .bar-graph-check-name, .table-check-name-detail{
+//     max-height: 650px;
+//     overflow-y: auto;
+// }
+
+.table-detail{
+    // width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.table-detail thead th.column-0 { width: 10% !important ;}
+.table-detail thead th.column-1 { width: 15% !important; }
+.table-detail thead th.column-2 { width: 10% !important; }
+
+.thead-detail-participation{ width: 10% !important}
+
+.table-detail thead th {
+    white-space: nowrap
+}
+
+// .dt-scroll-sizing{
+//     height: 0 !important;
+//     overflow: hidden !important;
+// }
+// .table-detail thead tr:first-child th {
+//     position: sticky;
+//     z-index: 12;
+//     top: 0;
+// }
+
+.participation-result-parti{ color: #3b3c66 !important; }
+.participation-result-late{ color: #ff8e15 !important;}
+.participation-result-not_parti{ color: #dc0f06 !important;}
+
+.bar-graph-check-name, .bar-graph-check-concert{
+    text-align: center;
+    text-align: -webkit-center;
+}
+
+.tooltip-participate{ color: #6C6DE8 !important;}
+.tooltip-late{ color: #58A4E2 !important; }
+.tooltip-not-participate{ color: #44DBDC !important; }
+
+.title-subject-list{
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.search-subject:hover{
+    background: #6C6DE8 !important;
+    color: #ffffff !important;
+    svg{ color: #ffffff !important;}
+}
+
+.div-search-subject-event{
+    width: 25% !important;
+}
+
+@media only screen and (max-width: 1024px) {
+    .div-search-subject-event{
+        width: 50% !important;
+    }
+}

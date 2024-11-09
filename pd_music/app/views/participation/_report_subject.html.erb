@@ -1,0 +1,62 @@
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <% if @subject.present? %>
+        <li class="nav-item border-top" role="presentation" style="width: 210px;">
+            <button class="nav-link active" id="check-name-tab" data-bs-toggle="tab" data-bs-target="#check-name" type="button" role="tab" aria-controls="check-name" aria-selected="true">Participation in classroom</button>
+        </li>
+    <% end %>
+    <% if @event.present? %>
+        <li class="nav-item border-top" role="presentation" style="width: 87px;">
+            <button class="nav-link" id="check-concert-tab" data-bs-toggle="tab" data-bs-target="#check-concert" type="button" role="tab" aria-controls="check-concert" aria-selected="false" data-action="click->report-participation#showConcertGraph">Concert</button>
+        </li>
+    <% end %>
+</ul>
+
+
+<div class="tab-content h-100" id="myTabContent">
+    <% has_subject = false %>
+    <% if @subject.present? %>
+    <div class="tab-pane fade show active h-100" id="check-name" role="tabpanel" aria-labelledby="check-name-tab">
+        <div class="row p-3 border-bottom">
+            <label for="select-subject" class="col-sm-1 col-form-label text-end">Subject: </label>
+            <div class="col-3 div-filter-select">
+                <%= select_tag :subject, options_for_select(@subject.pluck(:subject_name, :id), @default_subject.id), { class: "form-select", id: "select-subject", data: { action: "change->report-participation#filterReportSubject"}, "data-url": participation_filter_report_path() } %>
+            </div>
+            <label for="select-class" class="col-sm-1 col-form-label text-end">Class: </label>
+            <div class="col-2 div-filter-select">
+                <%= select_tag :class, options_for_select(study_class), { include_blank: "Please select class", class: "form-select", id: "select-class", data: { action: "change->report-participation#filterReportSubject"}, "data-url": participation_filter_report_path() } %>
+            </div>
+            <label for="select-room" class="col-sm-1 col-form-label text-end">Room: </label>
+            <div class="col-2 div-filter-select">
+                <%= select_tag :room, options_for_select(room), { include_blank: "Please select room", class: "form-select", id: "select-room", data: { action: "change->report-participation#filterReportSubject"}, "data-url": participation_filter_report_path() } %>
+            </div>
+        </div>
+        <div class="tab-check-name-content h-100">
+            <%= render partial: "tab_check_name_content" %>
+        </div>
+    </div>
+    <% has_subject = true %>
+    <% end %>
+    
+    <% if @event.present? %>
+    <% is_active = has_subject ? "" : "show active" %>
+    <div class="tab-pane fade <%= is_active%> h-100" id="check-concert" role="tabpanel" aria-labelledby="check-concert-tab">
+        <div class="row p-3 border-bottom">
+            <label for="select-event" class="col-sm-1 col-form-label text-end">Event: </label>
+            <div class="col-3 div-filter-select">
+                <%= select_tag :event, options_for_select(@event.pluck(:event_name, :id), @default_event.id), { class: "form-select", id: "select-event", data: { action: "change->report-participation#filterReportEvent"}, "data-url": participation_filter_report_path() } %>
+            </div>
+            <label for="select-event-class" class="col-sm-1 col-form-label text-end">Class: </label>
+            <div class="col-2 div-filter-select">
+                <%= select_tag :event_class, options_for_select(study_class), { include_blank: "Please select class", class: "form-select", id: "select-event-class", data: { action: "change->report-participation#filterReportEvent"}, "data-url": participation_filter_report_path() } %>
+            </div>
+            <label for="select-event-room" class="col-sm-1 col-form-label text-end">Class: </label>
+            <div class="col-2 div-filter-select">
+                <%= select_tag :event_room, options_for_select(room), { include_blank: "Please select class", class: "form-select", id: "select-event-room", data: { action: "change->report-participation#filterReportEvent"}, "data-url": participation_filter_report_path() } %>
+            </div>
+        </div>
+        <div class="tab-check-concert-content h-100">
+            <%= render partial: "graph_concert" %>
+        </div>
+    </div>
+    <% end %>
+</div>

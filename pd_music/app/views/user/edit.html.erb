@@ -1,0 +1,13 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="user-profile">
+    <div class="border-bottom mb-3">
+        <h5 class="title-menu ms-3 my-3">Profile settings</h5>
+    </div>
+
+    <%= form_for :user, url: user_path(format: :json, id: params["id"]),  html: { data: { "action": "submit->user-profile#onUpdateUser" }, "data-user-profile-url-param": user_index_path() }, method: :PATCH do |f| %>
+        <div class="border rounded-3 div-form-user m-auto">
+            <%= render partial: "form", locals: { f: f, controller_name: "user-profile" } %>
+        </div>
+    <% end %>
+</div>

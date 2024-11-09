@@ -1,0 +1,40 @@
+<% if @order.present? || params["meal"].blank? || params["meal"] == "All" %>
+    <% if @order.blank? %>
+        <div class="no-subject-image h-90 m-auto text-center" style="align-content: center;">
+            <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+            <p>Please select meal to order</p>
+        </div>
+    <% else %>
+        <div class="div-order-list m-auto border rounded-3 mb-3 p-3">
+            <%= render partial: "ordered_list" %>
+        </div>
+    <% end %>
+<% else %>
+    <div class="div-order-list m-auto border rounded-3 mb-3 p-3">
+        <div class="mb-3 row">
+            <label for="select-restaurant" class="col-sm-2 col-form-label">Select restaurant :</label>
+            <div class="col-sm-8">
+                <%= select_tag :restaurant, options_for_select(@restaurant.pluck(:restaurant_name, :id)), {include_blank: "Please select restaurant", class: "form-select w-50", id: "select-restaurant", data: {action: "change->order#showMenu"}} %>
+            </div>
+            <div class="col-sm-2">
+                <% if params["id"].present? %>
+                    <%= hidden_field_tag "update_id", params["id"], id: "update-order-id" %>
+                    <button class="btn btn-outline-primary float-end" type="button" data-action="click->order#selectDate" data-order-url-param= "<%= food_order_change_date_path() %>">Cancel</button>
+                <% end %>
+            </div>
+        </div>
+
+        <div class="restaurant-blank">
+            <div class="no-subject-image h-90 m-auto text-center" style="align-content: center;">
+                <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+                <p>Please select restaurant to order</p>
+            </div>
+        </div>
+
+        <div class="show-order-table-menu mb-3" style="display: none;">
+            <%= render partial: "table_order_menu" %>
+        </div>
+    </div>
+<% end %>
+
+<%= render partial: "ticket" %>

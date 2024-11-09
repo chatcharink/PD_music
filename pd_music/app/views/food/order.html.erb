@@ -1,0 +1,33 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="order">
+    <%= form_for :form_order, url: food_menu_create_path(format: :json), method: :POST do |f| %>
+    <div class="border-bottom mb-3">
+        <h5 class="title-menu ms-3 my-3 d-inline-block">Order</h5>
+    </div>
+
+    <div class="mb-3 border rounded-3 w-75 m-auto p-3">
+        <div class="mb-3 row">
+            <label for="select-date" class="col-sm-2 col-form-label">Select date :</label>
+            <div class="col-sm-8">
+                <%= f.select :date, options_for_select(get_select_date(@order_setting["pre_order"]), DateTime.now.strftime("%d/%m/%Y")), {}, {class: "form-select w-50", id: "select-date", data: { action: "change->order#selectDate", "order-url-param": food_order_change_date_path() } } %>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="select-meal" class="col-sm-2 col-form-label">Select meal :</label>
+            <div class="col-sm-8">
+                <%= f.select :meal, options_for_select(get_select_meal(@order_setting["meal"]), "All"), {}, {class: "form-select w-50", id: "select-meal", data: { action: "change->order#selectDate", "order-url-param": food_order_change_date_path() } } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="select-order-data">
+        <%# if @order.blank? %>
+        <%= render partial: "select_for_order", locals: {f: f} %>
+        <%# else %>
+            <%# render partial: "ordered_list" %>
+        <%# end %>
+    </div>
+    <% end %>
+</div>

@@ -1,0 +1,87 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="participation" id="div-body-subject">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation" style="width: 210px;">
+            <button class="nav-link active" id="subject-tab" data-bs-toggle="tab" data-bs-target="#subject" type="button" role="tab" aria-controls="subject" aria-selected="true">Participation in classroom</button>
+        </li>
+        <li class="nav-item" role="presentation" style="width: 210px;">
+            <button class="nav-link" id="event-tab" data-bs-toggle="tab" data-bs-target="#event" type="button" role="tab" aria-controls="event" aria-selected="false">Participation in event</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="subject" role="tabpanel" aria-labelledby="subject-tab">
+            <div class="title-subject-list w-100 p-3 border-bottom">
+                <h5 class="d-inline">Subject</h5>
+                <div class="input-group div-search-subject-event" style="margin-left: auto; order: 2;">
+                    <input type="text" class="form-control" placeholder="Search subject" aria-label="search subject" aria-describedby="btn-search-icon" id="txt-search-subject">
+                    <button class="btn btn-outline-primary search-subject" type="button" id="btn-search-icon" data-action="click->participation#searchSubject" data-participation-url-param="<%= participation_filter_subject_path %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline-primary search-subject" type="button" data-action="click->participation#searchSubject" data-participation-url-param="<%= participation_filter_subject_path %>" data-participation-clear-param="true">Clear</button>
+                </div>
+
+            </div>
+            <div class="div-card-subject mt-3 mx-3 d-flex row row-cols-1 row-cols-md-3 g-4 h-90">
+                <% if can_view_menu?([15]) %>
+                    <%= render partial: "subject_list", locals: {data: @subject, type: "subject", permission: [15, 17]} %>
+                <% end %>
+            </div>
+
+            <% if can_view_menu?([15, 16]) %>
+                <%= render partial: "add_subject" %>
+            <% end %>
+        </div>
+        
+        <div class="tab-pane fade" id="event" role="tabpanel" aria-labelledby="event-tab">
+            <div class="title-subject-list w-100 p-3 border-bottom">
+                <h5 class="d-inline">Event</h5>
+                <div class="input-group div-search-subject-event" style="margin-left: auto; order: 2;">
+                    <input type="text" class="form-control" placeholder="Search event" aria-label="search event" aria-describedby="btn-search-event-icon" id="txt-search-event">
+                    <button class="btn btn-outline-primary search-subject" type="button" id="btn-search-event-icon" data-action="click->participation#searchEvent" data-participation-url-param="<%= participation_filter_subject_path %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-subject" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline-primary search-subject" type="button" data-action="click->participation#searchEvent" data-participation-url-param="<%= participation_filter_subject_path %>" data-participation-clear-param="true">Clear</button>
+                </div>    
+            </div>
+            <div class="div-card-event mt-3 mx-3 d-flex row row-cols-1 row-cols-md-3 g-4 h-90">
+                <% if can_view_menu?([15]) %>
+                    <%= render partial: "subject_list", locals: {data: @event, type: "event", permission: [15, 17]} %>
+                <% end %>
+            </div>
+
+            <% if can_view_menu?([15, 16]) %>
+                <%= render partial: "add_event" %>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="div-add-user-modal">
+        <%= render partial: "add_user_to_subject", locals: { href: "" } %>
+    </div>
+
+    <div class="modal fade" id="deleteSubjectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteSubjectLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSubjectLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you want to delete <span id="delete-subject-name"></span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger text-white" id="confirm-delete-subject" data-action="click->participation#deleteSubject">Delete</button>
+                <button type="button" class="btn btn-outline-primary" id="close-confirm-delete-subject" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+

@@ -1,0 +1,25 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary me-1 float-end px-2 py-1" data-bs-toggle="modal" data-bs-target="#showCommentClassRoomAdmin" data-action="click->dashboard#showToolsTip click->dashboard#expandCommentAdmin" >
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707"/>
+    </svg>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="showCommentClassRoomAdmin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showCommentClassRoomAdminLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showCommentClassRoomAdminLabel">Behaviour comment list</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body div-body-comment-admin">
+                <%= render partial: "table_comment_admin", locals: {behaviour: behaviour} %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="view-detail-user-comment">
+    <%= render partial: "expand_comment_dialog" %>
+</div>

@@ -1,0 +1,87 @@
+<nav class="navbar navbar-light bg-light" data-controller="layout">
+    <div class="w-100">
+        <button class="hamburger-icon text-center rounded-3 ms-4 me-3 d-inline" data-action="click->layout#miniSideMenu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+            </svg>
+        </button>
+        <%= link_to root_path(), class: "navbar-brand" do %>
+            <%# <img src="/pictures/logo-removebg.png" alt="" width="40" height="30" class="d-inline-block align-text-top"> %>
+            <span class="nav-logo">PD Music school</span>
+        <% end %>
+        <div class="btn-group float-end me-3">
+            <div class="dropdown mx-3" style="align-content: center;">
+                <% noti = Notification.where(user_id: session["current_user"]["id"]) %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill notification-icon dropdown-toggle" viewBox="0 0 16 16" id="dropdownNotification" data-bs-toggle="dropdown" aria-expanded="false">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+                </svg>
+                <% count_noti = noti.count %>
+                <% if count_noti > 0 %>
+                <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 10px; left: 20px; min-width: 25px;">
+                    <% alert_count = count_noti >= 100 ? "99+" : count_noti %>
+                    <%= alert_count %>
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+                <% end %>
+
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start py-0 my-0" aria-labelledby="dropdownNotification" style="width: 500px !important;">
+                    <div class="row ms-2">
+                        <div class="col-5 border-end py-2">
+                            <div class="mb-2"><span>Filter :</span></div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="RadioNotification" id="Notification0" value="" data-action="change->layout#filterNoti" data-layout-url-param="<%= notification_filter_path() %>" checked>
+                                <label class="form-check-label" for="Notification0">
+                                    All
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="RadioNotification" id="Notification1" value="new_assign" data-action="change->layout#filterNoti" data-layout-url-param="<%= notification_filter_path() %>">
+                                <label class="form-check-label" for="Notification1">
+                                    New assign homework
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="RadioNotification" id="Notification2" value="overdue" data-action="change->layout#filterNoti" data-layout-url-param="<%= notification_filter_path() %>">
+                                <label class="form-check-label" for="Notification2">
+                                    Going overdue
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="RadioNotification" id="Notification3" value="behaviour" data-action="change->layout#filterNoti" data-layout-url-param="<%= notification_filter_path() %>">
+                                <label class="form-check-label" for="Notification3">
+                                    Comment behaviour
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="RadioNotification" id="Notification4" value="homework" data-action="change->layout#filterNoti" data-layout-url-param="<%= notification_filter_path() %>">
+                                <label class="form-check-label" for="Notification4">
+                                    Comment homework
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="RadioNotification" id="Notification5" value="change_status" data-action="change->layout#filterNoti" data-layout-url-param="<%= notification_filter_path() %>">
+                                <label class="form-check-label" for="Notification5">
+                                    Send/Reject/Checked homework
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-7 ps-0 div-noti-list">
+                            <%= render partial: "layouts/notification", locals: {notification: noti} %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-logout dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                <%= image_tag(session["current_user"]["profile_pic"], class: "rounded-circle border me-1", width: "30px", height: "30px") %>
+                <%= session["current_user"]["username"] %>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li class="dropdown-li"><%= button_to "Change profile", edit_user_path(id: session["current_user"]["id"]), method: :get, class: "dropdown-item" %></li>
+                <li class="dropdown-li"><%= button_to "Log out", login_logout_path(), method: :get, class: "dropdown-item" %></li>
+                <%# <li><button class="dropdown-item" type="button">Action</button></li>
+                <li><button class="dropdown-item" type="button">Another action</button></li>
+                <li><button class="dropdown-item" type="button">Something else here</button></li> %>
+            </ul>
+        </div>
+    </div>
+</nav>

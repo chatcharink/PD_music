@@ -1,0 +1,2 @@
+class HomeworkType < ApplicationRecord
+end

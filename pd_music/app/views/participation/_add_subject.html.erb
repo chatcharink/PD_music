@@ -1,0 +1,43 @@
+<div class="div-add-subject-parti position-absolute bottom-0 end-0 me-3 mb-3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createSubjectParticipation">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+</div>
+
+<div class="modal fade" id="createSubjectParticipation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createSubjectParticipationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <%= form_for :form_create_subject, url: participation_add_subject_path(format: :json), method: :POST, data: { action: "submit->participation#createSubject" } do |f| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSubjectParticipationLabel">Create subject</h5>
+                <button type="button" class="btn-close" id="close-icon-create-subject-dialog" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="txt_subject" class="form-label">Subject :</label>
+                    <%= f.text_field :subject, value: params[:subject], class: "form-control", id: "txt_subject" %>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="form-label">Description <i>-(optional)</i> :</label>
+                    <%= f.text_field :description, value: params[:description], class: "form-control", id: "description" %>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="class_period" class="col-sm-3 col-form-label">Class period: </label>
+                    <div class="col-sm-9">
+                        <%= f.text_field :class_period, value: params[:class_period], class: "form-control w-50", id: "class_period" %>
+                    </div>
+                </div>
+
+                <%= f.hidden_field :subject_type, value: "participation" %>
+                
+            </div>
+            <div class="modal-footer">
+                <%= f.submit "Create", class: "btn btn-primary w-25" %>
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>

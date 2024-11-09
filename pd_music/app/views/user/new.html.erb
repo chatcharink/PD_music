@@ -1,0 +1,13 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="user">
+    <div class="border-bottom mb-3">
+        <h5 class="title-menu ms-3 my-3">Add user</h5>
+    </div>
+
+    <%= form_for :user, url: user_index_path(format: :json),  html: { data: { "action": "submit->user#onUpdateUser" }, "data-user-url-param": user_index_path() }, method: :POST do |f| %>
+        <div class="border rounded-3 div-form-user m-auto">
+            <%= render partial: "form", locals: { f: f, controller_name: "user" } %>
+        </div>
+    <% end %>
+</div>

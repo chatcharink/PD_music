@@ -1,0 +1,52 @@
+<div class="permission-div">
+    <div class="m-auto w-75 mt-3 mb-4" data-controller="permission">
+        <h5 class="title-menu d-inline">Permission settings</h5>
+        <button type="button" class="btn btn-primary float-end" style="width: 15%" data-action="click->permission#save_permission" data-permission-url-param="<%= settings_update_permission_path() %>">Save</button>
+    </div>
+    <div class="m-auto w-75 border rounded-3 p-3">
+        <div class="text-center">
+        <% @permiss.each do |key, val| %>
+            <button class="btn btn-permission-setting border w-90 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#<%=key%>Settings" aria-expanded="false" aria-controls="<%=key%>Settings">
+                <h5 class="d-inline"><%= key.split("_").join(" ") %></h5>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill float-end" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+            </button>
+            <div class="collapse div-collapse-permission w-90 mb-3 m-auto" id="<%=key%>Settings">
+                <% val.each_with_index do |(k, v), index| %>
+                <% if index == 0 %>
+                    <div class="row my-3 border-bottom">
+                        <div class="col"></div>
+                        <div class="col">
+                            <div class="row text-start">
+                                <% v.each do |role, status| %>
+                                    <% role_id, role_name = role.split("_") %>
+                                    <span class="col"><%= role_name %></span>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+                <div class="row mb-3 border-bottom">
+                    <% permission_id, function_name = k.split("_") %>
+                    <div class="col text-start">
+                        <span class="ps-5"><%= function_name %></span>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <% v.each do |role, status| %>
+                            <% permission_role_id, role_name = role.split("_") %>
+                            <div class="form-check form-switch form-check-inline col ps-3">
+                                <% checked = status == 1 ? "checked" : "" %>
+                                <input class="form-check-input check-permission m-auto" type="checkbox" data-permission-id="<%= permission_id%>" data-id="<%= permission_role_id %>" data-role="<%= role_name.downcase %>" id="<%= k.downcase.gsub(" ", "_") %>-<%= role_name.downcase %>" <%= checked %>>
+                            </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        <% end %>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="modal fade" id="addMenuBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addMenuBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <%= form_for :form_create_menu, url: food_menu_create_path(format: :json), method: :POST, data: { action: "submit->menu#createMenu" } do |f| %>
+            <div class="modal-header">
+                <div class="div-header-menu d-inline-flex" style="align-items: center;">
+                    <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", id: "menu_profile", class: "img-profile rounded-circle", width: "150px", height: "150px") %>
+                    <%= f.file_field :menu_picture, accept: ".png, .jpg, .jpeg .gif", data: { action: "change->menu#uploadMenuPicture" }, class: "p-3", id: "upload-menu-pic" %>
+                </div>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="mb-3">
+                    <label for="menu" class="form-label">Menu:</label>
+                    <%= f.text_field :menu, value: "", class: "form-control", id: "menu" %>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="form-label">Description:</label>
+                    <%= f.text_area :description, value: "", class: "form-control", rows: 2, id: "description" %>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="price" class="col-sm-1 col-form-label">Price:</label>
+                    <div class="col-sm-5 ps-4">
+                        <%= f.text_field :price, value: "", class: "form-control w-100", id: "price" %>
+                    </div>
+                </div>
+
+                <%= f.hidden_field :update_id, value: "", id: "update-menu-id" %>
+                <hr>
+
+                <div class="mb-3 d-inline dropdown">
+                    <span>Option: </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" id="dropdownAddOption" data-bs-toggle="dropdown" aria-expanded="false">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                    </svg>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownAddOption">
+                        <% @option_category.each do |op| %>
+                            <li><button type="button" class="dropdown-item" id="dropdown-option-<%= op.option_category %>" data-action="click->menu#selectOption" data-menu-category-param="<%= op.option_category %>" data-menu-url-param="<%= food_menu_get_option_path() %>" ><%= op.option_category %></button></li>
+                        <% end %>
+                    </ul>
+                </div>
+
+                <div class="ps-2 my-3 row" id="div-set-second-dish">
+                    <div class="form-check">
+                        <%= f.check_box :set_second_dish, {class: "form-check-input", id: "setSecondDish"}, 1, 0 %>
+                        <label class="form-check-label" for="setSecondDish">
+                            Set second dish
+                        </label>
+                    </div>
+                </div>
+
+                <%= f.hidden_field :restaurant_id, value: restaurant_id, id: "add-menu-restaurant-id" %>
+                <%= f.hidden_field :page, value: page, id: "add-menu-dialog-page" %>
+            </div>
+            <div class="modal-footer">
+                <%= f.submit "Add", class: "btn btn-primary w-25", id:"btn-add-update-menu" %>
+                <button type="button" class="btn btn-outline-primary" id="close-add-menu-dialog" data-bs-dismiss="modal" data-action="click->menu#defaultAddMenu">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<% notification.each_with_index do |n, index| %>
+    <% status = n.status == 0 ? "unread" : "" %>
+    <div class="div-noti <%= status %> pt-3">
+        <div class="subject-noti ps-2"><p class="m-0"><%= n.subject %></p></div>
+        <div class="msg-noti <%= status %> ps-2"><p class="m-0"><%= n.message %></p></div>
+        <div class="text-end datetime-noti pe-2"><p class="mb-3"><%= n.updated_at.strftime("%H:%M:%S %d/%m/%Y") %></p></div>
+    </div>
+    <% break if index == 4 %>
+<% end %>
