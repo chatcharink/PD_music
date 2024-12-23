@@ -1,0 +1,73 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="homework" id="div-body-subject">
+    <div class="title-subject w-100 p-3 border-bottom"><h5>Subject</h5></div>
+    <div class="div-card-subject mt-3 mx-3 d-flex row row-cols-1 row-cols-md-3 g-4">
+        <%= render partial: "subject_list" %>
+    </div>
+
+    <% if can_view_menu?([24]) %>
+    <div class="div-add-subject position-absolute bottom-0 end-0 me-3 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createSubject">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </div>
+
+    <div class="modal fade" id="createSubject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createSubjectLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSubjectLabel">Create subject</h5>
+                    <button type="button" class="btn-close" id="close-icon-create-subject-dialog" data-bs-dismiss="modal" aria-label="Close" data-action="click->homework#clearSubject"></button>
+                </div>
+                <div class="modal-body">
+                    <%= form_for :form_create_homework, url: homework_index_path(format: :json), method: :POST, data: { action: "submit->homework#createSubject" } do |f| %>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject :</label>
+                            <%= f.text_field :subject, value: params[:subject], class: "form-control", id: "subject" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description <i>-(optional)</i> :</label>
+                            <%= f.text_field :description, value: params[:description], class: "form-control", id: "description" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="class-periods" class="form-label">Class periods : </label>
+                            <%= f.text_field :class_period, value: params[:class_period], class: "form-control", id: "class-periods" %>
+                        </div>
+
+                        <%= f.hidden_field :subject_id, value: "", id: "update-subject-id"%>
+
+                        <div class="mb-3 float-end">
+                            <%= f.submit "Create", class: "btn btn-primary", id: "btn-submit-form-create-subject" %>
+                        </div>
+                    <% end %>
+                </div>
+                <%# <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Create</button>
+                </div> %>
+            </div>
+        </div>
+    </div>
+    <% end %>
+
+    <div class="modal fade" id="deleteSubjectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteSubjectLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSubjectLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you want to delete <span id="delete-subject-name"></span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger text-white" id="confirm-delete-subject" data-action="click->homework#deleteSubject">Delete</button>
+                <button type="button" class="btn btn-outline-primary" id="close-confirm-delete-subject" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

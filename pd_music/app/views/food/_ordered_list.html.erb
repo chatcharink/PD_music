@@ -1,0 +1,62 @@
+<h5 class="mb-3">Ordered</h5>
+<% @order.each do |order| %>
+    <div class="row mb-3" style="align-items: center;">
+        <div class="col-2">
+            <%= image_tag(order.menu_picture.attached? ? url_for(order.menu_picture) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", id: "avatar_profile", class: "img-profile rounded-circle", width: "150px", height: "150px") %>
+        </div>
+        <div class="col-5">
+            <h5><%= order.menu_name %></h5>
+            <% if order.optional.present? %>
+                <% JSON.parse(order.optional).each do |op| %>
+                    <p class="mb-1"><%= op["category"] %> : <%= @option[op["id"].to_i]["menu_name"] %></p>
+                <% end %>
+            <% end %>
+            <% if order.second_menu_id.present? %>
+                <p>+ <%= @option[order.second_menu_id]["menu_name"] %></p>
+            <% end %>
+            <% if order.more_detail.present? %>
+                <p>(<%= order.more_detail %>)</p>
+            <% end %>
+        </div>
+        <div class="col-2">
+            <%# <h5>Price</h5> %>
+            <h5><%= order.total_price %> บาท</h5>
+        </div>
+        <div class="col-3 text-center">
+            <% if can_view_menu?([45]) %>
+            <div class="edit-ordered d-inline mx-1" data-action="click->order#editOrder" data-order-id-param="<%= order.order_id %>" data-order-meal-param="<%= order.meal %>" data-order-url-param="<%= food_order_change_date_path() %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square icon" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+            </div>
+            <% end %>
+            
+            <% if can_view_menu?([56]) %>
+            <div class="delete-ordered d-inline mx-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill icon delete" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#deleteOrderModal" data-action="click->order#setDeleteId" data-order-order-id-param="<%= order.order_id %>" data-order-meal-param="<%= order.meal %>">
+                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                </svg>
+            </div>
+            <% end %>
+        </div>
+    </div>
+<% end %>
+
+<div class="modal fade" id="deleteOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteOrderLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteOrderLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you want to delete order meal<span id="delete-order-name"></span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger text-white" id="confirm-delete-order" data-action="click->order#deleteOrder">Delete</button>
+                <button type="button" class="btn btn-outline-primary" id="close-confirm-delete-order" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

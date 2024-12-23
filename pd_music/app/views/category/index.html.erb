@@ -1,0 +1,83 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="category">
+    <div class="border-bottom">
+        <h5 class="title-menu ps-3 pb-3 my-3 w-100 d-inline-block border-bottom">Category</h5>
+        <div class="div-table-category m-auto" style="width: 95%">
+            <%= content_tag :table, class: "table table-hover", id: "table-category-list", width: "100%", data: { url: category_show_datatable_path(format: :json)} do %>
+                <thead>
+                    <tr id="header_table">
+                        <th class="text-start column-0">Category name</th>
+                        <th class="text-start column-1">Description</th>
+                        <th class="text-start column-2">Update data</th>
+                        <th class="text-center column-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+            <% end %>
+        </div>
+    </div>
+
+    <% if can_view_menu?([66]) %>
+    <div class="div-add-category position-absolute bottom-0 end-0 me-3 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" id="create-category-btn" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createCategory">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </div>
+
+    <div class="modal fade" id="createCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createCategoryLabel">Create category</h5>
+                    <button type="button" class="btn-close" id="close-icon-create-category-dialog" data-bs-dismiss="modal" aria-label="Close" data-action="click->category#clearCategory"></button>
+                </div>
+                <div class="modal-body">
+                    <%= form_for :form_create_category, url: category_index_path(format: :json), method: :POST, id: "form_create_category", data: { action: "submit->category#createCategory" } do |f| %>
+                        <div class="mb-3">
+                            <label for="category_name" class="form-label">Name :</label>
+                            <%= f.text_field :category_name, value: "", class: "form-control", id: "category_name" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description <i>-(optional)</i> :</label>
+                            <%= f.text_field :description, value: "", class: "form-control", id: "description" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="colorPicker" class="form-label">Color picker</label>
+                            <%= f.color_field :color, value: "#000000", class: "form-control form-control-color", id: "colorPicker" %>
+                        </div>
+
+                        <%= f.hidden_field :category_id, value: "", id: "update-category-id"%>
+
+                        <div class="mb-3 float-end">
+                            <%= f.submit "Create", class: "btn btn-primary", id: "btn-submit-form-create-category" %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% end %>
+
+    <div class="modal fade" id="deleteCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCategoryLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you want to delete <span id="delete-category-name"></span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger text-white" id="confirm-delete-category" data-action="click->category#deleteCategory">Delete</button>
+                <button type="button" class="btn btn-outline-primary" id="close-confirm-delete-category" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

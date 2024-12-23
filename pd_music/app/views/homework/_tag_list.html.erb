@@ -1,0 +1,64 @@
+<% unless can_view_menu?([27]) %>
+    <% flash["error"] = "You don't have permission to create subject" %>
+    <% return redirect_to path_to_root %>
+<% end %>
+<div class="div-tag">
+    <h5 class="m-3 d-inline-flex" style="width: fit-content">Lesson:</h5>
+    <% if can_view_menu?([28]) %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill icon d-inline-flex" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#addTagModal">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    <% end %>
+</div>
+<div class="row mx-3">
+    <% if tag.blank? %>
+        <div class="no-subject-image h-50 m-auto text-center" style="align-content: center;">
+            <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+            <p>No tag, Please add tag first</p>
+        </div>
+    <% else %>
+        <% tag.each do |t| %>
+            
+            <div class="col tag-card m-3">
+                <% if can_view_menu?([31]) %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill-up icon float-end" viewBox="0 0 16 16" data-action="click->homework#getImprovementDetail" data-homework-url-param="<%= homework_show_get_improvement_detail_path(tag_id: t.id) %>">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.354-5.854 1.5 1.5a.5.5 0 0 1-.708.708L13 11.707V14.5a.5.5 0 0 1-1 0v-2.793l-.646.647a.5.5 0 0 1-.708-.708l1.5-1.5a.5.5 0 0 1 .708 0M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
+                    </svg>
+                <% end %>
+                <h5 class="text-white" style="padding: 4rem !important;" data-action="click->homework#showHomeworkTable" data-homework-has-permission-param=<%= can_view_menu?([33]) %> data-homework-url-param="<%= homework_show_homework_table_path(id: id, category: category_id, tag_id: t.id) %>"><%= t.tag_name %></h5>
+            </div>
+            <input type="hidden" class="hide-tag-data" value="<%= t.tag_name%>" data-url="<%= homework_show_homework_table_path(id: id, category: category_id, tag_id: t.id) %>"/>
+        <% end %>
+    <% end %>
+</div>
+
+<div class="modal fade" id="addTagModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTagModalLabel">Add tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <%= form_for :form_add_tag, url: homework_create_tag_path(format: :json, id: id, category: category_id), method: :POST, html: { data: { action: "submit->homework#addTagSuccess" } }  do |f| %>
+                    <div class="mb-3">
+                        <label for="homework_tag" class="form-label">Tag</label>
+                        <%= f.text_field :tag_name, value: params["type"], class: "form-control", id: "homework_tag", placeholder: "Lesson 1" %>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description_tag" class="form-label">Description</label>
+                        <%= f.text_area :description, value: params["description"], class: "form-control", id: "description_tag", rows: "2" %>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <%= f.submit "Add", class: "btn btn-primary", id: "btn-add-tag" %>
+                        <button type="button" class="btn btn-outline-primary" id="btn-close-add-tag" data-bs-dismiss="modal">Close</button>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="div-give-improvement"></div>

@@ -1,0 +1,89 @@
+<div class="mb-3 div-upload-<%= question_no %>" data-controller="homework">
+    <div class="mb-3">
+        <label class="form-label">Optional :</label>
+        <% if option.blank? %>
+            <% select_reveal = false %>
+            <% select_not_reveal = true %>
+            <% is_active = "" %>
+        <% else %>
+            <% select_reveal = option.to_i == 1 %>
+            <% select_not_reveal = option.to_i == 0 %>
+            <% is_active = option.to_i == 1 ? "active" : "" %>
+        <% end %>
+        <div class="form-check form-check-inline">
+            <%= radio_button_tag "form_questions[question#{question_no}][option]", "reveal", select_reveal, class: "form-check-input", id: "reveal-#{question_no}", data: { action: "change->homework#selectOption" }, "data-homework-question-no-param": question_no %>
+            <label class="form-check-label" for="reveal-<%= question_no %>">Able to reveal answer</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= radio_button_tag "form_questions[question#{question_no}][option]", "no_reveal", select_not_reveal, class: "form-check-input", id: "no_reveal-#{question_no}", data: { action: "change->homework#selectOption" }, "data-homework-question-no-param": question_no %>
+            <label class="form-check-label" for="no_reveal-<%= question_no %>">Not reveal answer</label>
+        </div>
+    </div>
+
+    <div class="div-upload-reveal p-3 rounded-3 w-100 text-center dropdown <%= is_active %>" id="div-upload-reveal-<%= question_no %>" for="upload-reveal-icon-<%= question_no %>">
+        <% is_show = reveal.blank? ? "active" : "" %>
+        <div class="upload-reveal-icon my-5 <%= is_show %>" id="upload-reveal-icon-<%= question_no %>" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z"/>
+                <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+            </svg>
+            <span>Click to upload files</span>
+        </div>
+        <div class="media-reveal" id="media-reveal-<%= question_no %>" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="btn-group-img-size mb-3" id="div-reveal-image-resize-<%= question_no %>" style="display: none;">
+                <div class="btn-group" role="group" aria-label="image-size">
+                    <%= radio_button_tag("form_questions[question#{question_no}][reveal_image_thumbnail]", "", reveal["image_thumbnail"].blank?, class: "btn-check", id: "reveal-original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content", "homework-reveal-param": "true"} ) %>
+                    <label class="btn btn-outline-primary" for="reveal-original-size-<%= question_no %>">Original</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][reveal_image_thumbnail]", "924x476", reveal["image_thumbnail"] == "924x476", class: "btn-check", id: "reveal-924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px", "homework-reveal-param": "true"} ) %>
+                    <label class="btn btn-outline-primary" for="reveal-924x476-<%= question_no %>">16:9</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][reveal_image_thumbnail]", "668x476", reveal["image_thumbnail"] == "668x476", class: "btn-check", id: "reveal-668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px", "homework-reveal-param": "true"} ) %>
+                    <label class="btn btn-outline-primary" for="reveal-668x476-<%= question_no %>">4:3</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][reveal_image_thumbnail]", "476x476", reveal["image_thumbnail"] == "476x476", class: "btn-check", id: "reveal-476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px", "homework-reveal-param": "true"} ) %>
+                    <label class="btn btn-outline-primary" for="reveal-476x476-<%= question_no %>">1:1</label>
+                </div>
+            </div>
+            <div class="div-image m-auto" id="div-image-reveal-<%= question_no %>" style="justify-content: center; overflow: hidden;">
+                <% if reveal.blank? %>
+                    <% source = nil %>
+                <% else %>
+                    <% source = reveal["media"].attached? ? url_for(reveal["media"]) : reveal["media"] %>
+                <% end %>
+                <img id="picture-reveal-<%= question_no %>" src="<%= source %>"/>
+            </div>
+            <%= hidden_field_tag "form_questions[question#{question_no}][update_reveal]", false, id: "update-reveal-media-#{question_no}" %>
+        </div>
+        <ul class="dropdown-menu">
+            <li>
+                <label class="dropdown-item" for="reveal-picture-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                    </svg> Picture
+                </label>
+                <%= file_field_tag "form_questions[question#{question_no}][reveal]", accept: ".png, .jpg, .jpeg", data: { action: "change->homework#uploadRevealPicture" }, "data-homework-question-no-param": "#{question_no}", class: "answer-media", id: "reveal-picture-#{question_no}" %>
+            </li>
+            <li>
+                <label class="dropdown-item" for="reveal-video-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                        <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                    </svg> Video
+                </label>
+                <%= file_field_tag "form_questions[question#{question_no}][reveal]", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->homework#uploadRevealVideo" }, "data-homework-question-no-param": "#{question_no}", class: "answer-media", id: "reveal-video-#{question_no}" %>
+            </li>
+            <li>
+                <label class="dropdown-item" for="reveal-audio-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                        <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                        <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                        <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                        <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                    </svg> Audio
+                </label>
+                <%= file_field_tag "form_questions[question#{question_no}][reveal]", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->homework#uploadRevealAudio" }, "data-homework-question-no-param": "#{question_no}", class: "answer-media", id: "reveal-audio-#{question_no}" %>
+            </li>
+        </ul>
+    </div>
+</div>

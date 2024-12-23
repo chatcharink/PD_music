@@ -1,0 +1,38 @@
+<div class="m-3 w-90" data-action="click->report-participation#adjustableDatatable">
+    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#participationDetailBackdrop">
+        See all detail
+    </button>
+</div>
+
+<div class="report-box px-3 py-2 m-3 w-90">
+    <span class="title-summary-box">Subject periods</span>
+    <div class="summary-parti text-center d-inline">
+        <%= pie_chart [["Done", json_data.length] , ["Remaining", (@default_subject.class_periods.to_i-json_data.length)]], donut: true, colors: ["#44dbdc", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+        <h3><%= json_data.length %>/<%= @default_subject.class_periods %></h3>
+    </div>
+</div>
+
+<div class="report-box students px-3 py-2 m-3 w-90">
+    <span class="title-summary-box">Number of students</span>
+    <div class="summary-parti students text-center d-inline">
+        <h1 class="mt-5"><%= @participation_in_class.length %></h1>
+    </div>
+</div>
+
+
+<div class="modal fade" id="participationDetailBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="participationDetailBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog modal-xl">
+        <div class="modal-content">
+            <%# <div class="modal-header">
+                <h5 class="modal-title" id="participationDetailBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> %>
+            <div class="modal-body">
+                <%= render partial: "table_detail", locals: {first_data: json_data} %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

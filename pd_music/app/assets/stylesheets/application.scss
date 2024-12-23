@@ -1,0 +1,318 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+@import "bootstrap";
+
+html, body { 
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, span, a, label, li, p, .btn, td, th, select, .form-select, .form-control-plaintext {
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+  color: #3b3c66;
+}
+
+input, button, input:focus, input:active, button:focus, button:active{
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input::placeholder {
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 400;
+  font-style: normal;
+  color: #3b3c66;
+}
+
+.w-90{ width: 90% !important; }
+.w-35{ width: 35% !important; }
+.h-90{ height: 90% !important; }
+.alert-icon-error, .text-error{
+  color: #ff220f !important;
+}
+
+.alert-icon-success, .text-success{
+  color: #53d81e !important;
+}
+
+.alert-icon-info, .text-info{
+  color: #6c6de8 !important;
+}
+
+.tooltip-text{
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+  color: #fff;
+}
+
+.toast-body, .toast-header{
+  font-family: "Athiti", sans-serif !important;
+  // font-weight: 500;
+  font-style: normal;
+}
+
+.toast-body-error{
+  background-color: #f8d7da !important;
+}
+
+.toast-body-success{
+  background-color: #ecffe4 !important;
+}
+
+.toast-body-info{
+  background-color: #ececff !important;
+}
+
+.hamburger-icon{
+  cursor: pointer;
+  background-color: #fff;
+  color: #3b3c66;
+  border: none;
+}
+
+.hamburger-icon:hover{
+  background-image: linear-gradient(90deg, #6c6de8, #44dbdc);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff !important;
+}
+
+@media only screen and (max-width: 1024px) {
+  .div-body{
+    margin-left: 0px !important;
+  }
+
+  .div-side-menu{
+    display: none;
+  }
+
+  .navbar-logo{
+    font-size: 18px;
+  }
+}
+
+.div-side-menu{
+  width: 300px !important;
+  height: 100% !important;
+  border-right: 1px solid #d7d7d7;
+  background-color: #fff !important;
+  transition: .5s;
+  z-index: 999;
+  // position: absolute;
+  // bottom: 0;
+}
+
+.div-side-menu.mini{
+  width: 60px !important;
+  transition: .5s;
+}
+
+// .div-side-menu.mini.active{
+//   .side-menu{
+//     color: #fff;
+//     background-image: linear-gradient(90deg, #6c6de8, #44dbdc);
+//     background-attachment: fixed;
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//     border-radius: 50%; 
+//   }
+// }
+
+.bg-light{
+  background-color: #fff !important;
+  // background-image: linear-gradient(90deg, #6c6de8, #44dbdc);
+  // background-attachment: fixed;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.nav-side-menu, .side-menu{
+  color: #3b3c66 !important;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.side-menu.active{
+  color: #fff !important;
+  .nav-side-menu{
+    background-image: linear-gradient(90deg, #6c6de8, #44dbdc);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    span, svg { 
+      color: #fff !important;
+    }
+  }
+}
+
+.nav-side-menu:hover{
+  background-color: #e9ecef !important;
+  border-top-right-radius: 5px;
+  .side-menu{
+    color: #3b3c66 !important;
+  }
+}
+
+.div-body{
+  margin-left: 300px;
+  transition: .5s;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 100px) !important;
+  // background-image: linear-gradient(90deg, #6c6de8, #44dbdc);
+  // background-attachment: fixed;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+}
+
+.div-body.full{
+  margin-left: 60px;
+  transition: .5s;
+}
+
+.btn-primary{
+  background: linear-gradient(to right, #44dbdc 50%, #6c6de8 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all .3s ease-out;
+  color: #fff !important;
+  border: none !important;
+  span{
+    color: #fff !important;
+  }
+}
+
+.btn-outline-primary{
+  background: transparent !important;
+  border: 1px solid #6c6de8 !important;
+  color: #6c6de8 !important;
+}
+
+.btn-primary:hover{
+  background-position: left bottom;
+}
+
+.dropdown-item{
+  cursor: pointer;
+}
+
+.dropdown-item:hover{
+  background-color: #6c6de8 !important;
+  color: #fff !important;
+}
+
+.nav-logo{
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 700;
+  font-size: 24px;
+  color: #3b3c66 !important;
+  // color: #fff !important;
+}
+
+.btn-logout{
+  background-color: transparent !important;
+  border: none !important;
+}
+
+// .dropdown-item:hover{
+//   background-image: linear-gradient(to right, #6c6de8, #44dbdc) !important;
+//   background-attachment: fixed;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   color: #fff !important;
+// }
+
+.title-menu{
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 600;
+}
+
+.dataTables_empty{
+  text-align: center !important;
+}
+
+.btn-skip{
+  color: #3b3c66 !important;
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.notification-icon{ cursor: pointer; }
+
+.notification-icon:hover{ color: #6c6de8; }
+
+.div-noti{
+  border-bottom: 1px solid #6c6de8;
+  cursor: pointer;
+}
+.div-noti.unread{
+  background-color: #b2b2f4;
+}
+.div-noti.unread:hover{
+  background-color: #6c6de8;
+}
+
+.subject-noti p{
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+.datetime-noti p{
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+.msg-noti.unread p{
+  font-weight: 600 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+  background-color: #6c6de8 !important;
+  border: 1px solid #3b3c66 !important;
+  span{ color: #fff !important; }
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+  border-right: 1px solid #3b3c66 !important;
+  color: #fff !important;
+  span{ color: #fff !important; }
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover{
+  background-color: rgba(108,109,232, .5) !important;
+}
+
+.dt-empty{
+  text-align: center;
+}
+
+.dt-paging{
+  float: right;
+}
+
+.custom-tooltip.tooltip > .tooltip-inner{
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+}

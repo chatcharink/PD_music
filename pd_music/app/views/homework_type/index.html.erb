@@ -1,0 +1,78 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="homework-type">
+    <div class="border-bottom">
+        <h5 class="title-menu ps-3 pb-3 my-3 w-100 d-inline-block border-bottom">Homework type</h5>
+        <div class="div-table-homework-type m-auto" style="width: 95%">
+            <%= content_tag :table, class: "table table-hover", id: "table-homework-type-list", width: "100%", data: { url: homework_type_show_datatable_path(format: :json)} do %>
+                <thead>
+                    <tr id="header_table">
+                        <th class="text-start column-0">Homework type</th>
+                        <th class="text-start column-1">Description</th>
+                        <th class="text-start column-2">Update data</th>
+                        <th class="text-center column-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+            <% end %>
+        </div>
+    </div>
+
+    <% if can_view_menu?([24]) %>
+    <div class="div-add-homework-type position-absolute bottom-0 end-0 me-3 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" id="create-homework-type-btn" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createHomeworkType">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </div>
+
+    <div class="modal fade" id="createHomeworkType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createHomeworkTypeLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createHomeworkTypeLabel">Create homework type</h5>
+                    <button type="button" class="btn-close" id="close-icon-create-homework-type-dialog" data-bs-dismiss="modal" aria-label="Close" data-action="click->homework-type#clearHomeworkType"></button>
+                </div>
+                <div class="modal-body">
+                    <%= form_for :form_create_homework_type, url: homework_type_index_path(format: :json), method: :POST, id: "form_create_homework_type", data: { action: "submit->homework-type#createHomeworkType" } do |f| %>
+                        <div class="mb-3">
+                            <label for="homework-type" class="form-label">Name :</label>
+                            <%= f.text_field :homework_type, value: "", class: "form-control", id: "homework-type" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description <i>-(optional)</i> :</label>
+                            <%= f.text_field :description, value: "", class: "form-control", id: "description" %>
+                        </div>
+
+                        <%= f.hidden_field :homework_type_id, value: "", id: "update-homework-type-id"%>
+
+                        <div class="mb-3 float-end">
+                            <%= f.submit "Create", class: "btn btn-primary", id: "btn-submit-form-create-homework-type" %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% end %>
+
+    <div class="modal fade" id="deleteHomeworkTypeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteHomeworkTypeLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteHomeworkTypeLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you want to delete <span id="delete-homework-type-name"></span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger text-white" id="confirm-delete-homework-type" data-action="click->homework-type#deleteHomeworkType">Delete</button>
+                <button type="button" class="btn btn-outline-primary" id="close-confirm-delete-homework-type" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

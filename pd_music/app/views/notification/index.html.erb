@@ -1,0 +1,32 @@
+<div class="permission-div">
+    <div class="m-auto w-75 mt-3 mb-4" data-controller="notification">
+        <h5 class="title-menu d-inline">Notification setting</h5>
+        <button type="button" class="btn btn-primary float-end" style="width: 15%" data-action="click->notification#save_notification" data-notification-url-param="<%= settings_save_notification_path() %>">Save</button>
+    </div>
+    <div class="m-auto w-75 border rounded-3 p-3">
+        <div class="text-center" style="justify-items: center;">
+            <div class="row w-90 mb-3">
+                <div class="col-8"></div>
+                <div class="col-2 text-center"><span>Notification</span></div>
+                <div class="col-2 text-center"><span>Email</span></div>
+            </div>
+        <% @notification.each do |key, val| %>
+            <div class="row btn-permission-setting border w-90 mb-3 rounded-3" style="align-items: center;">
+                <div class="col-8"><span><%= key %></span></div>
+                <% checked_noti = val["notification"][1].blank? ? "" : "checked" %>
+                <div class="col-2 text-center">
+                    <div class="form-check form-switch form-check-inline float-end">
+                        <input class="form-check-input noti-toggle-checkbox" type="checkbox" data-id="<%= val["notification"][1] %>" data-permission-id="<%= val["notification"][0] %>" id="notiStatus-<%= key %>" <%= checked_noti %> >
+                    </div>
+                </div>
+                <% checked_email = val["email"][1].blank? ? "" : "checked" %>
+                <div class="col-2 text-center">
+                    <div class="form-check form-switch form-check-inline float-end">
+                        <input class="form-check-input noti-toggle-checkbox" type="checkbox" data-id="<%= val["email"][1] %>" data-permission-id="<%= val["email"][0] %>" id="emailStatus-<%= key %>" <%= checked_email %> >
+                    </div>
+                </div>
+            </div>
+        <% end %>
+        </div>
+    </div>
+</div>

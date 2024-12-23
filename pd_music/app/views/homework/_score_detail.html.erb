@@ -1,0 +1,62 @@
+<div class="w-100 div-table-score-detail">
+    <% if homework.blank? %>
+        <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+            <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+            <p>No User in any homework</p>
+        </div>
+    <% else %>
+        <table class="table table-bordered table-score-detail nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="column-0" style="align-content: center;">Name</th>
+                    <% homework.each do |hw| %>
+                        <th class="column-1">
+                            <p class="mb-1"><%= hw.estimate_date.strftime("%d/%m/%Y") %></p>
+                            <p class="mb-1"><%= hw.task_name %></p>
+                            <hr>
+                            <p class="mb-1">Full score: <%= hw.full_score %></p>
+                        </th>
+                    <% end %>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="average-score">
+                    <td class="average-score">Average score</td>
+                    <% homework.each do |hw| %>
+                        <td class="average-score"><%= (score[hw.task_name]["score"]/score[hw.task_name]["number"]).to_f %></td>
+                    <% end %>
+                </tr>
+                <% data.each do |k, v| %>
+                <tr>
+                    <td>
+                        <% picture_path = v["profile_pic"].attached? ? url_for(v["profile_pic"]) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg" %>
+                        <img src="<%= picture_path%>" class="rounded-circle border" width="75px" height="75px" />
+                        <span class="ms-3"><%= k.capitalize %></span>
+                    </td>
+                    <% homework.each do |hw| %>
+                        <td>
+                            <% if v[hw.task_name].present? %>
+                                <p><%= v[hw.task_name][0] %></p>
+                                <% status = case v[hw.task_name][1] 
+                                            when "sent" then "ส่งแล้ว"
+                                            when "late" then "ส่งแล้ว (เลยกำหนด)"
+                                            when "need_review" then "รอตรวจ"
+                                            else "ยังไม่ส่ง"
+                                            end
+                                %>
+                                <% if v[hw.task_name][1]  == "need_review" %>
+                                    <p class="text-status <%= v[hw.task_name][1] %>" data-action="click->homework-detail#review_homework" data-homework-detail-id-param=<%= v[hw.task_name][3] %> data-homework-detail-homework-mapping-id-param=<%= v[hw.task_name][4] %> data-homework-detail-user-id-param=<%= v[hw.task_name][2] %>><%= status %></p>
+                                <% else %>
+                                    <p class="text-status <%= v[hw.task_name][1] %>"><%= status %></p>
+                                <% end %>
+                            <% else %>
+                                -
+                            <% end %>
+                        </td>
+                    <% end %>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+    <% end %>
+</div>

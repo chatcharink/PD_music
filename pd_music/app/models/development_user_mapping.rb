@@ -1,0 +1,2 @@
+class DevelopmentUserMapping < ApplicationRecord
+end

@@ -1,0 +1,141 @@
+/* line 1, app/assets/stylesheets/restaurant.scss */
+.div-ordered {
+  width: 50%;
+}
+
+@media only screen and (max-width: 1024px) {
+  /* line 6, app/assets/stylesheets/restaurant.scss */
+  .div-ordered {
+    width: 90%;
+  }
+}
+
+/* line 11, app/assets/stylesheets/restaurant.scss */
+.div-add-restaurant .icon {
+  color: #6C6DE8 !important;
+  cursor: pointer;
+}
+
+/* line 16, app/assets/stylesheets/restaurant.scss */
+.div-add-restaurant .icon:hover {
+  color: rgba(108, 109, 232, 0.5) !important;
+}
+
+/* line 20, app/assets/stylesheets/restaurant.scss */
+.upload-restaurant-icon {
+  color: #3b3c66 !important;
+  cursor: pointer;
+  margin-top: -50px;
+}
+
+/* line 27, app/assets/stylesheets/restaurant.scss */
+.upload-restaurant-icon:hover {
+  color: #ffffff !important;
+  background-color: #6C6DE8 !important;
+}
+
+/* line 32, app/assets/stylesheets/restaurant.scss */
+.table-menu-list {
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+/* line 37, app/assets/stylesheets/restaurant.scss */
+.table-menu-list > tbody > tr > * {
+  align-content: center !important;
+}
+
+/* line 41, app/assets/stylesheets/restaurant.scss */
+.table-menu-list tbody tr {
+  box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border-radius: .75rem;
+}
+
+/* line 47, app/assets/stylesheets/restaurant.scss */
+.table-menu-list tbody tr:hover td {
+  background-color: #e2e2ff !important;
+}
+
+/* line 51, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th {
+  background-color: #6C6DE8 !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* line 54, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th span {
+  color: #fff !important;
+}
+
+/* line 58, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th:first-child, .table-menu-list tbody tr td:first-child {
+  border-top-left-radius: .75rem;
+  border-bottom-left-radius: .75rem;
+}
+
+/* line 63, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th:last-child, .table-menu-list tbody tr td:last-child {
+  border-top-right-radius: .75rem;
+  border-bottom-right-radius: .75rem;
+}
+
+/* line 68, app/assets/stylesheets/restaurant.scss */
+.dataTables_paginate {
+  float: right;
+}
+
+/* line 72, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th.column-0 {
+  width: 10%;
+}
+
+/* line 73, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th.column-1 {
+  width: 80%;
+}
+
+/* line 74, app/assets/stylesheets/restaurant.scss */
+.table-menu-list thead th.column-2 {
+  width: 10%;
+}
+
+/* line 76, app/assets/stylesheets/restaurant.scss */
+#upload-menu-pic {
+  font-family: "Athiti", sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 86, app/assets/stylesheets/restaurant.scss */
+#upload-menu-pic::file-selector-button {
+  background-color: #6c6de8 !important;
+  color: #fff;
+  border: 1px solid #6c6de8;
+  border-radius: .5rem;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* line 95, app/assets/stylesheets/restaurant.scss */
+.menu-description {
+  font-weight: 300;
+  font-size: 14px;
+}
+
+/* line 100, app/assets/stylesheets/restaurant.scss */
+.btn-option-menu {
+  height: 75px;
+  text-align: start !important;
+  font-weight: 500 !important;
+}
+
+/* line 106, app/assets/stylesheets/restaurant.scss */
+#total-selected {
+  color: #6C6DE8 !important;
+}

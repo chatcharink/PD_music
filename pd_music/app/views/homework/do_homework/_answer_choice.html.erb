@@ -1,0 +1,43 @@
+<% answer.each_with_index do |ans, index| %>
+    <div class="div-show-answer-media mb-3" id="div-display-media-answer-<%= ans[0] %>" style="overflow: hidden;">
+        <% if !ans[1].nil? %>
+            <div class="form-check">
+                <%= f.radio_button :choice, index+1, class: "form-check-input radio-choice", id: "choice-#{index+1}", checked: user_answer.include?((index+1).to_s), disabled: user_answer.present? %>
+            <% if ans[1].kind_of? String %>
+                <label class="form-check-label">
+                    <%= ans[0] %>.
+                    <span class="ms-3"><%= ans[1] %></span>
+                </label>
+            <% else %>
+                <% source = ans[1].attached? ? url_for(ans[1]) : ans[1] %>
+                <% if ans[1].content_type.include?("image") %>
+                    <label class="form-check-label">
+                        <%= ans[0] %>.
+                        <% if ans[2].blank? %>
+                            <% set_size = "" %>
+                        <% else %>
+                            <% width, height = ans[2].split("x") %>
+                            <% set_size = "width: #{width}px; height: #{height}px" %>
+                        <% end %>
+                        <div class="div-image ms-3" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden; <%= set_size %>">
+                            <img id="answer-image-<%= ans[0] %>" src=<%= source %> />
+                        </div>
+                    </label>
+                <% elsif ans[1].content_type.include?("video") %>
+                    <label class="form-check-label">
+                        <%= ans[0] %>.
+                        <video class="ms-3" src=<%= source %> id="answer-video-<%= ans[0] %>" autoplay="true" controls="true" style="width: 500px; height: 250px;"><video>
+                    </label>
+                <% elsif ans[1].content_type.include?("audio") %>
+                    <label class="form-check-label d-inline-flex">
+                        <%= ans[0] %>.
+                        <div id="div-audio-answer-<%= ans[0] %>" class="div-audio text-center m-auto rounded-3 ms-3 d-inline-flex active">
+                            <audio id="audio-player-answer-<%= ans[0] %>" src=<%= source %> controls="true"></audio>
+                        </div>
+                    </label>
+                <% end %>
+            <% end %>
+            </div>
+        <% end %>
+    </div>
+<% end %>

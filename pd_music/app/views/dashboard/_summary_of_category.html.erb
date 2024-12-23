@@ -1,0 +1,120 @@
+<div class="row div-cat-box ms-4 mb-3">
+    <div class="col-9 d-inline-flex p-0">
+        <div class="cat-box all-cat-task px-3 py-2">
+            <span class="title-summary-box">All workhome assign</span>
+            <div class="cat-value text-center mt-3">
+                <h1 class="d-inline"><%= @data["specific_category"]["done"].to_i + @data["specific_category"]["remain"].to_i %></h1><span class="ms-3">Tasks<span>
+            </div>
+        </div>
+
+        <div class="cat-box done-cat-task mx-3 px-3 py-2">
+            <span class="title-summary-box">Completed homework</span>
+            <div class="cat-value text-center mt-3">
+                <h1 class="d-inline"><%= @data["specific_category"]["done"].to_i %></h1><span class="ms-3">Tasks<span>
+            </div>
+        </div>
+
+        <div class="cat-box remain-cat-task ms-3 px-3 py-2">
+            <span class="title-summary-box">Remaining homework</span>
+            <div class="cat-value text-center mt-3">
+                <h1 class="d-inline"><%= @data["specific_category"]["remain"].to_i %></h1><span class="ms-3">Tasks<span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="cat-box overdue-work mx-3 px-3 py-2">
+            <span class="title-summary-box">All Overdue</span>
+            <div class="cat-value overdue-work text-center">
+                <h1 class="d-inline"><%= @data["specific_category"]["estimated"].to_i %></h1><span class="ms-3">Tasks<span>
+            </div>
+            <div class="title-sub-detail row text-center">
+                <!-- <%# @category.each do |id, value| %> -->
+                    <div class="col overdue-text">
+                        <p class="m-0">This week</p>
+                        <p><%= get_overdue_day_each_cat(@data) %> Remains</p>
+                    </div>
+                    <div class="col overdue-text">
+                        <p class="m-0">More than 1 week</p>
+                        <p><%= get_overdue_week_each_cat(@data) %> Remains</p>
+                    </div>
+                <!-- <%# end %> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ms-4 mb3"><h5>Homework submission frequency</h5></div>
+<div class="row div-summary-box ms-4 mb-3">
+    <div class="div-graph col-9">
+        <div class="div-filter-date mt-3 mb-0 text-center">
+            <%= render partial: "filter_graph" %>
+        </div>
+        <div class="graph px-3 py-2" id="graph-frequency">
+            <%= render partial: "graph", locals: {graph: [{name: @category.name_en, data: @data["data"]}], color: ["##{@category.color_code}"]} %>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="summary-box cat-score mx-3 px-3 py-2">
+            <span class="title-summary-box">Behaviour comment : </span>
+            
+            <% if session["current_user"]["role"] == 1 %>
+                <% h_behaviour = Hash.new() %>
+                <% if @comment.blank? %>
+                    <p class="text-center">No negative comment</p>
+                <% else %>
+                    <% @comment.each do |c| %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"] ||= {} %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["id"] = c.student_id %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["negative_times"] ||= 0 %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["negative_times"] += 1 if c.rating <= 3 %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["status"] = c.status.capitalize %>
+                        <% if h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"].blank? %>
+                            <% h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] = DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) %>
+                        <% else %>
+                            <% h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] = DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) if h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] < DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) %>
+                        <% end %>
+                    <% end %>
+                    <%= render partial: "expand_comment_admin_dialog", locals: {behaviour: h_behaviour} %>
+                    <%= render partial: "show_comment_admin", locals: {behaviour: h_behaviour} %>
+                <% end %>
+
+            <% elsif session["current_user"]["role"] == 2 %>
+                <%= render partial: "expand_comment_dialog" %>
+                <%= render partial: "comment_dialog" if can_view_menu?([6])  %>
+                <div class="comment-table">
+                    <%= render partial: "show_comment" %>
+                </div>
+            <% else %>
+                <%= render partial: "expand_comment_dialog" %>
+                <div class="comment-table">
+                    <%= render partial: "show_comment" %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<div class="row div-summary-box ms-4 mb-3">
+    <% controller_name = teacher_mode ? "dashboard-datatable-teacher" : "dashboard-datatable" %>
+    <div class="col-12 ps-0 pe-5" data-controller="<%= controller_name %>">
+        <h5>Task assignment</h5>
+        <div class="filter-table my-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="going_overdue" data-action="change-><%= controller_name %>#filterTable" data-key="goingOverdue" checked>
+                <label class="form-check-label" for="going_overdue">Going overdue</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="overdue" data-action="change-><%= controller_name %>#filterTable" data-key="overdue">
+                <label class="form-check-label" for="overdue">Overdue</label>
+            </div>
+        </div>
+        <div class="div-table w-100">
+            <% if teacher_mode %>
+                <%= render partial: "table_group" %>
+            <% else %>
+                <%= render partial: "table" %>
+            <% end %>
+        </div>
+    </div>
+</div>

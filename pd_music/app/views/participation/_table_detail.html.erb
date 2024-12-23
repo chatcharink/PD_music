@@ -1,0 +1,66 @@
+<div class="w-100 mt-3 table-check-name-detail">
+    <% if first_data.blank? %>
+        <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+            <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+            <p>No participation in this subject.</p>
+        </div>
+    <% else %>
+    <table class="table table-hover table-detail nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th class="column-0 bg-white"></th>
+                <th class="column-1"><b>Name</b></th>
+                <th class="column-2" width="10%"><b>Class</b></th>
+                <% first_data.each_with_index do |(k, v), index| %>
+                    <th class="column-<%= index+3 %> text-center thead-detail-participation"><b><%= k %></b></th>
+                <% end %>
+            </tr>
+        </thead>
+        <tbody>
+            <% max_length = 1 %>
+            <% @participation_in_class.each do |pt| %>
+            <% diff_length = 0 %>
+            <tr class="row-detail-participation">
+                <td class="text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Student phone: <%= pt.phone_number %><br/>Parent phone: <%= pt.parent_phoneno %>">
+                        <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+                    </svg>
+                    <%= image_tag(pt.profile_pic.attached? ? url_for(pt.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "rounded-circle", width: "75px", height: "75px")  %>
+                </td>
+                <td class="truncate"><%= pt.firstname %> <%= pt.lastname %></td>
+                <td><%= get_display_class(pt.study_class, pt.room) %></td>
+                <% if pt.participation.present? %>
+                    <% json = JSON.parse(pt.participation) %>
+                    <% max_length = json.length if max_length < json.length %>
+                    <% diff_length = max_length - json.length if max_length > json.length %>
+                    <% json.each_with_index do |(key, value), index| %>
+                        <%  if value["participate"].to_i > 0
+                                result = "มา"
+                                status_code = "parti"
+                            elsif value["late"].to_i > 0
+                                result = "มาสาย"
+                                status_code = "late"
+                            else
+                                result = "ไม่มา"
+                                status_code = "not_parti"
+                            end
+                        %>
+                        <% while diff_length > 0 %>
+                            <td class="text-center participation-result">-</td>
+                            <% diff_length -= 1 %>
+                        <% end %>
+                        <td class="text-center participation-result-<%= status_code %>"><%= result %></td>    
+                    <% end %>
+                <% else %>
+                    <% length = max_length %>
+                    <% while length > 0 %>
+                        <td class="text-center participation-result">-</td>
+                        <% length -= 1 %>
+                    <% end %>
+                <% end %>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <% end %>
+</div>

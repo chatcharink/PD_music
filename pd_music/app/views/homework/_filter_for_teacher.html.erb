@@ -1,0 +1,52 @@
+<div class="row p-3 filter-content">
+    <div class="col-1"><span>Filter:</span></div>
+    <div class="col-3">
+        <label for="search-name" class="form-label">Name:</label>
+        <input type="email" class="form-control w-75" id="search-name">
+    </div>
+
+    <div class="col-3">
+        <label for="search-subject" class="form-label">Subject:</label>
+        <%= select_tag :subject, options_for_select(@subject.pluck(:subject_name, :id)), include_blank: "Please select subject", class: "form-select w-75", id: "search-subject" %>
+    </div>
+
+    <div class="col-3">
+        <label for="search-homework" class="form-label">Homework:</label>
+        <%= select_tag :homework, options_for_select(@homework_list.pluck(:task_name, :id)), include_blank: "Please select homework", class: "form-select w-75", id: "search-homework" %>
+    </div>
+</div>
+<div class="row p-3 filter-content">
+    <div class="col-1"></div>
+    <div class="col-6" style="align-content: center;">
+        <label for="search-homework" class="form-label">Status:</label>
+        <div class="form-check form-check-inline">
+            <%= check_box_tag "status", "", true, class: "form-check-input check-box-status", id: "check-box-all", data: {action: "change->homework-detail#checkStatus", "homework-detail-mode-param": "all"} %>
+            <label class="form-check-label" for="check-box-all">All</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= check_box_tag "status", "open", false, class: "form-check-input check-box-status", id: "check-box-open", data: {action: "change->homework-detail#checkStatus"} %>
+            <label class="form-check-label" for="check-box-open">Open</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= check_box_tag "status", "send", false, class: "form-check-input check-box-status", id: "check-box-send", data: {action: "change->homework-detail#checkStatus"} %>
+            <label class="form-check-label" for="check-box-send">Send</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= check_box_tag "status", "reject", false, class: "form-check-input check-box-status", id: "check-box-reject", data: {action: "change->homework-detail#checkStatus"} %>
+            <label class="form-check-label" for="check-box-reject">Reject</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= check_box_tag "status", "checked", false, class: "form-check-input check-box-status", id: "check-box-checked", data: {action: "change->homework-detail#checkStatus"} %>
+            <label class="form-check-label" for="check-box-checked">Checked</label>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <label for="search-deadline" class="form-label">Deadline:</label>
+        <%= select_tag :homework, options_for_select(deadline_date()), include_blank: "Please select deadline", class: "form-select w-75", id: "search-deadline" %>
+    </div>
+
+    <div class="col-2" style="align-content: center;">
+        <button class="btn btn-primary" data-action="click->homework-detail#applyFilter">Apply filter</button>
+    </div>
+</div>

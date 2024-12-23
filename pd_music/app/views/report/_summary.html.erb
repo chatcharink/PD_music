@@ -1,0 +1,112 @@
+<% if homework.blank? %>
+    <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+        <p>No homework in this subject.</p>
+    </div>
+<% else %>
+    <h5 class="mx-3">Progress of homework</h5>
+    <div class="row" style="align-items: center;">
+        <div class="col-12 p-3 ps-5">
+            <div class="mb-3">
+                <% arr_tag = [] %>
+                <% total_daily = 0 %>
+                <% total_weekly = 0 %>
+                <% daily = 0 %>
+                <% weekly = 0 %>
+                <% homework.each_with_index do |hw, index| %>
+                    <% total_daily += 1 if hw.homework_type_id == 1 %>
+                    <% total_weekly += 1 if hw.homework_type_id == 2 %>
+                    <% if hw.send_date.present? %>
+                        <% if hw.status == "checked" && hw.send_date <= hw.estimate_date %>
+                            <% daily += 1 if hw.homework_type_id == 1 %>
+                            <% weekly += 1 if hw.homework_type_id == 2 %>
+                        <% end %>
+                    <% end %>
+
+                    <% next if arr_tag.include?(hw.tag_id) %>
+                    <% if selected_tag.blank? %>
+                        <% is_checked = index == 0 ? "checked" : "" %>
+                    <% else %>
+                        <% is_checked = selected_tag == hw.tag_id.to_i ? "checked" : "" %>
+                    <% end %>
+                    <input type="radio" class="btn-check" name="options-homework" id="<%= hw.tag_id %>" autocomplete="off" <%= is_checked %> data-action="change->report#filterHomework" data-report-url-param=<%= report_filter_homework_path(user: user, subject: subject, tag: hw.tag_id, category: category) %>>
+                    <label class="btn btn-filter-homework text-center" for="<%= hw.tag_id %>" style="width: 150px;">
+                        <%= hw.tag_name %>
+                        <%# if index == 0 %>
+                            <p class="mb-0"><%= @progress %>%</p>
+                        <%# end %>
+                    </label>
+                    <% arr_tag << hw.tag_id %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4 p-4 pt-0">
+            <div class="text-center border rounded-3">
+                <span class="title-summary-box" style="color: #51B6E0">% Success <%= homework.first.tag_name %></span>
+                <div class="summary-value text-center d-inline">
+                    <%= pie_chart [["Done", @progress], ["Remaining", 100-(@progress)]], donut: true, colors: ["#51B6E0", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 p-4 pt-0">
+            <div class="text-center border rounded-3">
+                <span class="title-summary-box" style="color: #5F92E4">% Daily homework</span>
+                <div class="summary-value text-center d-inline">
+                    <%= pie_chart [["Done", daily], ["Remaining", total_daily-(daily)]], donut: true, colors: ["#5F92E4", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 p-4 pt-0">
+            <div class="text-center border rounded-3">
+                <span class="title-summary-box" style="color: #44DBDC">% Weekly homework</span>
+                <div class="summary-value text-center d-inline">
+                    <%= pie_chart [["Done", weekly], ["Remaining", total_weekly-(weekly)]], donut: true, colors: ["#44DBDC", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h5 class="m-3">Student development</h5>
+    <div class="row" style="align-items: center;">
+        <div class="col-8">
+            <div class="filter-graph position-relative border rounded-3 p-3 m-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input check-filter-graph" type="checkbox" id="filter-graph-all" value="" data-action="change->report#filterGraph" data-report-url-param=<%= report_filter_graph_path(user: user, subject: subject) %> checked >
+                    <label class="form-check-label" for="filter-graph-all">All</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input check-filter-graph" type="checkbox" id="filter-graph-samathi" value="สมาธิ" data-action="change->report#filterGraph" data-report-url-param=<%= report_filter_graph_path(user: user, subject: subject) %>>
+                    <label class="form-check-label" for="filter-graph-samathi">สมาธิ</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input check-filter-graph" type="checkbox" id="filter-graph-improve" value="พัฒนาการ" data-action="change->report#filterGraph" data-report-url-param=<%= report_filter_graph_path(user: user, subject: subject) %>>
+                    <label class="form-check-label" for="filter-graph-improve">พัฒนาการ</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input check-filter-graph" type="checkbox" id="filter-graph-daily-homework" value="ส่งการบ้านรายวัน" data-action="change->report#filterGraph" data-report-url-param=<%= report_filter_graph_path(user: user, subject: subject) %>>
+                    <label class="form-check-label" for="filter-graph-daily-homework">ส่งการบ้านรายวัน</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input check-filter-graph" type="checkbox" id="filter-graph-week-homework" value="ส่งการบ้านรายสัปดาห์" data-action="change->report#filterGraph" data-report-url-param=<%= report_filter_graph_path(user: user, subject: subject) %>>
+                    <label class="form-check-label" for="filter-graph-week-homework">ส่งการบ้านรายสัปดาห์</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 p-4">
+            <div class="text-center border rounded-3">
+                <span class="title-summary-box" style="color: #6C6DE8;">% All <i>(include สมาธิ พัฒนาการ การส่งการบ้าน)</i></span>
+                <div class="summary-value text-center d-inline" style="appearance: auto;">
+                    <%= pie_chart [["Done", (@all.to_f/40)*100], ["Remaining", 100-((@all.to_f/40)*100)]], donut: true, colors: ["#6C6DE8", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-graph p-3 m-3">
+        <%= render partial: "graph", locals: {graph: @graph} %>
+    </div>
+<% end %>

@@ -1,0 +1,80 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="homework">
+    <%= form_for :form_homework, url: homework_do_create_question_path(format: :json), method: :POST, html: { data: { "action": "submit->homework#submitFormQuestions" } }, id: "form_homework_question", multipart: true do |f| %>
+    <div class="row bg-white position-sticky top-0 p-3 mb-3 z-index-99">
+        <div class="col-6"><h5 class="px-3">Homework > Add</h5></div>
+        <div class="col-6 text-end"><%= f.submit "Create", class: "btn btn-primary mx-3", id: "btn-create-hw" %></div>
+    </div>
+
+    <div class="head-create-hw p-3 border w-75 rounded-3 m-auto mb-3">
+        <%= f.hidden_field :subject_id, value: params["subject"] %>
+        <%= f.hidden_field :category_id, value: params["category"] %>
+        <%= f.hidden_field :homework_type, value: params["type"] %>
+        <%= f.hidden_field :tag_id, value: params["tag"] %>
+        <div class="mb-3 row">
+            <label for="homework_name" class="col-sm-2 col-form-label">Homework name: </label>
+            <div class="col-sm-5">
+                <%= f.text_field :name, value: params["name"], class: "form-control", id: "homework_name" %>
+            </div>
+            <div class="col-sm-2" style="align-content: center;">
+                <div class="form-check form-switch form-check-inline">
+                    <%= f.check_box :is_default, {class: "form-check-input", id: "flexSwitchSetDefault", checked: false, "data-action": "change->homework#setDefaultHomework"}, 1, 0 %>
+                    <label class="form-check-label" for="flexSwitchSetDefault">Set default</label>
+                </div>
+            </div>
+            <label for="priority" class="col-sm-1 col-form-label text-end">Priority: </label>
+            <div class="col-sm-2">
+                <%= f.text_field :priority, value: "", class:"form-control w-50", id: "priority", disabled: true %>
+                <%= hidden_field_tag :priority_hidden, @priority, id: "priority-hidden" %>
+            </div>
+        </div>
+    </div>
+
+    <div class="head-create-hw p-3 border w-75 rounded-3 m-auto mb-3">
+        <div class="mb-3 row g-4">
+            <div class="col-2">
+                <label for="estimate-date" class="visually-hidden">Estimate date</label>
+                <input type="text" readonly class="form-control-plaintext" id="estimate-date" value="Estimate Date:">
+            </div>
+            <div class="col-4">
+                <label for="estimate-date-text" class="visually-hidden">Estimated field</label>
+                <%= f.date_field :estimate_date, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: "form-control" , id: "estimate-date-text" %>
+            </div>
+            <div class="col-2 text-end">
+                <label for="full-score" class="visually-hidden">Full score</label>
+                <input type="text" readonly class="form-control-plaintext text-end" id="full-score" value="Full score:">
+            </div>
+            <div class="col-2">
+                <label for="full-score-text" class="visually-hidden">Full score field</label>
+                <%= f.text_field :full_score, value: params["full_score"], class: "form-control" , id: "full-score-text" %>
+            </div>
+            <div class="col-2 text-center" style="align-content: center;">
+                <span class="div-lock-homework d-inline" data-action="click->homework#lockHomework" data-value="locked">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill lock-icon" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                    </svg> Locked
+                </span>
+                <span class="div-lock-homework d-none"  data-action="click->homework#lockHomework" data-value="unlock">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock-fill lock-icon" viewBox="0 0 16 16">
+                        <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2"/>
+                    </svg> Unlock
+                </span>
+                <%= f.hidden_field :lock_homework, value: "locked", id: "is-lock-homework" %>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-question mb-3">
+        <%= render partial: "question", locals: {f: f, question_no: 1, question_data: {}} %>
+    </div>
+
+    <div class="mb-3 w-100 text-center">
+        <button type="button" class="btn btn-primary w-75" id="add-question-btn" data-action="click->homework#addQuestion" data-homework-question-no-param="1" data-homework-url-param="<%= homework_add_question_path() %>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg> Add question
+        </button>
+    </div>
+    <% end %>
+</div>

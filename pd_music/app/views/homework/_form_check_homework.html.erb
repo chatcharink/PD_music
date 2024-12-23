@@ -1,0 +1,107 @@
+<%= form_for "form_score", url: homework_do_give_homework_score_path(format: :json, id: question["homework_id"], question_no: question_no, current_score: question["current_score"], questions: question["current_question"], homework_mapping: question["homework_mapping_id"]), method: "POST", html: { data: {controller: "homework-detail", action: "submit->homework-detail#giveScore" }, style: "width: 100%" } do |f| %>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="checkHomeworkLabel" style="width: 50%"><%= question["task_name"] %></h1><br>
+            <span>Score: <%= question["current_score"] %> / <%= question["full_score"] %></span>
+            <%# <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> %>
+        </div>
+        <div class="modal-body">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label class="form-label head-question-no">Question <%= question_no %> : <%= question["questions"]["no_#{question_no}"]["question"] %></label>
+                    
+                    <% if question["questions"]["no_#{question_no}"]["question_media"].attached? %>
+                        <div class="media-questions text-center">
+                            <% media = url_for(question["questions"]["no_#{question_no}"]["question_media"]) %>
+                            <% if question["questions"]["no_#{question_no}"]["question_media"].content_type.include?("image") %>
+                                <img src=<%= url_for(media) %> style="width: 500px; height: 250px;"/>
+                            <% elsif question["questions"]["no_#{question_no}"]["question_media"].content_type.include?("video") %>
+                                <video src=<%= url_for(media) %> autoplay=true controls=true style="width: 500px; height: 250px;"><video>
+                            <% elsif question["questions"]["no_#{question_no}"]["question_media"].content_type.include?("audio") %>
+                                <div class="div-audio text-center m-auto rounded-3 ms-3 active">
+                                    <audio src=<%= url_for(media) %> controls=true style="width: 75%"></audio>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        
+            <div class="mb-3 row">
+                <div class="col-6 m-auto">
+                    <p>Your answer:</p>
+                    <% source = question["questions"]["no_#{question_no}"]["answer"].attached? ? url_for(question["questions"]["no_#{question_no}"]["answer"]) : question["questions"]["no_#{question_no}"]["answer"] %>
+                    <% if question["questions"]["no_#{question_no}"]["answer"].content_type.include?("image") %>
+                        <img class="ms-3" id="answer-upload-image" src=<%= source %> style="width: 500px; height: 250px;"/>
+
+                    <% elsif question["questions"]["no_#{question_no}"]["answer"].content_type.include?("video") %>
+                        <video class="ms-3" src=<%= source %> id="answer-upload-video" autoplay="true" controls="true" style="width: 500px; height: 250px;"><video>
+                        
+                    <% elsif question["questions"]["no_#{question_no}"]["answer"].content_type.include?("audio") %>
+                        <div id="div-audio-upload-answer" class="div-audio text-center m-auto rounded-3 ms-3 d-inline-flex w-100 active">
+                            <audio id="audio-player-upload-answer" src=<%= source %> controls="true"></audio>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+
+            <% if question["questions"]["no_#{question_no}"]["option"] == 1 %>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <p>Correct answer:</p>
+                        <% source = question["questions"]["no_#{question_no}"]["reveal"].attached? ? url_for(question["questions"]["no_#{question_no}"]["reveal"]) : question["questions"]["no_#{question_no}"]["reveal"] %>
+                        <% if source.blank? %>
+                            <span>No answer</span>
+                        <% else %>
+                            <% if question["questions"]["no_#{question_no}"]["reveal"].content_type.include?("image") %>
+                                <img class="ms-3" id="reveal-upload-image" src=<%= source %> style="width: 500px; height: 250px;"/>
+
+                            <% elsif question["questions"]["no_#{question_no}"]["reveal"].content_type.include?("video") %>
+                                <video class="ms-3" src=<%= source %> id="reveal-upload-video" autoplay="true" controls="true" style="width: 500px; height: 250px;"><video>
+                                
+                            <% elsif question["questions"]["no_#{question_no}"]["reveal"].content_type.include?("audio") %>
+                                <div id="div-audio-upload-reveal" class="div-audio text-center m-auto rounded-3 ms-3 d-inline-flex active">
+                                    <audio id="audio-player-upload-reveal" src=<%= source %> controls="true"></audio>
+                                </div>
+                            <% end %>
+                        <% end %>
+                    </div>
+
+                    <div class="col-6">
+                        <p>Your second answer:</p>
+                        <% source = question["questions"]["no_#{question_no}"]["second_answer"].attached? ? url_for(question["questions"]["no_#{question_no}"]["second_answer"]) : question["questions"]["no_#{question_no}"]["second_answer"] %>
+                        <% if source.blank? %>
+                            <span>No answer</span>
+                        <% else %>
+                            <% if question["questions"]["no_#{question_no}"]["second_answer"].content_type.include?("image") %>
+                                <img class="ms-3" id="second-answer-upload-image" src=<%= source %> style="width: 500px; height: 250px;"/>
+
+                            <% elsif question["questions"]["no_#{question_no}"]["second_answer"].content_type.include?("video") %>
+                                <video class="ms-3" src=<%= source %> id="second-answer-upload-video" autoplay="true" controls="true" style="width: 500px; height: 250px;"><video>
+                                
+                            <% elsif question["questions"]["no_#{question_no}"]["second_answer"].content_type.include?("audio") %>
+                                <div id="div-audio-upload-second-answer" class="div-audio text-center m-auto rounded-3 ms-3 d-inline-flex active">
+                                    <audio id="audio-player-upload-second-answer" src=<%= source %> controls="true"></audio>
+                                </div>
+                            <% end %>
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+            <div class="row text-center" style="justify-content: center; align-items: center;">
+                <div class="col-1"><span>Score: </span></div>
+                <div class="col-2">
+                    <%= f.text_field "score", value: question["questions"]["no_#{question_no}"]["score"], class: "form-control", id: "score" %>
+                    <%= f.hidden_field "full_question_score", value: question["questions"]["no_#{question_no}"]["full_score"], id: "full-question-score" %>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger position-absolute text-white" style="left: 10px;" data-bs-target="#rejectReason" data-bs-toggle="modal" data-bs-dismiss="modal">Reject</button>
+            <% btn_name = question["current_question"].length == 1 ? "Submit" : "Submit and next answer" %>
+            <%= f.submit btn_name, class: "btn btn-primary" %>
+            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            <%# <button type="button" class="btn btn-primary">Submit and next answer</button> %>
+        </div>
+    </div>
+<% end %>

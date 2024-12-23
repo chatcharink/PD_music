@@ -1,0 +1,282 @@
+<% if question_data.blank? %>
+
+<div class="question-answer p-3 border w-75 rounded-3 m-auto mb-3">
+    <!-- Question -->
+    <div class="mb-3">
+        <label for="question_<%= question_no %>" class="form-label head-question-no">Question <%= question_no %> : </label>
+        
+        <div class="row mb-3">
+            <div class="col-sm-8">
+                <%= text_field_tag "form_questions[question#{question_no}][text]", params["question_#{question_no}"], class: "form-control w-100 d-inline question-value-#{question_no}", id: "question_#{question_no}" %>
+            </div>
+            <div class="col-sm-1 dropdown" style="align-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical icon" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                </svg>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <label class="dropdown-item" for="question_picture_<%= question_no %>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                            </svg> Picture
+                        </label>
+                        <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".png, .jpg, .jpeg", data: { action: "change->homework#uploadPicture" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_picture_#{question_no}" %>
+                    </li>
+                    <li>
+                        <label class="dropdown-item" for="question_video_<%= question_no %>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                                <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                            </svg> Video
+                        </label>
+                        <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->homework#uploadVideo" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_video_#{question_no}" %>
+                    </li>
+                    <li>
+                        <label class="dropdown-item" for="question_audio_<%= question_no %>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                                <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                                <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                                <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                                <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                            </svg> Audio
+                        </label>
+                        <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->homework#uploadAudio" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_audio_#{question_no}" %>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-1 pe-0 text-end">
+                <label for="question-score-<%= question_no %>" class="visually-hidden">Score</label>
+                <input type="text" readonly class="form-control-plaintext text-end" id="question-score-<%= question_no %>" value="Score:">
+            </div>
+            <div class="col-2">
+                <label for="question-score-text-<%= question_no %>" class="visually-hidden">Score field</label>
+                <%= text_field_tag "form_questions[question#{question_no}][full_score]", 0, class: "form-control w-100 d-inline question-score-value", id: "question-score-text-#{question_no}" %>
+            </div>
+        </div>
+        <%= hidden_field_tag "form_questions[question#{question_no}][update_question_media]", false, id: "update-question-media-#{question_no}" %>
+
+        <div class="media-questions text-center" id="div-media-<%= question_no %>">
+            <div class="btn-group-img-size mb-3" id="div-image-resize-<%= question_no %>" style="display: none;">
+                <div class="btn-group" role="group" aria-label="image-size">
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "", true, class: "btn-check", id: "original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content"} ) %>
+                    <label class="btn btn-outline-primary" for="original-size-<%= question_no %>">Original</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "924x476", false, class: "btn-check", id: "924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px"} ) %>
+                    <label class="btn btn-outline-primary" for="924x476-<%= question_no %>">16:9</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "668x476", false, class: "btn-check", id: "668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px"} ) %>
+                    <label class="btn btn-outline-primary" for="668x476-<%= question_no %>">4:3</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "476x476", false, class: "btn-check", id: "476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px"} ) %>
+                    <label class="btn btn-outline-primary" for="476x476-<%= question_no %>">1:1</label>
+                </div>
+            </div>
+            <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden;">
+                <img id="picture-question-<%= question_no %>"/>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Answer -->
+    <div class="mb-3">
+        <label class="form-label me-3">Answer: </label>
+
+        <div class="dropdown d-inline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+            </svg>
+
+            <ul class="dropdown-menu">
+                <li>
+                    <button type="button" class="dropdown-item" data-action="click->homework#selectAnswerFormat" data-homework-format-param="1" data-homework-url-param="<%= homework_answer_format_path() %>" data-homework-question-no-param="<%= question_no %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x2-gap" viewBox="0 0 16 16">
+                            <path d="M4 4v2H2V4zm1 7V9a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m0-5V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m5 5V9a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m0-5V4a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1M9 4v2H7V4zm5 0h-2v2h2zM4 9v2H2V9zm5 0v2H7V9zm5 0v2h-2V9zm-3-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm1 4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1z"/>
+                        </svg> Select chord
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item" data-action="click->homework#selectAnswerFormat" data-homework-format-param="2" data-homework-url-param="<%= homework_answer_format_path() %>" data-homework-question-no-param="<%= question_no %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ol" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+                            <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635z"/>
+                        </svg> Choices
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item" data-action="click->homework#selectAnswerFormat" data-homework-format-param="3" data-homework-url-param="<%= homework_answer_format_path() %>" data-homework-question-no-param="<%= question_no %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                        </svg> Upload files
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <%= hidden_field_tag "form_questions[question#{question_no}][selected_format]", "", id: "selected-format-#{question_no}" %>
+    <div class="mb-3 selected-answer-<%= question_no %>"></div>
+
+    <div class="mb-3" id="div-select-correct-answer-<%= question_no %>">
+        <label class="form-label me-3">Correct answer: </label>
+        <%= select_tag "form_questions[question#{question_no}][correct_answers]", [] , {class: "form-control select-answer", id: "select-answer-#{question_no}", multiple: true} %>
+    </div>
+</div>
+
+<% else %>
+    <% question_data.each do |q| %>
+        <% q.each do |k, v| %>
+        <% question_no = k.gsub("no_", "") %>
+        <div class="question-answer p-3 border w-75 rounded-3 m-auto mb-3">
+            <!-- Question -->
+            <div class="mb-3">
+                <label for="question_<%= question_no %>" class="form-label head-question-no">Question <%= question_no %> : </label>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-8">
+                        <%= text_field_tag "form_questions[question#{question_no}][text]", v["question"], class: "form-control w-100 d-inline question-value-#{question_no}", id: "question_#{question_no}" %>
+                    </div>
+                    <div class="col-sm-1 dropdown" style="align-content: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical icon" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        </svg>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <label class="dropdown-item" for="question_picture_<%= question_no %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                                    </svg> Picture
+                                </label>
+                                <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".png, .jpg, .jpeg", data: { action: "change->homework#uploadPicture" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_picture_#{question_no}" %>
+                            </li>
+                            <li>
+                                <label class="dropdown-item" for="question_video_<%= question_no %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                                        <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                                    </svg> Video
+                                </label>
+                                <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->homework#uploadVideo" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_video_#{question_no}" %>
+                            </li>
+                            <li>
+                                <label class="dropdown-item" for="question_audio_<%= question_no %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                                        <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                                        <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                                        <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                                        <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                                    </svg> Audio
+                                </label>
+                                <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->homework#uploadAudio" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_audio_#{question_no}" %>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-1 pe-0 text-end">
+                        <label for="question-score-<%= question_no %>" class="visually-hidden">Score</label>
+                        <input type="text" readonly class="form-control-plaintext text-end" id="question-score-<%= question_no %>" value="Score:">
+                    </div>
+                    <div class="col-2">
+                        <label for="question-score-text-<%= question_no %>" class="visually-hidden">Score field</label>
+                        <%= text_field_tag "form_questions[question#{question_no}][full_score]", v["score"], class: "form-control w-100 d-inline question-score-value", id: "question-score-text-#{question_no}" %>
+                    </div>
+                </div>
+
+                <div class="media-questions text-center" id="div-media-<%= question_no %>">
+                    <% if v["question_media"].attached? %>
+                        <% if v["question_media"].content_type.include?("image") %>
+                            <div class="btn-group-img-size mb-3" id="div-image-resize-<%= question_no %>">
+                                <div class="btn-group" role="group" aria-label="image-size">
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "", v["image_thumbnail"].blank? , class: "btn-check", id: "original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content"} ) %>
+                                    <label class="btn btn-outline-primary" for="original-size-<%= question_no %>">Original</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "924x476", v["image_thumbnail"] == "924x476", class: "btn-check", id: "924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="924x476-<%= question_no %>">16:9</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "668x476", v["image_thumbnail"] == "668x476", class: "btn-check", id: "668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="668x476-<%= question_no %>">4:3</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "476x476", v["image_thumbnail"] == "476x476", class: "btn-check", id: "476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="476x476-<%= question_no %>">1:1</label>
+                                </div>
+                            </div>
+                            <% if v["image_thumbnail"].blank? %>
+                                <% set_size = "" %>
+                            <% else %>
+                                <% width, height = v["image_thumbnail"].split("x") %>
+                                <% set_size = "width: #{width}px; height: #{height}px" %>
+                            <% end %>
+                            <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden; <%= set_size %>">
+                                <img id="picture-question-<%= question_no %>" src=<%= url_for(v["question_media"]) %> />
+                            </div>
+                        <% elsif v["question_media"].content_type.include?("video") %>
+                            <video src=<%= url_for(v["question_media"]) %> id="video-player-<%= question_no %>" autoplay=true controls=true style="width: 500px; height: 250px;"><video>
+                        <% elsif v["question_media"].content_type.include?("audio") %>
+                            <div id="div-audio-<%= question_no%>" class="div-audio text-center m-auto rounded-3 ms-3 active">
+                                <audio id="audio-player-<%= question_no%>" src=<%= url_for(v["question_media"]) %> controls = true style="width: 75%"></audio>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="media-questions text-center" id="div-media-<%= question_no %>">
+                            <div class="btn-group-img-size mb-3" id="div-image-resize-<%= question_no %>" style="display: none;">
+                                <div class="btn-group" role="group" aria-label="image-size">
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "", true, class: "btn-check", id: "original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content"} ) %>
+                                    <label class="btn btn-outline-primary" for="original-size-<%= question_no %>">Original</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "924x476", false, class: "btn-check", id: "924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="924x476-<%= question_no %>">16:9</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "668x476", false, class: "btn-check", id: "668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="668x476-<%= question_no %>">4:3</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "476x476", false, class: "btn-check", id: "476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="476x476-<%= question_no %>">1:1</label>
+                                </div>
+                            </div>
+                            <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden;">
+                                <img id="picture-question-<%= question_no %>"/>
+                            </div>
+                        </div>
+                    <% end %>
+                    <%= hidden_field_tag "form_questions[question#{question_no}][update_question_media]", false, id: "update-question-media-#{question_no}" %>
+                </div>
+            </div>
+            
+            
+            <!-- Answer -->
+            <div class="mb-3">
+                <label class="form-label me-3">Answer: </label>
+            </div>
+
+            <%= hidden_field_tag "form_questions[question#{question_no}][selected_format]", v["answer_format"], id: "selected-format-#{question_no}" %>
+            <% correct_answer = v["correct_answer"].blank? ? [] : v["correct_answer"].split(",") %>
+
+            <div class="mb-3 selected-answer-<%= question_no %>">
+                <% case v["answer_format"].to_i %>
+                <% when 1 %>
+                    <%= hidden_field_tag "form_questions[question#{question_no}][id]", v["id"], id: "question_id" %>
+                    <%= render partial: "homework/select_chord", locals: {question_no: question_no, answer: v["chords"], correct_answer: correct_answer} %>
+                    <% arr_answer = [] %>
+                    <% v["chords"].split(",").each {|c| arr_answer << [c, c.downcase]} %>
+                <% when 2 %>
+                    <%= render partial: "homework/select_choices", locals: {question_no: question_no, answer: v["choice"]} %>
+                    <% arr_answer = [] %>
+                    <% v["choice"].each {|c| arr_answer << c[1]} %>
+                <% when 3 %>
+                    <%= hidden_field_tag "form_questions[question#{question_no}][id]", v["id"], id: "question_id" %>
+                    <%= render partial: "homework/upload_file", locals: {question_no: question_no, option: v["option"], reveal: v["reveal"]} %>
+                    <% arr_answer = [] %>
+                <% end %>
+            </div>
+
+            <% unless v["answer_format"].to_i == 3 %>
+                <div class="mb-3">
+                    <label class="form-label me-3">Correct answer: </label>
+                    <%= select_tag "form_questions[question#{question_no}][correct_answers]", options_for_select(arr_answer.uniq, correct_answer) , {class: "form-control select-answer", id: "select-answer-#{question_no}", multiple: true} %>
+                </div>
+            <% end %>
+        </div>
+        <% end %>
+    <% end %>
+<% end %>

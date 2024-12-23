@@ -1,0 +1,50 @@
+.btn-check + .btn-filter-homework{
+    background-color: #fff !important; 
+    color: #6c6de8 !important;
+    border: 1px solid #6c6de8 !important;
+    cursor: pointer;
+    p { color: #fff !important; }
+}
+
+.btn-check + .btn-filter-homework:checked{
+    color: #fff !important;
+    background-color: #6c6de8 !important;
+    border: none !important;
+    p { color: #fff !important; }
+}
+
+#nav-text-subject, .nav-select-subject{
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.filter-graph{
+    background: #dddddd;
+}
+
+#div-filter-content-report{
+    // position: absolute;
+    width: 100%;
+    background-color: #fff;
+    height: 50px;
+    transition: .5s;
+}
+
+#div-filter-content-report.active{
+    height: 115px;
+    transition: .5s;
+}
+
+.filter-icon-report{
+    margin-top: 0px;
+    transition: .5s;
+    button {
+        background: #44DBDC !important;
+    }
+}
+
+.filter-icon-report.active{
+    // margin-top: 140px;
+    transition: .5s;
+}

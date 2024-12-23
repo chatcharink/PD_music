@@ -1,0 +1,59 @@
+<div class="filter-select-by form-check form-check-inline ms-5 my-3">
+  <input class="form-check-input" type="radio" name="filter-by" id="individual" data-action="change->dashboard#filterName" data-dashboard-filter-by-param="individual">
+  <label class="form-check-label ms-2" for="individual">
+    Individual
+  </label>
+</div>
+<div class="filter-select-by form-check form-check-inline ms-3">
+  <input class="form-check-input" type="radio" name="filter-by" id="group" data-action="change->dashboard#filterName" data-dashboard-filter-by-param="group" checked>
+  <label class="form-check-label ms-2" for="group">
+    Group
+  </label>
+</div>
+
+<div class="filter-box filter-select-by mb-3 ms-5">
+    <%= form_for :form_date_filter, url: dashboard_change_tab_path(format: :json), method: :POST, html: { data: { "action": "submit->dashboard#filterNameOrGroup" } } do |f|%>
+        <div class="individual-search mb-3 row g-3" style="display: none;">
+            <div class="col-2">
+                <label for="label_filter_student-name" class="visually-hidden">Name</label>
+                <input type="text" readonly class="form-control-plaintext text-end" id="label_filter_student-name" value="Name :">
+            </div>
+            <div class="col-3">
+                <label for="form_date_filter_student-name" class="visually-hidden"></label>
+                <% user = User.where(status: "active").where.not(role: 1).index_by(&:id) %>
+                <%= f.select "student-name", user.collect {|k, v| ["#{v["firstname"]} #{v["lastname"]}", k]}, { prompt: "-- Please select student --" }, class: "form-select w-100" %>
+            </div>
+            <div class="col-1">
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="col-6">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addExamDateModal" data-action="click->dashboard#openAddExamDate">Add exam date</button>
+            </div>
+        </div>
+
+        <div class="group-search mb-3 row">
+            <div class="col-2 form-floating">
+                <%= f.select "class", study_class(), { include_blank: "-- Select class --", selected: "#{session["current_user"]["study_class"]}" }, class: "form-select w-100", id: "select_class" %>
+                <label class="ms-2" for="select_class">Class: </label>
+            </div>
+            <div class="col-3 form-floating">
+                <%= f.select "musical", MusicalInstrument.all.pluck(:musical_instruments_en, :id), { include_blank: "-- Select musical group --" }, class: "form-select w-100", id: "select_musical_instrument" %>
+                <label class="ms-2" for="select_musical_instrument">Music instrument: </label>
+            </div>
+            <div class="col-3 form-floating">
+                <%= f.select "exam_date", exam_date(), { include_blank: "-- Select going exam date --" }, class: "form-select w-75 d-inline", id: "select_exam_date" %>
+                <label class="ms-2" for="select_exam_date">Going exam date: </label>
+                <button type="submit" class="btn btn-primary float-end mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    <% end %>
+</div>

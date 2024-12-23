@@ -1,0 +1,22 @@
+<ul class="nav nav-tabs nav-tabs-dashboard z-index-99">
+    <% default_category = 1 %>
+    <% @category.each_with_index do |(k, v), index| %>
+        <% is_active = index == 0 ? "active" : "" %>
+        <% default_category = k if index == 0 %>
+        <% default_category = params["category"] if params["category"].present? %>
+        <li class="nav-item text-center">
+            <a class="nav-link dashboard-tab <%= is_active %>" id="dashboard-tab-<%= v["name_en"] %>" data-action="click->homework#selectCategory" data-homework-url-param="<%= homework_path(id: subject_id, category: k, subject: subject_name, banner: banner) %>" data-homework-tab-param="<%= v["name_en"] %>"><%= v["name_en"].capitalize %></a>
+        </li>
+    <% end %>
+</ul>
+
+<div class="head-subject position-absolute" style="top: 250px;">
+    <h3 class="py-5 px-3 mb-0 text-white"><%= subject_name %></h3>
+</div>
+<div class="head-subject-image">
+    <img src="<%= APP_CONFIG[:application_path] %>/pictures/banners/music_long_banner_<%= banner %>.png" width="100%" height="250px">
+</div>
+
+<div class="div-tag-list">
+    <%= render partial: "tag_list", locals: {tag: tag, id: subject_id, category_id: default_category} %>
+</div>

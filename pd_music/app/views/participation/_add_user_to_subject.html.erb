@@ -1,0 +1,62 @@
+<div class="modal fade" id="addUserToSubject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserToSubjectLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserToSubjectLabel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-plus-fill me-3" viewBox="0 0 16 16">
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                    </svg>Add user
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-action="click->participation#clearClass click->participation#clearUser"></button>
+            </div>
+            <div class="modal-body p-0">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-individual-tab" data-bs-toggle="tab" data-bs-target="#nav-individual" type="button" role="tab" aria-controls="nav-individual" aria-selected="true">Individual</button>
+                        <button class="nav-link" id="nav-class-tab" data-bs-toggle="tab" data-bs-target="#nav-class" type="button" role="tab" aria-controls="nav-class" aria-selected="false">Class</button>
+                    </div>
+                </nav>
+                <div class="tab-content py-3" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-individual" role="tabpanel" aria-labelledby="nav-individual-tab" data-action="click->participation#clearClass">
+                        <span class="mb-3 px-3">Student: </span>
+                        <% @user.each do |u| %>
+                            <div class="div-user-list border-bottom" id="user-list-<%= u.id %>" data-action="click->participation#addUser" data-participation-id-param="<%= u.id %>" data-value="<%= u.id %>">
+                                <%= check_box_tag(:user, u.id, false, class: "d-none", id: "user-#{u.id}" ) %>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" class="bi bi-check-circle-fill p-3 d-none" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                                <%= image_tag(u.profile_pic.attached? ? url_for(u.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "rounded-circle p-3", width: "75px", height: "75px") %>
+                                <span><%= u.firstname.capitalize %> <%= u.lastname %><span>
+                            </div>
+                        <% end %>
+                    </div>
+                    <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab" data-action="click->participation#clearUser">
+                        <span class="mb-3 px-3">Class: </span>
+                        <% arr_class = study_class_and_room() %>
+                        <% arr_class.each_with_index do |c, index| %>
+                            <div class="div-class-list border-bottom" id="class-list-<%= index %>" data-action="click->participation#addUser" data-participation-class-param="<%= index %>" data-value="<%= c[1] %>">
+                                <%= check_box_tag(:class, c[1], false, class: "d-none", id: "class-#{index}" ) %>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-check-circle-fill p-3 d-none" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-circle p-3" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                </svg>
+                                <span><%= c[0] %><span>
+                            </div>
+                        <% end %>
+                    </div>
+                    <%= hidden_field_tag :add_by, "user" %>
+                    <%= hidden_field_tag :selected_user, "" %>
+                    <%= hidden_field_tag :subject_id, "" %>
+                    <%= hidden_field_tag :type, "" %>
+                    <%= hidden_field_tag :is_edit, href %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-action="click->participation#submitAddUser" data-participation-url-param="<%= participation_add_user_path() %>" data-bs-dismiss="modal">Add student</button>
+            </div>
+        </div>
+    </div>
+</div>

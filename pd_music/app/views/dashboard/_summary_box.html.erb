@@ -1,0 +1,94 @@
+<div class="row div-summary-box ms-3 mb-3" data-controller="dashboard">
+    <div class="col-9 d-inline-flex">
+        <div class="summary-box all-work px-3 py-2">
+            <span class="title-summary-box">% Complete All Task</span>
+            <div class="summary-value text-center d-inline">
+                <%= pie_chart [["Done", get_all_done(@data, @category.length)], ["Remaining", get_all_remain(@data,  @category.length)]], donut: true, colors: ["#6C6DE8", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+                <h1><%= percent_done(@data,  @category.length) %></h1>
+            </div>
+        </div>
+
+        <% @category.each do |id, value| %>
+
+        <div class="summary-box category-<%= id %>-box ms-3 px-3 py-2">
+            <span class="title-summary-box" style="color: #<%= value["color_code"] %>">% Complete <%= value["name_en"] %></span>
+            <div class="summary-value text-center d-inline">
+                <%= pie_chart [["Done", get_done_task(@data, id)], ["Remaining", get_remain_task(@data, id)]], donut: true, colors: ["##{value["color_code"]}", "#d7d7d7"], width: "150px", height: "150px", legend: false %>
+                <h1 style="color: #<%= value["color_code"] %>"><%= percent_done_each_category(@data, id) %></h1>
+            </div>
+        </div>
+
+        <% end %>
+    </div>
+    <div class="col-3">
+        <div class="summary-box overdue-work mx-3 px-3 py-2">
+            <span class="title-summary-box">All Overdue</span>
+            <div class="summary-value overdue-work text-center d-inline">
+                <h1><%= get_all_overdue(@data, @category.length) %></h1>
+            </div>
+            <div class="title-sub-detail row text-center">
+                <!-- <%# @category.each do |id, value| %> -->
+                    <div class="col overdue-text">
+                        <p class="m-0">This week</p>
+                        <p><%= get_overdue_day(@data,  @category.length) %> Remains</p>
+                    </div>
+                    <div class="col overdue-text">
+                        <p class="m-0">More than 1 week</p>
+                        <p><%= get_overdue_week(@data,  @category.length) %> Remains</p>
+                    </div>
+                <!-- <%# end %> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ms-4 mb3"><h5>Homework submission frequency</h5></div>
+<div class="row div-summary-box ms-4 mb-3">
+    <div class="div-graph col-9">
+        <div class="div-filter-date mt-3 mb-0 text-center">
+            <%= render partial: "filter_graph" %>
+        </div>
+        <div class="graph px-3 py-2" id="graph-frequency">
+            <% graph = [] %>
+            <% color = [] %>
+            <% @data.each do |k, v| %>
+                <% graph << {name: @category[k.gsub("category_", "").to_i]["name_en"], data: v["data"]} %>
+                <% color << "##{@category[k.gsub("category_", "").to_i]["color_code"]}" %>
+            <% end %>
+            <%= render partial: "graph", locals: {graph: graph, color: color} %>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="summary-box all-score mx-3 px-3 py-2">
+            <span class="title-summary-box">Average Score</span>
+            <%= bar_chart get_score_data(@data, @category), colors: color, max: 10 %>
+        </div>
+    </div>
+</div>
+
+<div class="row div-summary-box ms-4 mb-3">
+    <% controller_name = session["current_user"]["role"] != 3 ? "dashboard-datatable-teacher" : "dashboard-datatable" %>
+    <div class="col-12 ps-0 pe-5" data-controller="<%= controller_name %>">
+        <h5>Task assignment</h5>
+        <% if can_view_menu?([4]) %>
+            <div class="filter-table my-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="going_overdue" data-action="change-><%= controller_name %>#filterTable" data-key="goingOverdue" checked>
+                    <label class="form-check-label" for="going_overdue">Going overdue</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="overdue" data-action="change-><%= controller_name %>#filterTable" data-key="overdue">
+                    <label class="form-check-label" for="overdue">Overdue</label>
+                </div>
+            </div>
+        <% end %>
+        <div class="div-table w-100">
+            <% if session["current_user"]["role"] != 3 %>
+                <%= render partial: "table_group" %>
+            <% else %>
+                <%= render partial: "table" %>
+            <% end %>
+        </div>
+    </div>
+</div>
