@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import $ from 'jquery'
 
 export default class extends Controller {
   connect() {
@@ -80,7 +81,54 @@ export default class extends Controller {
       $(".div-noti-list").html('');
       $(".div-noti-list").html(data);
     });
+  }
 
+  updateNoti(event){
+    let url = event.params["url"];
+    const filter = fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": this.getCsrfToken()
+      }
+    }).then(response => {
+      if (response.ok) {
+        return response.text();
+      }
+    });
+
+    filter.then((data) => {
+      let result = JSON.parse(data);
+      window.location.replace(result["redirect_path"]);
+    });
+  }
+
+  showHomeworkTable(event){
+    let url = event.params["url"];
+    const show_homework = fetch(url).then(response => {
+      if (response.ok) {
+        return response.text();
+      }
+    });
+
+    show_homework.then((data) => {
+      try{
+        result = JSON.parse(data);
+        this.alert(result["status"], result["message"]);
+      } catch {
+        let nav_homework_menu = document.getElementById("homeworkMenu");
+        let tag_list = document.getElementsByClassName("hide-tag-data");
+        if (document.getElementsByClassName("tmp-side-homework-tag").length <= 0){
+          for (let i=0; i < tag_list.length; i++){
+            let url = tag_list[i].getAttribute("data-url");
+            let nav = "<div class=\"nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90 tmp-side-homework-tag\" style=\"margin-left: 10px;\" data-action=\"click->layout#showHomeworkTable\" data-layout-url-param="+url+">"+tag_list[i].value+"</div>"
+            nav_homework_menu.insertAdjacentHTML("beforeend", nav);
+          }
+        }
+        $(".div-tag-list").html("");
+        $(".div-tag-list").html(data);
+      }
+    });
   }
 
   getCsrfToken() {

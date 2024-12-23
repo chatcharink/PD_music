@@ -1,6 +1,6 @@
 class PermissionController < ApplicationController
     def index
-        return redirect_to path_to_root unless can_view_menu?([38])
+        return redirect_to path_to_root unless can_view_menu?([57])
         permission = Permission.all.order(:priority)
         permission_roles = PermissionAndRole.all
         permission_of_role = Hash.new()

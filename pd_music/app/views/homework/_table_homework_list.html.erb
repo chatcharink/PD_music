@@ -1,0 +1,10 @@
+<% if homework.blank? %>
+    <div class="no-subject-image h-50 m-auto text-center" style="align-content: center;">
+        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+        <p>No homework, Please add the homework</p>
+    </div>
+<% else %>
+    <div class="mb-3 w-75 border rounded-3 p-3 m-auto">
+        <%= render partial: "table_homework" %>
+    </div>
+<% end %>

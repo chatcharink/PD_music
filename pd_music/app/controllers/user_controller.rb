@@ -1,6 +1,9 @@
 class UserController < ApplicationController
     def index
-        return redirect_to path_to_root unless can_view_menu?([5])
+        unless can_view_menu?([7])
+            flash["error"] = "You don't have permission to view user list"
+            return redirect_to path_to_root
+        end
     end
 
     def show
@@ -11,7 +14,10 @@ class UserController < ApplicationController
     end
 
     def new
-        return redirect_to path_to_root unless can_view_menu?([40])
+        unless can_view_menu?([8])
+            flash["error"] = "You don't have permission to create user"
+            return redirect_to path_to_root
+        end
         @user = User.new
         # @study_class = study_class()
         musical = MusicalInstrument.where(status: "active")
@@ -27,6 +33,7 @@ class UserController < ApplicationController
                 ecrypt_password = BCrypt::Engine.hash_secret(params["user"]["correct_password"], generated_salt_password)
                 user = User.insert_user(params["user"], ecrypt_password, generated_salt_password)
                 if user
+                    assign_default_homework(user.id) if params["user"]["role"].to_i == 3
                     flash[:success] = "Create user: #{params["user"]["username"]} successfully."
                     save_activity("Add user", "Success", "Create user #{params["user"]["username"]} successfully")
                     status = "success"
@@ -54,12 +61,18 @@ class UserController < ApplicationController
     end
 
     def approve_user
+        unless can_view_menu?([9])
+            flash["error"] = "You don't have permission to approve user"
+            return redirect_to path_to_root
+        end
+
         begin
             user = User.update(params["id"], role: params["role"], status: "active")
             session["inactive_user"] = User.where(status: "inactive").count if can_view_menu?([6])
             ### send mail ####
             UserMailer.approved(user).deliver_now
             ##################
+            assign_default_homework(params["id"])  if params["role"].to_i == 3
             save_activity("Update user", "Success", "Activate user : #{user.username} successfully")
             flash["success"] = "Activated user : #{user.username} successfully"
         rescue => e
@@ -71,7 +84,10 @@ class UserController < ApplicationController
     end
 
     def edit
-        return redirect_to path_to_root unless can_view_menu?([7])
+        unless can_view_menu?([10])
+            flash["error"] = "You don't have permission to edit user"
+            return redirect_to path_to_root
+        end
         @user = User.find(params[:id])
         # @study_class = study_class()
         musical = MusicalInstrument.where(status: "active")
@@ -108,6 +124,10 @@ class UserController < ApplicationController
     end
 
     def upload_profile_picture
+        unless can_view_menu?([10])
+            flash["error"] = "You don't have permission to edit user"
+            return redirect_to path_to_root
+        end
         begin
             state = "no_update"
             if params["user"]["profile_pic"].present?
@@ -130,7 +150,10 @@ class UserController < ApplicationController
     end
 
     def destroy
-        return redirect_to path_to_root unless can_view_menu?([8])
+        unless can_view_menu?([11])
+            flash["error"] = "You don't have permission to delete user"
+            return redirect_to path_to_root
+        end
         begin
             user = User.find(params["id"]).update(status: "deleted")
             session["inactive_user"] = User.where(status: "inactive").count if can_view_menu?([6])
@@ -146,7 +169,33 @@ class UserController < ApplicationController
     end
 
 
-    private def study_class
+    private 
+    def study_class
         ["ประถมศึกษา", "มัธยมศึกษาปีที่ 1", "มัธยมศึกษาปีที่ 2", "มัธยมศึกษาปีที่ 3", "มัธยมศึกษาปีที่ 4", "มัธยมศึกษาปีที่ 5", "มัธยมศึกษาปีที่ 6", "ปริญญาตรี", "มากกว่าปริญาตรี", "อื่นๆ"]
+    end
+
+    def assign_default_homework id
+        homework = Homework.where(status: "active", is_default: 1)
+        #### add default homework
+        homework.each do |hw|
+            HomeworkUserMapping.create(homework_id: hw.id, user_id: id, status: "open", score: 0)
+
+            ### Send notification
+            if can_view_menu?([12])
+                Notification.create(subject: "Assign homework", 
+                    message: "You have new homework: #{hw.task_name} assignment. Please do it before #{hw.estimate_date.strftime("%d/%m/%Y")}",
+                    status: 0,
+                    send_by: session["current_user"]["id"],
+                    user_id: id,
+                    notification_type: "new_assign"
+                )
+            end
+
+            ### Send email
+            if can_view_menu?([60])
+                user = User.find(id)
+                HomeworkMailer.new_assignment(user, [hw.task_name, hw.estimate_date.strftime("%d/%m/%Y")]).deliver_now
+            end
+        end
     end
 end

@@ -4,13 +4,13 @@
     <div class="border-bottom">
         <h5 class="title-menu ms-3 my-3 d-inline-block">Order</h5>
 
-        <% if can_view_menu?([42]) || can_view_menu?([37]) %>
+        <% if can_view_menu?([53]) || can_view_menu?([52]) %>
         <div class="dropdown float-end mt-1 p-2 me-3 rounded-3 dropdown-more-setting-order">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16" id="dropdownOrderSetting" data-bs-toggle="dropdown" aria-expanded="false">
                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
             </svg>
             <ul class="dropdown-menu" aria-labelledby="dropdownOrderSetting">
-                <% if can_view_menu?([42]) %>
+                <% if can_view_menu?([53]) %>
                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#settingOrder">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                             <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
@@ -19,7 +19,7 @@
                     </button>
                 </li>
                 <% end %>
-                <% if can_view_menu?([37]) %>
+                <% if can_view_menu?([52]) %>
                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportOrder">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
@@ -32,7 +32,7 @@
         </div>
         <% end %>
 
-        <% if can_view_menu?([29]) %>
+        <% if can_view_menu?([44]) %>
             <%= link_to food_order_path(), class: "btn btn-primary float-end me-3 mt-2" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
                     <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z"/>

@@ -98,7 +98,7 @@ export default class extends Controller {
         title.innerHTML = "";
         let select_class = document.getElementById("select_class");
         let select_exam_date = document.getElementById("select_exam_date");
-        
+
         document.getElementById("hide-select-class").value = select_class.value;
         if (select_class.value != ""){
           title.innerHTML += "class : "+select_class.value;
@@ -118,6 +118,13 @@ export default class extends Controller {
       
       this.clickFilter();
     });
+  }
+
+  openAddExamDate(){
+    let select_name = document.getElementById("form_date_filter_student-name");
+    console.log(select_name);
+    document.getElementById("student_name").value = select_name.options[select_name.selectedIndex].text;
+    document.getElementById("exam-date_student-id").value = select_name.value; 
   }
 
   getBody(){
@@ -245,7 +252,7 @@ export default class extends Controller {
   // }
 
   clickFilter(){
-    let filter_btn = document.getElementsByClassName("filter-icon");
+    let filter_btn = document.getElementsByClassName("filter-icon-dashboard");
     let div_content = document.getElementsByClassName("div-filter-content");
     let all_div = document.getElementsByClassName("filter-select-by");
 

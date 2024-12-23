@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <style>
+            .div-box{
+                margin: auto;
+                width: 50%;
+                border: 1px solid #d7d7d7;
+                border-radius: 20px;
+                font-family: "Athiti", sans-serif !important;
+                font-weight: 500;
+                font-style: normal;
+                color: #3b3c66;
+            }
+
+            @media only screen and (max-width: 1024px) {
+                .div-box{
+                    width: 90% !important;
+                }
+            }
+
+            .head-email{
+                background-image: linear-gradient(90deg, #6c6de8, #44dbdc);;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+                background-size: cover;
+                color: #fff;
+                font-weight: 500;
+                padding: 15px;
+            }
+
+            .head-email{
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+            }
+
+            .foot-email{
+                border-top: 1px solid #d7d7d7;
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+                padding: 15px;
+            }
+
+            .body-email{
+                padding: 15px;
+            }
+
+            .btn-primary{
+                background: linear-gradient(to right, #44dbdc 50%, #6c6de8 50%);
+                background-size: 200% 100%;
+                background-position: right bottom;
+                transition: all .3s ease-out;
+                color: #fff !important;
+                border: none !important;
+                width: fit-content;
+                border-radius: 10px;
+                padding: 10px;
+                text-decoration: none;
+                margin: 20px;
+            }
+
+            .btn-primary:hover{
+                background-position: left bottom;
+            }
+
+            #div-btn-reset{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body> 
+        <div class="div-box">
+            <div class="head-email">
+                <h3>New messages</h3>
+            </div>
+            <div class="body-email">
+                <p><b>Hi K.<%= @user.firstname%> <%= @user.lastname %></b></p>
+
+                <p style="margin-bottom: 40px;">You have new homework : <%= @homework[0] %>. Please do it before <%= @homework[1] %></p>
+                <div id="div-btn-reset">
+                    <%= link_to "Login", login_url(), class: "btn btn-primary" %>
+                </div>
+            
+            </div>
+
+            <div class="foot-email">
+                <p>Thanks,</p>
+                <p>The PD music Team</p>
+            </div>
+        </div>
+    </body>
+</html>

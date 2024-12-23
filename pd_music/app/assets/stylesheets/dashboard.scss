@@ -45,7 +45,7 @@
     transition: .5s;
 }
 
-.filter-icon{
+.filter-icon-dashboard{
     margin-top: 0px;
     transition: .5s;
     button {
@@ -53,7 +53,7 @@
     }
 }
 
-.filter-icon.active{
+.filter-icon-dashboard.active{
     margin-top: 140px;
     transition: .5s;
 }

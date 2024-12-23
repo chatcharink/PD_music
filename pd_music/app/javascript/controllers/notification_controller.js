@@ -3,6 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
     connect() {
         document.getElementById("notification").classList.add("active");
+        let setting = document.getElementById("settingMenu");
+        if (!setting.classList.contains("show")){
+            setting.classList.add("show");
+        }
     }
 
     save_notification(event) {

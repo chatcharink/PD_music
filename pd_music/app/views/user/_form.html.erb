@@ -137,7 +137,8 @@
     </div>
 
     <div class="text-center mt-3">
-        <%= f.submit "Update", class: "btn btn-primary w-35" %>
+        <% state = @user.username.present? ? "Update" : "Create" %>
+            <%= f.submit state, class: "btn btn-primary w-35" %>
     </div>
 </div>
 

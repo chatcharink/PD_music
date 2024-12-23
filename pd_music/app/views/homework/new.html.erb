@@ -1,27 +1,17 @@
 <% is_user_logged_in? %>
 
 <div class="h-100" data-controller="homework">
-    <%= form_for :form_homework, url: homework_index_path(format: :json), method: :POST, id: "form_create_homework", multipart: true do |f| %>
-    <div class="mb-3">
-        <div class="nav-title-link my-3">
-            <h5 class="p-3 d-inline">Homework > Add</h5>
-
-            <div class="btn-save-homework float-end mx-3">
-                <button type="button" class="btn btn-outline-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-                    </svg> Preview
-                </button>
-                <%= f.submit "Create", class: "btn btn-primary", id: "btn-create-hw" %>
-            </div>
-        </div>
+    <%= form_for :form_homework, url: homework_do_create_question_path(format: :json), method: :POST, html: { data: { "action": "submit->homework#submitFormQuestions" } }, id: "form_homework_question", multipart: true do |f| %>
+    <div class="row bg-white position-sticky top-0 p-3 mb-3 z-index-99">
+        <div class="col-6"><h5 class="px-3">Homework > Add</h5></div>
+        <div class="col-6 text-end"><%= f.submit "Create", class: "btn btn-primary mx-3", id: "btn-create-hw" %></div>
     </div>
 
     <div class="head-create-hw p-3 border w-75 rounded-3 m-auto mb-3">
         <%= f.hidden_field :subject_id, value: params["subject"] %>
         <%= f.hidden_field :category_id, value: params["category"] %>
         <%= f.hidden_field :homework_type, value: params["type"] %>
+        <%= f.hidden_field :tag_id, value: params["tag"] %>
         <div class="mb-3 row">
             <label for="homework_name" class="col-sm-2 col-form-label">Homework name: </label>
             <div class="col-sm-5">
@@ -29,13 +19,14 @@
             </div>
             <div class="col-sm-2" style="align-content: center;">
                 <div class="form-check form-switch form-check-inline">
-                    <%= f.radio_button :is_default, 1, class: "form-check-input", id: "flexSwitchSetDefault", checked: false %>
+                    <%= f.check_box :is_default, {class: "form-check-input", id: "flexSwitchSetDefault", checked: false, "data-action": "change->homework#setDefaultHomework"}, 1, 0 %>
                     <label class="form-check-label" for="flexSwitchSetDefault">Set default</label>
                 </div>
             </div>
-            <label for="priority" class="col-sm-1 col-form-label">Priority: </label>
+            <label for="priority" class="col-sm-1 col-form-label text-end">Priority: </label>
             <div class="col-sm-2">
-                <%= f.text_field :priority, value: @priority, class:"form-control w-50", id: "priority" %>
+                <%= f.text_field :priority, value: "", class:"form-control w-50", id: "priority", disabled: true %>
+                <%= hidden_field_tag :priority_hidden, @priority, id: "priority-hidden" %>
             </div>
         </div>
     </div>
@@ -52,7 +43,7 @@
             </div>
             <div class="col-2 text-end">
                 <label for="full-score" class="visually-hidden">Full score</label>
-                <input type="text" readonly class="form-control-plaintext" id="full-score" value="Full score:">
+                <input type="text" readonly class="form-control-plaintext text-end" id="full-score" value="Full score:">
             </div>
             <div class="col-2">
                 <label for="full-score-text" class="visually-hidden">Full score field</label>
@@ -75,7 +66,7 @@
     </div>
 
     <div class="div-question mb-3">
-        <%= render partial: "question", locals: {f: f, question_no: 1} %>
+        <%= render partial: "question", locals: {f: f, question_no: 1, question_data: {}} %>
     </div>
 
     <div class="mb-3 w-100 text-center">

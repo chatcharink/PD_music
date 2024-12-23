@@ -18,24 +18,29 @@
         <% end %>
     </ul>
 
-    <% if session["current_user"]["role"] != 3 %>
+    <% if can_view_menu?([3]) %>
         <div class="div-filter-content border w-100 z-index-99">
             <%= render partial: "filter_for_teacher" %>
         </div>
-        <div class="filter-icon text-center position-absolute start-50 z-index-99">
+        <div class="filter-icon-dashboard text-center position-absolute start-50 z-index-99">
             <button class="btn btn-primary rounded-bottom" style="border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;" data-controller="dashboard" data-action="click->dashboard#clickFilter">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
                     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                 </svg> Filter
             </button>
         </div>
-        <div class="div-filter-dashboard ms-4 mt-3">
-            <h5 class="title-dashboard"><span>Result of </span><span class="title-group-name" id="title-group-name">class : <%= session["current_user"]["study_class"] %></span></h5>
-        </div>
         <input type="hidden" id="hide-select-state" data-select="group_id" value="" >
         <input type="hidden" id="hide-select-class" value="<%= session["current_user"]["study_class"] %>">
         <input type="hidden" id="hide-select-exam-date" value="">
-    <% else %>
+    <% end %>
+
+    <% if can_view_menu?([5]) %>
+        <div class="div-filter-dashboard ms-4 mt-3">
+            <h5 class="title-dashboard"><span>Result of </span><span class="title-group-name" id="title-group-name">class : <%= session["current_user"]["study_class"] %></span></h5>
+        </div>
+    <% end %>
+
+    <% if session["current_user"]["exam_date"].present? %>
         <div class="w-100" id="scroll-container">
             <div id="scroll-text">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-megaphone-fill me-3" viewBox="0 0 16 16">
@@ -43,12 +48,41 @@
                 </svg>  Announcement: You exam date is <%= session["current_user"]["exam_date"].strftime("%d %B %Y") %>
             </div>
         </div>
-        <input type="hidden" id="hide-select-state" data-select="id" value="<%= session["current_user"]["id"] %>" >
     <% end %>
+    <input type="hidden" id="hide-select-state" data-select="id" value="<%= session["current_user"]["id"] %>">
 
     <input type="hidden" id="hide-category" value="" />
 
     <div class="div-dashboard mt-3 mb-5" id="div-dashboard">
         <%= render partial: "summary_box" %>
+    </div>
+</div>
+
+<div class="modal fade" id="addExamDateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addExamDateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addExamDateModalLabel">Add exam date</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <%= form_for :form_add_exam_date, url: dashboard_add_exam_date_path(format: :json), method: :POST do |f| %>
+                    <div class="mb-3">
+                        <label for="student_name" class="form-label">Student name</label>
+                        <%= f.text_field :student_name, value: "", class: "form-control", id: "student_name", disabled: true %>
+                        <%= f.hidden_field :student_id, value: "", id: "exam-date_student-id" %>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exam_date" class="form-label">Exam date</label>
+                        <%= f.date_field :exam_date, as: :date, value: DateTime.now().strftime("%Y-%m-%d"), class: "form-control" , id: "exam_date" %>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <%= f.submit "Add", class: "btn btn-primary", id: "btn-add-tag" %>
+                        <button type="button" class="btn btn-outline-primary" id="btn-close-add-tag" data-bs-dismiss="modal">Close</button>
+                    </div>
+                <% end %>
+            </div>
+        </div>
     </div>
 </div>

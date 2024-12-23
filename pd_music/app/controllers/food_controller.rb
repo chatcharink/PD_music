@@ -3,7 +3,10 @@ class FoodController < ApplicationController
     include FoodHelper
 
     def index
-        return redirect_to path_to_root unless can_view_menu?([28])
+        unless can_view_menu?([43])
+            flash["error"] = "You don't have permission to view order"
+            return redirect_to path_to_root
+        end
         ymal_path = APP_CONFIG[:order_setting_path]
         @order_setting = YAML.load(File.read("#{ymal_path}/setting_order.yml"))  
         @hash_order = Hash.new
@@ -315,7 +318,10 @@ class FoodController < ApplicationController
     end
 
     def restaurant
-        return redirect_to path_to_root unless can_view_menu?([31])
+        unless can_view_menu?([46])
+            flash["error"] = "You don't have permission to view restaurant"
+            return redirect_to path_to_root
+        end
         @restaurant = Restaurant.where.not(status: "deleted")
         option_menu = Menu.where(menu_type: "option")
         @option_category = Menu.select(:option_category).where(menu_type: "option").group(:option_category)
@@ -353,7 +359,10 @@ class FoodController < ApplicationController
     end
 
     def menu_list
-        return redirect_to path_to_root unless can_view_menu?([34])
+        unless can_view_menu?([49])
+            flash["error"] = "You don't have permission to view menu"
+            return redirect_to path_to_root
+        end
         @restaurant = Restaurant.select("restaurants.restaurant_name, menus.menu_name").where(id: params["id"])
         @restaurant = @restaurant.joins("left join menus on menus.restaurant_id = restaurants.id").first
 

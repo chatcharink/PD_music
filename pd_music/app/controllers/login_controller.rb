@@ -35,7 +35,7 @@ class LoginController < ApplicationController
                     session["permission_roles"] = permission_role.pluck(:permission_id)
                     session["inactive_user"] = User.where(status: "inactive").count if can_view_menu?([6])
                     User.update(u.id, first_login: 1)
-                    flash[:success] = "Login Successfully. Welcome #{u.firstname} to PD music school." if can_view_menu?([1]) || can_view_menu?([14]) || can_view_menu?([20]) || can_view_menu?([28])
+                    flash[:success] = "Login Successfully. Welcome #{u.firstname} to PD music school." if can_view_menu?([1]) || can_view_menu?([17]) || can_view_menu?([33]) || can_view_menu?([41]) || can_view_menu?([43])
                     save_activity("Login", "Success", "#{u.username} login success")
                     redirect_to path_to_root
                 else

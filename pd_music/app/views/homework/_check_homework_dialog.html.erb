@@ -1,0 +1,30 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary d-none" id="btn-check-homework-dialog" data-bs-toggle="modal" data-bs-target="#checkHomework">
+  Check Homework
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="checkHomework" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkHomeworkLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" id="checkHomeworkDialog">
+    <%= render partial: "form_check_homework", locals: {question: question, question_no: question_no} %>
+  </div>
+</div>
+
+<div class="modal fade" id="rejectReason" aria-hidden="true" aria-labelledby="rejectReasonLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rejectReasonLabel">Reject</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span>Reject reason : </span>
+        <%= text_area_tag "reject_reason", "", class: "form-control mt-3", rows: 2, id: "reject-reason" %>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger text-white" data-action="click->homework-detail#rejectHomework" data-homework-detail-answer-id-param="<%= question["questions"]["no_#{question_no}"]["answer_id"] %>" data-homework-detail-url-param="<%= homework_do_reject_homework_path() %>">Reject</button>
+        <button class="btn btn-outline-primary" data-bs-target="#checkHomework" data-bs-toggle="modal" data-bs-dismiss="modal">Back</button>
+      </div>
+    </div>
+  </div>
+</div>

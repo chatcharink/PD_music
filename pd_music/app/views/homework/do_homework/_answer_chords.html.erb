@@ -1,0 +1,10 @@
+<div class="mb-3"><span>Please click to select answer : </span></div>
+<div class="div-select-chord border rounded-3 p-3">
+    <% chords = answer.split(",") %>
+    <% chords.each_with_index do |ch| %>
+        <div class="d-inline">
+            <%= f.check_box :chords, {class: "btn-check", id: "btn-check-chord-#{ch}", checked: user_answer.include?(ch.downcase), disabled: user_answer.present?}, ch.capitalize %>
+            <label class="btn btn-outline-primary mx-1 mb-3" for="btn-check-chord-<%= ch %>"><%= ch %></label>
+        </div>
+    <% end %>
+</div>

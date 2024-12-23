@@ -96,23 +96,23 @@ class UserDatatable < ApplicationDatatable
 
   def user_action(record)
     actions = []
-    if can_view_menu?([6]) || can_view_menu?([7]) || can_view_menu?([8])
+    if (record.status == "inactive" && can_view_menu?([9])) || can_view_menu?([10]) || can_view_menu?([11])
       actions << "<div class=\"dropdown\">"
       actions << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" data-bs-auto-close=\"outside\" class=\"bi bi-three-dots-vertical\" data-bs-toggle=\"dropdown\" id=\"action-menu-#{record.id}\" aria-expanded=\"false\" viewBox=\"0 0 16 16\"><path d=\"M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0\"/></svg>"
       actions << "<span class=\"position-absolute top-0 start-75 translate-middle p-1 bg-danger border border-light rounded-circle\"><span class=\"visually-hidden\">New alerts</span></span>" if record.status == "inactive"
       actions << "<ul class=\"dropdown-menu\" aria-labelledby=\"action-menu-#{record.id}\">"
-      if record.status == "inactive" && can_view_menu?([6])
+      if record.status == "inactive" && can_view_menu?([9])
         actions << "<li class=\"approve-user\"><div class=\"btn-group dropstart w-100\">"
         actions << "<button type=\"button\" class=\"btn text-start\" data-bs-toggle=\"dropdown\"  id=\"approve-menu-#{record.id}\" aria-expanded=\"false\">Approve</button>"
         actions << "<ul class=\"dropdown-menu\" aria-labelledby=\"approve-menu-#{record.id}\">"
         @role.each { |r| actions << "#{link_to("#{r.role_name}", user_list_approved_path(id: record.id, role: r.id), class: "dropdown-item", data: {turbo_method: :post})}"}
         actions << "</ul></div></li>"
       end
-      if can_view_menu?([7])
+      if can_view_menu?([10])
         actions << "<li>#{link_to("Edit", edit_user_path(id: record.id), class: "dropdown-item")}</li>"
       end
       
-      if can_view_menu?([8])
+      if can_view_menu?([11])
         actions << "<li><button type=\"button\" class=\"dropdown-item\" data-bs-toggle=\"modal\" data-bs-target=\"#deleteUserModal\" data-action=\"click->user#setDeleteId\" data-user-id-param=\"#{record.id}\" data-user-name-param=\"#{record.firstname} #{record.lastname}\">Delete</button></li>"
       end
       actions << '</ul></div>'

@@ -1,0 +1,78 @@
+<div class="row border rounded-3 w-90 m-auto p-3 mb-3">
+    <div class="col-12">
+        <label class="form-label head-question-no">Question <%= question[index]["no_#{question_no}"]["question_no"] %> : <%= question[index]["no_#{question_no}"]["question"] %></label>
+        
+        <% if question[index]["no_#{question_no}"]["question_media"].attached? %>
+            <div class="media-questions text-center">
+                <% media = url_for(question[index]["no_#{question_no}"]["question_media"]) %>
+                <% if question[index]["no_#{question_no}"]["question_media"].content_type.include?("image") %>
+                    <% if question[index]["no_#{question_no}"]["image_thumbnail"].blank? %>
+                        <% set_size = "" %>
+                    <% else %>
+                        <% width, height = question[index]["no_#{question_no}"]["image_thumbnail"].split("x") %>
+                        <% set_size = "width: #{width}px; height: #{height}px" %>
+                    <% end %>
+                    <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden; <%= set_size %>">
+                        <img src=<%= url_for(media) %> />
+                    </div>
+                    
+                <% elsif question[index]["no_#{question_no}"]["question_media"].content_type.include?("video") %>
+                    <video src=<%= url_for(media) %> autoplay=true controls=true style="width: 500px; height: 250px;"><video>
+                <% elsif question[index]["no_#{question_no}"]["question_media"].content_type.include?("audio") %>
+                    <div class="div-audio text-center m-auto rounded-3 ms-3 active">
+                        <audio src=<%= url_for(media) %> controls=true style="width: 75%"></audio>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<%= form_for "form_answer", url: homework_do_next_question_path(format: :json, id: @h_homework["homework_id"], question_no:  question[index]["no_#{question_no}"]["question_no"].to_i+1, questions: @h_homework["question_length"]), method: :POST, id: "form_answer", html: { data: { "action": "submit->do-homework#onSubmitAnswer" } } do |f| %>
+    <div class="row border rounded-3 w-90 m-auto p-3 mb-5">
+        <% disable_reveal = "" %>
+        <div class="col-12">
+            <% case question[index]["no_#{question_no}"]["answer_format"].to_i %>
+            <% when 1 %>
+                <%= render partial: "homework/do_homework/answer_chords", locals: {f: f, question_no: question[index]["no_#{question_no}"]["question_no"].to_i, answer: question[index]["no_#{question_no}"]["chords"], user_answer: question[index]["no_#{question_no}"]["answer"]} %>
+            <% when 2 %>
+                <%= render partial: "homework/do_homework/answer_choice", locals: {f: f, question_no: question[index]["no_#{question_no}"]["question_no"].to_i, answer: question[index]["no_#{question_no}"]["choice"], user_answer: question[index]["no_#{question_no}"]["answer"]} %>
+            <% when 3 %>
+                <% disable_reveal = "disabled" %>
+                <%= render partial: "homework/do_homework/answer_upload_file", locals: {f: f, question_no: question[index]["no_#{question_no}"]["question_no"].to_i, option: question[index]["no_#{question_no}"]["option"]} %>
+            <% end %>
+        </div>
+        <input type="hidden" id="have-revral-answer" value="0">
+        <%= f.hidden_field :answer_id, value: question[index]["no_#{question_no}"]["answer_id"], id: "answer-id" %>
+        <%= f.hidden_field :your_answer, value: question[index]["no_#{question_no}"]["answer"], id: "your-answer" %>
+        <%= f.hidden_field :your_score, value: 0, id: "your-score", "data-score": question[index]["no_#{question_no}"]["score"].to_i %>
+        <%= f.submit "Submit", class: "btn btn-primary d-none", id: "send-answer" %>
+    </div>
+
+    <div class="w-90 text-center m-auto">
+        <button type="button" class="btn btn-outline-primary mx-4" style="width: 125px;" id="btn-reveal-answer" data-action="click->do-homework#revealAnswer" data-do-homework-format-param=<%= question[index]["no_#{question_no}"]["answer_format"] %> data-do-homework-url-param=<%= homework_do_reveal_answer_path(id: question[index]["no_#{question_no}"]["id"], answer_format: question[index]["no_#{question_no}"]["answer_format"].to_i) %> <%= disable_reveal %>>Reveal answer</button>
+        <button type="button" class="btn btn-primary mx-4" style="width: 125px;" data-action="click->do-homework#answer" data-do-homework-format-param=<%= question[index]["no_#{question_no}"]["answer_format"] %> data-do-homework-question-no-param=<%= question[index]["no_#{question_no}"]["question_no"].to_i %> data-do-homework-url-param=<%= homework_do_reveal_answer_path(id: question[index]["no_#{question_no}"]["id"]) %>>Answer</button>
+    </div>
+<% end %>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary d-none" id="open-answer-result-dialog" data-bs-toggle="modal" data-bs-target="#answerResult"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="answerResult" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="answerResultBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="w-100 text-center" id="answer-result-icon">
+                    
+                </div>
+                <div class="w-100" id="answer-result"></div>
+            </div>
+            <div class="m-3">
+                <% button_text = @h_homework["question_length"].length == question[index]["no_#{question_no}"]["question_no"].to_i ? "Submit" : "Next question" %>
+                <button type="button" class="btn btn-primary float-end" id="btn-next-question" data-bs-dismiss="modal" data-action="click->do-homework#nextQuestion"><%= button_text %></button>
+            </div>
+        </div>
+    </div>
+</div>

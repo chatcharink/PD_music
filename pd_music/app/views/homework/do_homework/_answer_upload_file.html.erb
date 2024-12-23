@@ -1,0 +1,250 @@
+<div class="mb-3"><span>Your answer:</span></div>
+<div class="div-upload-reveal p-3 mb-3 rounded-3 w-100 text-center dropdown active" id="div-upload-reveal-<%= question_no %>" for="upload-reveal-icon1-<%= question_no %>">
+    <div class="upload-reveal-icon my-5 active" id="upload-reveal-icon1-<%= question_no %>" data-bs-toggle="dropdown" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z"/>
+            <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+        </svg>
+        <span>Click to upload files</span>
+    </div>
+    <div class="media-reveal" id="media-reveal1-<%= question_no %>" data-bs-toggle="dropdown" aria-expanded="false">
+        <img id="picture-reveal-<%= question_no %>" style="display:none;"/>
+    </div>
+    
+    <ul class="dropdown-menu" id="dropdown-answer">
+        <li>
+            <label class="dropdown-item" for="reveal-picture-<%= question_no %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                </svg> Picture
+            </label>
+            <%= f.file_field "answer_media", accept: ".png, .jpg, .jpeg", data: { action: "change->do-homework#uploadRevealPicture" }, "data-do-homework-question-no-param": "#{question_no}", class: "answer-media", id: "reveal-picture-#{question_no}" %>
+        </li>
+        <li>
+            <label class="dropdown-item" for="reveal-video-<%= question_no %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                    <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                </svg> Video
+            </label>
+            <%= f.file_field "answer_media", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->do-homework#uploadRevealVideo" }, "data-do-homework-question-no-param": "#{question_no}", class: "answer-media", id: "reveal-video-#{question_no}" %>
+        </li>
+        <li>
+            <label class="dropdown-item" for="reveal-audio-<%= question_no %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                    <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                    <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                    <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                    <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                </svg> Audio
+            </label>
+            <%= f.file_field "answer_media", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->do-homework#uploadRevealAudio" }, "data-do-homework-question-no-param": "#{question_no}", class: "answer-media", id: "reveal-audio-#{question_no}" %>
+        </li>
+        <li data-action="click->do-homework#selectRecordAudio" data-do-homework-question-no-param="<%= question_no %>" data-do-homework-times-param="1">
+            <label class="dropdown-item" for="reveal-record-<%= question_no %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic me-3" viewBox="0 0 16 16">
+                    <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
+                    <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
+                </svg> Record
+            </label>
+            <%= f.hidden_field "record_audio", value: "false", class: "answer-media d-none", id: "reveal-record-audio1" %>
+        </li>
+    </ul>
+
+    <% option_value = option == 0 ? "reveal" : "answer" %>
+    <input type="hidden" value="<%= option_value %>" id="upload-file-state">
+</div>
+
+<div id="div-reveal" style="display: none;">
+    <div class="mb-3"><span>Reveal answer:</span></div>
+    <div class="div-reveal-media p-3 rounded-3 w-100 mb-3 text-center dropdown active" id="div-reveal-media">
+
+    </div>
+</div>
+
+<div id="div-second-answer" style="display: none;">
+    <div class="mb-3"><span>Your answer:</span></div>
+    <div class="div-upload-reveal p-3 rounded-3 w-100 mb-3 text-center dropdown active" id="div-upload-answer2">
+        <div class="upload-reveal-icon my-5 active" id="upload-reveal-icon2-<%= question_no %>" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z"/>
+                <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+            </svg>
+            <span>Click to upload files</span>
+        </div>
+        <div class="media-reveal" id="media-reveal2-<%= question_no %>">
+            <img id="picture-answer2-<%= question_no %>" style="display:none;"/>
+        </div>
+        
+        <ul class="dropdown-menu" id="dropdown-answer2">
+            <li>
+                <label class="dropdown-item" for="answer-picture2-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                    </svg> Picture
+                </label>
+                <%= f.file_field "answer_media2", accept: ".png, .jpg, .jpeg", data: { action: "change->do-homework#uploadAnswerPicture2" }, "data-do-homework-question-no-param": "#{question_no}", class: "answer-media2", id: "answer-picture2-#{question_no}" %>
+            </li>
+            <li>
+                <label class="dropdown-item" for="answer-video2-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                        <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                    </svg> Video
+                </label>
+                <%= f.file_field "answer_media2", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->do-homework#uploadAnswerVideo2" }, "data-do-homework-question-no-param": "#{question_no}", class: "answer-media2", id: "answer-video2-#{question_no}" %>
+            </li>
+            <li>
+                <label class="dropdown-item" for="answer-audio2-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                        <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                        <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                        <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                        <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                    </svg> Audio
+                </label>
+                <%= f.file_field "answer_media2", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->do-homework#uploadAnswerAudio2" }, "data-do-homework-question-no-param": "#{question_no}", class: "answer-media2", id: "answer-audio2-#{question_no}" %>
+            </li>
+            <li data-action="click->do-homework#selectRecordAudio" data-do-homework-question-no-param="<%= question_no %>" data-do-homework-times-param="2">
+                <label class="dropdown-item" for="reveal-record-<%= question_no %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic me-3" viewBox="0 0 16 16">
+                        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
+                        <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
+                    </svg> Record
+                </label>
+                <%= f.hidden_field "record_audio2", value: "false", class: "answer-media d-none", id: "reveal-record-audio2" %>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script type="text/javascript">
+    
+    var gumStream;
+    //stream from getUserMedia() 
+    var rec;
+    
+    var my_timeout;
+
+    let fd = new FormData();
+    let upload_time = "1";
+
+    function startRecording(time) {
+        //Recorder.js object 
+        var input;
+        //MediaStreamAudioSourceNode we'll be recording 
+        // shim for AudioContext when it's not avb. 
+        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        var audioContext = new AudioContext;
+        //new audio context to help us record  
+
+        document.getElementById("mic-"+time).style.display = "none";
+        document.getElementById("mic_off-"+time).style.display = "block";
+        console.log("recordButton clicked"); 
+
+        /* Simple constraints object, for more advanced audio features see
+        https://addpipe.com/blog/audio-constraints-getusermedia/ */
+        var constraints = {
+            audio: true
+        } 
+        https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia */
+
+        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+            
+            // console.log("getUserMedia() success, stream created, initializing Recorder.js ..."); 
+            /* assign to gumStream for later use */
+            gumStream = stream;
+            /* use the stream */
+            input = audioContext.createMediaStreamSource(stream);
+            /* Create the Recorder object and configure to record mono sound (1 channel) Recording 2 channels will double the file size */
+            rec = new Recorder(input, {
+                numChannels: 1
+            });
+            //start the recording process 
+            rec.record();
+            console.log("Recording started");
+            upload_time = time;
+
+            my_timeout = setTimeout(function() {
+                var mic = document.getElementById("mic");
+                mic.style.display = "block";
+                mic.disabled = true;
+                document.getElementById("mic_off-"+time).style.display = "none";
+                rec.stop(); //stop microphone access 
+                gumStream.getAudioTracks()[0].stop();
+                rec.exportWAV(createDownloadLink);
+            }, 61000);
+        }).catch(function(err) {
+            //enable the record button if getUserMedia() fails 
+        });
+
+    }
+
+    function stopRecording(time) {
+        clearTimeout(my_timeout);
+        var mic = document.getElementById("mic-"+time);
+        mic.style.display = "inline-grid";
+        mic.disabled = true;
+        document.getElementById("mic_off-"+time).style.display = "none";
+        console.log("stopButton clicked");
+        //reset button just in case the recording is stopped while paused 
+        rec.stop(); //stop microphone access 
+        gumStream.getAudioTracks()[0].stop();
+        //create the wav blob and pass it on to createDownloadLink 
+        rec.exportWAV(createDownloadLink);
+    }
+
+    function createDownloadLink(blob) { 
+        //webkitURL is deprecated but nevertheless 
+        URL = window.URL || window.webkitURL;
+         
+        var url = URL.createObjectURL(blob);
+        
+        // var li = document.createElement('li');
+        var au = document.createElement('audio');
+        var link = document.createElement('a');
+        //add controls to the <audio> element 
+        au.controls = true;
+        au.src = url;
+        au.classList.add("audio_player");
+        au.setAttribute("id", "myAudio-"+upload_time);
+        let audio_player = document.getElementById("myAudio-"+upload_time);
+        if (audio_player != null){
+            audio_player.remove();
+        }
+        let index = parseInt(upload_time)-1;
+        console.log(document.getElementsByClassName("media-reveal"));
+        document.getElementsByClassName("media-reveal")[index].insertBefore(au, document.getElementsByClassName("media-reveal")[index].firstChild);
+
+
+        var today = new Date();
+        var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+        var time = today.getHours() + "-" + today.getMinutes() + "-" + today.getSeconds();
+        var dateTime = date+'_'+time;
+        link.href = url;
+        link.download = 'homework'+ dateTime +'.wav';
+        link.innerHTML = link.download;
+        
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(e) {
+            let response = xhr.response;
+            document.getElementById("reveal-record-audio"+response["times"]).value = "true";
+            document.getElementById("answer-id").value = response["answer_id"];
+        }
+        xhr.onerror = function(e) {
+            document.getElementById("reveal-record-audio"+response["times"]).value = "false";
+        }
+
+        var fd = new FormData();
+        fd.append("record_audio", blob, link.download);
+        fd.append("times", upload_time);
+        fd.append("answer_id", document.getElementById("answer-id").value);
+        xhr.open("POST", "<%= homework_do_set_audio_path() %>", true);
+        const meta_csrf = document.getElementsByName("csrf-token");
+        let csrf_content = meta_csrf[0].content;
+        xhr.setRequestHeader('X-CSRF-Token', csrf_content);
+        xhr.responseType = "json";
+        xhr.send(fd);
+    }
+</script>

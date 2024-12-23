@@ -7,7 +7,7 @@
         <%= render partial: "restaurant_list" %>
     </div>
 
-    <% if can_view_menu?([32]) %>
+    <% if can_view_menu?([47]) %>
         <div class="div-add-restaurant position-absolute bottom-0 end-0 me-3 mb-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createRestaurant">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -15,7 +15,7 @@
         </div>
     <% end %>
 
-    <% if can_view_menu?([32]) || can_view_menu?([33]) %>
+    <% if can_view_menu?([47]) || can_view_menu?([48]) %>
     <%= render partial: "add_restaurant_dialog" %>
     <% end %>
 

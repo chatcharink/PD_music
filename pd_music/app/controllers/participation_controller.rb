@@ -1,6 +1,6 @@
 class ParticipationController < ApplicationController
     def index
-        return redirect_to path_to_root unless can_view_menu?([14])
+        return redirect_to path_to_root unless can_view_menu?([17])
         participation = query_report()
         @subject = Subject.where(status: "active", subject_type: "participation")
         @event = Event.where(status: "active")
@@ -49,12 +49,12 @@ class ParticipationController < ApplicationController
         render(
             partial: "participation/subject_list",
             formats: [:html, :js, :json, :url_encoded_form],
-            locals: {data: data, type: params["type"], permission: [15, 17]}
+            locals: {data: data, type: params["type"], permission: [18, 20]}
         )
     end
 
     def show
-        return redirect_to path_to_root unless can_view_menu?([15])
+        return redirect_to path_to_root unless can_view_menu?([18])
         @subject = query_subject()
         @event = query_event()
         @user = User.where(status: "active", role: 3)
@@ -70,7 +70,7 @@ class ParticipationController < ApplicationController
     end
 
     def add_subject
-        return redirect_to path_to_root unless can_view_menu?([16])
+        return redirect_to path_to_root unless can_view_menu?([19])
         form_data = params["form_create_subject"]
         
         begin
@@ -82,7 +82,7 @@ class ParticipationController < ApplicationController
                 render(
                     partial: "participation/subject_list",
                     formats: [:html, :js, :json, :url_encoded_form],
-                    locals: {data: subject, type: "subject", permission: [15, 17]}
+                    locals: {data: subject, type: "subject", permission: [18, 20]}
                 )
             else
                 save_activity("Add subject", "Fail", "Cannot add subject : #{form_data["subject"]}")
@@ -99,7 +99,7 @@ class ParticipationController < ApplicationController
     end
 
     def add_event
-        return redirect_to path_to_root unless can_view_menu?([16])
+        return redirect_to path_to_root unless can_view_menu?([19])
         form_data = params["form_create_event"]
         
         begin
@@ -111,7 +111,7 @@ class ParticipationController < ApplicationController
                 render(
                     partial: "participation/subject_list",
                     formats: [:html, :js, :json, :url_encoded_form],
-                    locals: {data: event, type: "event", permission: [15, 17]}
+                    locals: {data: event, type: "event", permission: [18, 20]}
                 )
             else
                 save_activity("Add event", "Fail", "Cannot add event : #{form_data["event"]}")
@@ -131,7 +131,7 @@ class ParticipationController < ApplicationController
 
     def add_user_to_subject
         begin
-            return redirect_to path_to_root unless can_view_menu?([17])
+            return redirect_to path_to_root unless can_view_menu?([20])
             participate_type = params["state"] == "subject" ? "classroom" : "concert"
             participation = Participation.where(subject_id: params["subject_id"], participate_type: participate_type)
             db_user = participation.pluck(:user_id)
@@ -186,7 +186,7 @@ class ParticipationController < ApplicationController
     end
 
     def edit
-        return redirect_to path_to_root unless can_view_menu?([18])
+        return redirect_to path_to_root unless can_view_menu?([21])
         @participation = User.select("users.*, participations.id as participate_id, participations.user_id, participations.subject_id, participations.participation")
         @participation = @participation.joins("right join participations on participations.user_id = users.id")
         @participation = @participation.where("participations.subject_id = ?", params["id"])
@@ -202,7 +202,7 @@ class ParticipationController < ApplicationController
     end
     
     def update
-        return redirect_to path_to_root unless can_view_menu?([19])
+        return redirect_to path_to_root unless can_view_menu?([22])
         form_data = params["form_paritipation"]
         participates = Participation.select("participations.*, subjects.subject_name").where(id: form_data["arr_id"].split(","))
         participates = participates.joins("left join subjects on subjects.id = participations.subject_id")
@@ -229,12 +229,12 @@ class ParticipationController < ApplicationController
             case type
             when "subject"
                 subject = Subject.find(params["id"]).update(status: "deleted")
-                permission = [15, 17]
+                permission = [18, 20]
                 data = query_subject()
                 save_activity("Delete", "Success", "Delete subject: #{params["name"]} successfully")
             when "event"
                 event = Event.find(params["id"]).update(status: "deleted")
-                permission = [15, 17]
+                permission = [18, 20]
                 data = query_event()
                 save_activity("Delete", "Success", "Delete event: #{params["name"]} successfully")
             end

@@ -1,13 +1,14 @@
 class ApplicationController < ActionController::Base
     protect_from_forgery with: :null_session
     helper_method :is_user_logged_in?, :can_view_menu?, :can_access_action?, :path_to_root
+    before_action :is_user_logged_in? #, :except => [:session_expired, :service_connection]
     add_flash_types :info, :error, :success, :warning
     require "date"
     require "json"
     require "socket"
 
     def is_user_logged_in?
-        return redirect_to login_path() if session["current_user"].blank?
+        return redirect_to login_path() if session["current_user"].blank? && params[:controller] != "login"
     end
 
     def can_view_menu? permission_id
@@ -38,11 +39,13 @@ class ApplicationController < ActionController::Base
     def path_to_root
         if session["permission_roles"].include?(1)
             return root_path()
-        elsif session["permission_roles"].include?(20)
+        elsif session["permission_roles"].include?(39) || session["permission_roles"].include?(40) 
             return homework_index_path()
-        elsif session["permission_roles"].include?(14)
+        elsif session["permission_roles"].include?(41)
+            return report_path()
+        elsif session["permission_roles"].include?(17)
             return participation_index_path()
-        elsif session["permission_roles"].include?(28)
+        elsif session["permission_roles"].include?(43)
             return food_path()
         else
             session.delete "current_user"

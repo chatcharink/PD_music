@@ -10,29 +10,54 @@
             </div>
         <% end %>
     <% end %>
+
+    <% if can_view_menu?([23]) || can_view_menu?([33]) %>
+    <a class="side-menu" data-bs-toggle="collapse" href="#homeworkMenu" role="button" aria-expanded="false" aria-controls="homeworkMenu">
+        <div class="nav-side-menu py-3 px-4 w-90">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
+                <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+            </svg><span class="txt-menu ms-2">Homework</span>
+        </div>
+    </a>
+    <% end %>
+
+    <div class="collapse" id="homeworkMenu">
+        <% if can_view_menu?([33]) %>
+            <%= link_to homework_index_path(), class:"side-menu", id: "do-homework-menu" do %>
+                <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                        <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z"/>
+                    </svg><span class="txt-menu ms-2">Homework</span>
+                </div>
+            <% end %>
+        <% end %>
+
+        <% if can_view_menu?([23]) %>
+            <%= link_to homework_subject_list_path(), class:"side-menu", id: "homework-menu" do %>
+                <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
+                        <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                        <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                        <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+                    </svg><span class="txt-menu ms-2">Subject</span>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
     
-    <% if can_view_menu?([20]) %>
-        <%= link_to homework_index_path(), class:"side-menu", id: "homework-menu" do %>
+    <% if can_view_menu?([41]) %>
+        <%= link_to report_path(), class:"side-menu", id: "report-menu" do %>
             <div class="nav-side-menu py-3 px-4 w-90">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
-                    <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
-                    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
-                    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
-                </svg><span class="txt-menu ms-2">Homework</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                    <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z"/>
+                </svg><span class="txt-menu ms-2">Report</span>
             </div>
         <% end %>
     <% end %>
-    
-    <!--
-    <% link_to root_path(), class:"side-menu", id: "report-menu" do %>
-        <div class="nav-side-menu py-3 px-4 w-90">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
-                <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z"/>
-            </svg><span class="txt-menu ms-2">Report</span>
-        </div>
-    <% end %> -->
 
-    <% if can_view_menu?([14]) || can_view_menu?([15]) %>
+    <% if can_view_menu?([17]) || can_view_menu?([18]) %>
     <a class="side-menu" data-bs-toggle="collapse" href="#participationMenu" role="button" aria-expanded="false" aria-controls="participationMenu">
         <div class="nav-side-menu py-3 px-4 w-90">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-raised-hand" viewBox="0 0 16 16">
@@ -44,7 +69,7 @@
     <% end %>
 
     <div class="collapse" id="participationMenu">
-        <% if can_view_menu?([14]) %>
+        <% if can_view_menu?([17]) %>
             <%= link_to participation_index_path(), class:"side-menu", id: "participation-report-menu" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
@@ -54,7 +79,7 @@
             <% end %>
         <% end %>
 
-        <% if can_view_menu?([15]) %>
+        <% if can_view_menu?([18]) %>
             <%= link_to participation_path(id: "check"), class:"side-menu", id: "participation-check-menu" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
@@ -67,7 +92,7 @@
         <% end %>
     </div>
     
-    <% if can_view_menu?([28]) || can_view_menu?([31]) %>
+    <% if can_view_menu?([43]) || can_view_menu?([46]) %>
     <a class="side-menu" data-bs-toggle="collapse" href="#foodMenu" role="button" aria-expanded="false" aria-controls="foodMenu">
         <div class="nav-side-menu py-3 px-4 w-90">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-egg-fried" viewBox="0 0 16 16">
@@ -79,7 +104,7 @@
     <% end %>
 
     <div class="collapse" id="foodMenu">
-        <% if can_view_menu?([28]) %>
+        <% if can_view_menu?([43]) %>
             <%= link_to food_path(), class:"side-menu", id: "food-list-menu" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
@@ -89,7 +114,7 @@
             <% end %>
         <% end %>
 
-        <% if can_view_menu?([31]) %>
+        <% if can_view_menu?([46]) %>
             <%= link_to food_restaurants_path(), class:"side-menu", id: "food-restaurant-menu" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
@@ -102,13 +127,13 @@
     
     <hr class="my-3">
 
-    <% if can_view_menu?([5]) %>
+    <% if can_view_menu?([7]) %>
         <%= link_to user_index_path(), class:"side-menu", id: "user-menu" do %>
             <div class="nav-side-menu py-3 px-4 w-90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                     <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
                 </svg><span class="txt-menu ms-2">User</span>
-                <% if session["inactive_user"].to_i > 0 && can_view_menu?([6])%>
+                <% if session["inactive_user"].to_i > 0 && can_view_menu?([9]) %>
                     <% inactive_count = session["inactive_user"] > 99 ? "99+" : session["inactive_user"] %>
                     <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="left: 30%">
                         <%= inactive_count %>
@@ -118,7 +143,7 @@
         <% end %>
     <% end %>
     
-    <% if can_view_menu?([38]) || can_view_menu?([9]) || can_view_menu?([10]) || can_view_menu?([11]) || can_view_menu?([12]) || can_view_menu?([13]) %>
+    <% if can_view_menu?([57]) || can_view_menu?([58]) || can_view_menu?([59]) || can_view_menu?([10]) || can_view_menu?([65]) || can_view_menu?([69])%>
     <a class="side-menu" data-bs-toggle="collapse" href="#settingMenu" role="button" aria-expanded="false" aria-controls="settingMenu">
         <div class="nav-side-menu py-3 px-4 w-90">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
@@ -130,7 +155,7 @@
     <% end %>
 
     <div class="collapse" id="settingMenu">
-        <% if can_view_menu?([38]) %>
+        <% if can_view_menu?([57]) %>
             <%= link_to settings_permission_path(), class:"side-menu", id: "permission" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lock" viewBox="0 0 16 16">
@@ -140,7 +165,7 @@
             <% end %>
         <% end %>
 
-        <% if can_view_menu?([41]) %>
+        <% if can_view_menu?([59]) %>
             <%= link_to settings_notification_path(), class:"side-menu", id: "notification" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
@@ -150,13 +175,35 @@
             <% end %>
         <% end %>
 
-        <% if can_view_menu?([7]) %>
+        <% if can_view_menu?([10]) %>
             <%= link_to edit_user_path(id: session["current_user"]["id"]), class:"side-menu", id: "change_profile" do %>
                 <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                     </svg><span class="txt-menu ms-2">Change profile</span>
+                </div>
+            <% end %>
+        <% end %>
+
+        <% if can_view_menu?([65]) %>
+            <%= link_to category_index_path(), class:"side-menu", id: "category" do %>
+                <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                    </svg>
+                    <span class="txt-menu ms-2">Category</span>
+                </div>
+            <% end %>
+        <% end %>
+
+        <% if can_view_menu?([69]) %>
+            <%= link_to homework_type_index_path(), class:"side-menu", id: "homework_type" do %>
+                <div class="nav-side-menu nav-sub-side-menu py-3 ps-5 pe-4 w-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                    </svg><span class="txt-menu ms-2">Homework type</span>
                 </div>
             <% end %>
         <% end %>
@@ -172,7 +219,7 @@
         </div>
     <%# end %> -->
 
-    <% if can_view_menu?([39]) %>
+    <% if can_view_menu?([58]) %>
         <%= link_to activity_log_path(), class:"side-menu", id: "activity-menu" do %>
             <div class="nav-side-menu py-3 px-4 w-90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-walking" viewBox="0 0 16 16">
@@ -182,5 +229,7 @@
             </div>
         <% end %>
     <% end %>
+
+
     
 </div>

@@ -1,6 +1,147 @@
-.div-add-subject .icon{
-    color: #6C6DE8 !important;
+.filter-icon{
+    margin-top: -1rem;
+    transition: 1s;
+    button {
+        background: #44DBDC !important;
+    }
+}
+
+.filter-icon.active{
+    margin-top: 192px !important;
+    transition: .5s;
+}
+
+.div-filter-content-homework{
+    position: absolute;
+    width: 82%;
+    background-color: #fff;
+    height: 0px;
+    transition: 1s;
+    z-index: 1;
+    .filter-content{
+        visibility: hidden;
+    }
+}
+
+.div-filter-content-homework.active{
+    height: 210px;
+    transition: .5s;
+    .filter-content{
+        visibility: visible;
+    }
+}
+
+.homework-status-open{
+    color: #44dbdc;
+}
+.homework-status-reject, .answer-result-incorrect{
+    color: #ff220f;
+}
+.homework-status-send{
+    color: #FFC300;
+}
+.homework-status-checked, .answer-result-correct{
+    color: #24c80e;
+}
+.button_to{
+    display: inline;
+}
+.div-show-answer-media.correct{
+    background: #44dbdc;
+    label, span { color: #ffffff; }
+    border-radius: .75rem;
+    padding: 8px;
+}
+.btn-outline-primary:disabled{
+    border: 1px solid #e2e2ff !important;
+    color: #e2e2ff !important;
+}
+.table-do-homework-list{
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+.table-do-homework-list > tbody > tr > *{
+    align-content: center !important;
+    padding: 16px 8px;
+}
+
+.table-do-homework-list tbody tr{
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
     cursor: pointer;
+    border-radius: .75rem;
+}
+
+.table-do-homework-list tbody tr:hover td{
+    background-color: #e2e2ff !important;
+}
+
+.table-do-homework-list thead th {
+    background-color: #6C6DE8 !important;
+    color: #fff !important;
+    span{ color: #fff !important; }
+    font-weight: 700;
+    padding: 16px 8px;
+}
+
+.table-do-homework-list thead th:first-child, .table-do-homework-list tbody tr td:first-child {
+    border-top-left-radius: .75rem;
+    border-bottom-left-radius: .75rem;
+}
+
+.table-do-homework-list thead th:last-child, .table-do-homework-list tbody tr td:last-child {
+    border-top-right-radius: .75rem;
+    border-bottom-right-radius: .75rem;
+}
+
+.dataTables_paginate{
+    float: right;
+}
+
+#table-do-homework-list thead th.column-0{ width: 20%;}
+#table-do-homework-list thead th.column-1{ width: 35%;}
+#table-do-homework-list thead th.column-2{ width: 10%;}
+#table-do-homework-list thead th.column-3{ width: 10%;}
+#table-do-homework-list thead th.column-4{ width: 25%;}
+
+#table-detail-homework-list thead th.column-0{ width: 30%;}
+#table-detail-homework-list thead th.column-1{ width: 20%;}
+#table-detail-homework-list thead th.column-2{ width: 20%;}
+#table-detail-homework-list thead th.column-3{ width: 10%;}
+#table-detail-homework-list thead th.column-4{ width: 20%;}
+
+.table-score-detail thead th.column-0{ width: 200px !important;}
+.table-score-detail thead th.column-1{ width: 100px !important;}
+
+.average-score{
+    background-color: #e2e2ff !important;
+}
+
+.text-status.sent {
+    color: #24c80e;
+}
+.text-status.late {
+    color: #ff220f;
+}
+.text-status.open {
+    color: #e2e2ff;
+}
+.text-status.need_review {
+    color: #FFC300;
+    cursor: pointer;
+}
+
+.div-microphone{
+    width: fit-content;
+    margin: auto;
+    background-color: #dee2e6;
+}
+
+.div-microphone:hover{
+    border: 1px solid #6C6DE8;
+    background-color: #6C6DE8;
+    color: #ffffff;
+    svg{ color: #ffffff;}
 }
 
 .div-add-subject .icon:hover{
@@ -14,11 +155,13 @@
 
 .div-card-body{
     cursor: pointer;
+    height: 130px;
 }
 
 .div-card-body:hover{
-    background-color: #e2e2ff !important;
-    color: #ffffff;
+    background: #6C6DE8 !important;
+    color: #ffffff !important;
+    svg, p{ color: #ffffff !important;}
 }
 
 .table-homework-list{
@@ -96,9 +239,9 @@
     font-weight: 500;
     font-size: 12px;
     font-style: normal;
-    color: #53d81e;
+    color: #24c80e;
     cursor: pointer;
-    svg { color: #53d81e; }
+    svg { color: #24c80e; }
 }
 
 .remove-choice{
@@ -111,7 +254,7 @@
     svg { color: #ff220f; }
 }
 
-.question-media, .answer-media {
+.question-media, .answer-media, .answer-media2 {
     opacity: 0;
     position: absolute;
     z-index: -1;
@@ -152,4 +295,37 @@
 
 .div-lock-homework:hover{
     color: #6C6DE8 !important;
+}
+
+.upload-reveal-icon{
+    display: none;
+    width: fit-content;
+    margin: auto;
+}
+
+.upload-reveal-icon.active{
+    display: block;
+}
+
+.tag-card{
+    background-image: linear-gradient(90deg, #6c6de8, #44dbdc);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "Athiti", sans-serif !important;
+    font-weight: 500;
+    color: #fff;
+    width: 20%;
+    height: 200px !important;
+    border-radius: 1rem;
+    align-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+
+.bx--checkbox {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
 }

@@ -27,7 +27,7 @@ class DashboardDatatable < ApplicationDatatable
   end
 
   def get_raw_records
-    @category = Category.all.index_by(&:id)
+    @category = Category.where(status: "active").index_by(&:id)
     hw = HomeworkUserMapping.select("homeworks.*, homework_user_mappings.*")
     hw = hw.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
     hw = hw.where("homeworks.status = ?", "active")

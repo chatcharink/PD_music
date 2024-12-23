@@ -267,7 +267,10 @@ input::placeholder {
   cursor: pointer;
 }
 .div-noti.unread{
-  background-color: rgba(108,109,232, .5);
+  background-color: #b2b2f4;
+}
+.div-noti.unread:hover{
+  background-color: #6c6de8;
 }
 
 .subject-noti p{

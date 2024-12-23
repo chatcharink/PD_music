@@ -29,24 +29,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% @comment.each do |c| %>
-                    <tr>
-                        <% if session["current_user"]["role"] != 3 %>
-                            <td class="truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= c.firstname %> <%= c.lastname %></span>">
-                                <%= c.firstname %> <%= c.lastname %>
-                            </td>
-                        <% end %>
-                        <td class="truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= c.subject %></span>"><%= c.subject %></td>
-                        <td class="truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= c.comment %></span>"><%= c.comment %></td>
-                        <td class="text-center">
-                            <% for i in 0..c.rating-1 do %>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill rating-icon active" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                            </svg>
+                    <% if @comment.present? %>
+                        <% @comment.each do |c| %>
+                        <tr>
+                            <% if session["current_user"]["role"] != 3 %>
+                                <td class="truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= c.firstname %> <%= c.lastname %></span>">
+                                    <%= c.firstname %> <%= c.lastname %>
+                                </td>
                             <% end %>
-                        </td>
-                        <td><%= c.updated_at.strftime("%d/%m/%Y") %></td>
-                    </tr>
+                            <td class="truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= c.subject %></span>"><%= c.subject %></td>
+                            <td class="truncate" data-bs-toggle="tooltip" data-bs-html="true" title="<span class='tooltip-text'><%= c.comment %></span>"><%= c.comment %></td>
+                            <td class="text-center">
+                                <% for i in 0..c.rating-1 do %>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-star-fill rating-icon active" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                                <% end %>
+                            </td>
+                            <td><%= c.updated_at.strftime("%d/%m/%Y") %></td>
+                        </tr>
+                        <% end %>
                     <% end %>
                 </tbody>
                 <% end %>

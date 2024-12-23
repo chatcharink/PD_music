@@ -71,16 +71,18 @@
     <% controller_name = session["current_user"]["role"] != 3 ? "dashboard-datatable-teacher" : "dashboard-datatable" %>
     <div class="col-12 ps-0 pe-5" data-controller="<%= controller_name %>">
         <h5>Task assignment</h5>
-        <div class="filter-table my-3">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="going_overdue" data-action="change-><%= controller_name %>#filterTable" data-key="goingOverdue" checked>
-                <label class="form-check-label" for="going_overdue">Going overdue</label>
+        <% if can_view_menu?([4]) %>
+            <div class="filter-table my-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="going_overdue" data-action="change-><%= controller_name %>#filterTable" data-key="goingOverdue" checked>
+                    <label class="form-check-label" for="going_overdue">Going overdue</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="overdue" data-action="change-><%= controller_name %>#filterTable" data-key="overdue">
+                    <label class="form-check-label" for="overdue">Overdue</label>
+                </div>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" name="checkbox-filter-table" type="checkbox" id="overdue" data-action="change-><%= controller_name %>#filterTable" data-key="overdue">
-                <label class="form-check-label" for="overdue">Overdue</label>
-            </div>
-        </div>
+        <% end %>
         <div class="div-table w-100">
             <% if session["current_user"]["role"] != 3 %>
                 <%= render partial: "table_group" %>

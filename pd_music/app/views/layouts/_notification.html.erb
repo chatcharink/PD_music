@@ -1,6 +1,6 @@
 <% notification.each_with_index do |n, index| %>
     <% status = n.status == 0 ? "unread" : "" %>
-    <div class="div-noti <%= status %> pt-3">
+    <div class="div-noti <%= status %> pt-3" data-controller="layout" data-action="click->layout#updateNoti" data-layout-url-param="<%= notification_update_path(id: n.id, type: n.notification_type) %>">
         <div class="subject-noti ps-2"><p class="m-0"><%= n.subject %></p></div>
         <div class="msg-noti <%= status %> ps-2"><p class="m-0"><%= n.message %></p></div>
         <div class="text-end datetime-noti pe-2"><p class="mb-3"><%= n.updated_at.strftime("%H:%M:%S %d/%m/%Y") %></p></div>

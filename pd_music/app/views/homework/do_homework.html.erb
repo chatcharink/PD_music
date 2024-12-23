@@ -1,0 +1,28 @@
+<% is_user_logged_in? %>
+
+<div class="h-100" data-controller="do-homework">
+    <div class="mb-3">
+        <div class="nav-title-link my-3">
+            <h5 class="p-3 d-inline">Homework > <%= @h_homework["task_name"]%></h5>
+            <%= hidden_field_tag :homework_id, @h_homework["homework_id"] %>
+        </div>
+    </div>
+
+    <div class="row border rounded-3 w-90 m-auto mb-3 p-3">
+        <div class="col-4">
+            <span>Score: <span id="score"><%= @h_homework["current_score"] %></span></span>
+        </div>
+        <div class="col-4">
+            <span>Progress: <span id="progress-percent"><%= @h_homework["current_progress"].to_f.round(2) %></span>%</span>
+        </div>
+        <div class="col-4">
+            <span>Reveal answer: <span id="reveal-time"><%= @h_homework["current_reveal"] %></span></span>
+        </div>
+        <input type="hidden" value=<%= @h_homework["full_score"] %> id="full-score">
+        <input type="hidden" value=<%= @h_homework["question_length"].length %> id="total-question">
+    </div>
+
+    <div class="div-show-question mb-5">
+        <%= render partial: "show_question", locals: {question: @h_homework["questions"], index: 0, question_no: @h_homework["current_question"]} %>
+    </div>
+</div>

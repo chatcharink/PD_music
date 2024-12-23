@@ -2,7 +2,7 @@ module DashboardHelper
     def get_all_done data, num_category
         count = 0
         for i in 1..num_category
-            count += data["category_#{i}"]["done"] if data["category_#{i}"].present?
+            count += data["category_#{i}"]["done"].to_i if data["category_#{i}"].present?
         end
         return count
     end
@@ -10,7 +10,7 @@ module DashboardHelper
     def get_all_remain data, num_category
         count = 0
         for i in 1..num_category
-            count += data["category_#{i}"]["remain"] if data["category_#{i}"].present?
+            count += data["category_#{i}"]["remain"].to_i if data["category_#{i}"].present?
         end
         return count
     end
@@ -23,11 +23,11 @@ module DashboardHelper
     end
 
     def get_done_task data, category_id
-        return data["category_#{category_id}"].present? ? data["category_#{category_id}"]["done"] : 0
+        return data["category_#{category_id}"].present? ? data["category_#{category_id}"]["done"].to_i : 0
     end
 
     def get_remain_task data, category_id
-        return data["category_#{category_id}"].present? ? data["category_#{category_id}"]["remain"] : 0
+        return data["category_#{category_id}"].present? ? data["category_#{category_id}"]["remain"].to_i : 0
     end
 
     def percent_done_each_category data, category_id

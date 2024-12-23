@@ -1,3 +1,5 @@
+<% if question_data.blank? %>
+
 <div class="question-answer p-3 border w-75 rounded-3 m-auto mb-3">
     <!-- Question -->
     <div class="mb-3">
@@ -7,8 +9,8 @@
             <div class="col-sm-8">
                 <%= text_field_tag "form_questions[question#{question_no}][text]", params["question_#{question_no}"], class: "form-control w-100 d-inline question-value-#{question_no}", id: "question_#{question_no}" %>
             </div>
-            <div class="col-sm-4 dropdown" style="align-content: center;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="col-sm-1 dropdown" style="align-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical icon" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                 </svg>
 
@@ -43,10 +45,36 @@
                     </li>
                 </ul>
             </div>
+            <div class="col-1 pe-0 text-end">
+                <label for="question-score-<%= question_no %>" class="visually-hidden">Score</label>
+                <input type="text" readonly class="form-control-plaintext text-end" id="question-score-<%= question_no %>" value="Score:">
+            </div>
+            <div class="col-2">
+                <label for="question-score-text-<%= question_no %>" class="visually-hidden">Score field</label>
+                <%= text_field_tag "form_questions[question#{question_no}][full_score]", 0, class: "form-control w-100 d-inline question-score-value", id: "question-score-text-#{question_no}" %>
+            </div>
         </div>
+        <%= hidden_field_tag "form_questions[question#{question_no}][update_question_media]", false, id: "update-question-media-#{question_no}" %>
 
         <div class="media-questions text-center" id="div-media-<%= question_no %>">
-            <img id="picture-question-<%= question_no %>"/>
+            <div class="btn-group-img-size mb-3" id="div-image-resize-<%= question_no %>" style="display: none;">
+                <div class="btn-group" role="group" aria-label="image-size">
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "", true, class: "btn-check", id: "original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content"} ) %>
+                    <label class="btn btn-outline-primary" for="original-size-<%= question_no %>">Original</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "924x476", false, class: "btn-check", id: "924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px"} ) %>
+                    <label class="btn btn-outline-primary" for="924x476-<%= question_no %>">16:9</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "668x476", false, class: "btn-check", id: "668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px"} ) %>
+                    <label class="btn btn-outline-primary" for="668x476-<%= question_no %>">4:3</label>
+
+                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "476x476", false, class: "btn-check", id: "476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px"} ) %>
+                    <label class="btn btn-outline-primary" for="476x476-<%= question_no %>">1:1</label>
+                </div>
+            </div>
+            <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden;">
+                <img id="picture-question-<%= question_no %>"/>
+            </div>
         </div>
     </div>
 
@@ -56,7 +84,7 @@
         <label class="form-label me-3">Answer: </label>
 
         <div class="dropdown d-inline">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
             </svg>
 
@@ -91,8 +119,164 @@
     <%= hidden_field_tag "form_questions[question#{question_no}][selected_format]", "", id: "selected-format-#{question_no}" %>
     <div class="mb-3 selected-answer-<%= question_no %>"></div>
 
-    <div class="mb-3">
+    <div class="mb-3" id="div-select-correct-answer-<%= question_no %>">
         <label class="form-label me-3">Correct answer: </label>
         <%= select_tag "form_questions[question#{question_no}][correct_answers]", [] , {class: "form-control select-answer", id: "select-answer-#{question_no}", multiple: true} %>
     </div>
 </div>
+
+<% else %>
+    <% question_data.each do |q| %>
+        <% q.each do |k, v| %>
+        <% question_no = k.gsub("no_", "") %>
+        <div class="question-answer p-3 border w-75 rounded-3 m-auto mb-3">
+            <!-- Question -->
+            <div class="mb-3">
+                <label for="question_<%= question_no %>" class="form-label head-question-no">Question <%= question_no %> : </label>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-8">
+                        <%= text_field_tag "form_questions[question#{question_no}][text]", v["question"], class: "form-control w-100 d-inline question-value-#{question_no}", id: "question_#{question_no}" %>
+                    </div>
+                    <div class="col-sm-1 dropdown" style="align-content: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical icon" viewBox="0 0 16 16" data-bs-toggle="dropdown" aria-expanded="false">
+                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        </svg>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <label class="dropdown-item" for="question_picture_<%= question_no %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image me-3" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                                    </svg> Picture
+                                </label>
+                                <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".png, .jpg, .jpeg", data: { action: "change->homework#uploadPicture" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_picture_#{question_no}" %>
+                            </li>
+                            <li>
+                                <label class="dropdown-item" for="question_video_<%= question_no %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film me-3" viewBox="0 0 16 16">
+                                        <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/>
+                                    </svg> Video
+                                </label>
+                                <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".mp4, .mov, .avi, .flv, .wmv, .webm", data: { action: "change->homework#uploadVideo" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_video_#{question_no}" %>
+                            </li>
+                            <li>
+                                <label class="dropdown-item" for="question_audio_<%= question_no %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list me-3" viewBox="0 0 16 16">
+                                        <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                                        <path fill-rule="evenodd" d="M12 3v10h-1V3z"/>
+                                        <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1z"/>
+                                        <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5m0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5"/>
+                                    </svg> Audio
+                                </label>
+                                <%= file_field_tag "form_questions[question#{question_no}][media]", accept: ".mp3, .wav, .flac, .alac, wma", data: { action: "change->homework#uploadAudio" }, "data-homework-no-param": question_no, class: "question-media question-value-#{question_no}", id: "question_audio_#{question_no}" %>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-1 pe-0 text-end">
+                        <label for="question-score-<%= question_no %>" class="visually-hidden">Score</label>
+                        <input type="text" readonly class="form-control-plaintext text-end" id="question-score-<%= question_no %>" value="Score:">
+                    </div>
+                    <div class="col-2">
+                        <label for="question-score-text-<%= question_no %>" class="visually-hidden">Score field</label>
+                        <%= text_field_tag "form_questions[question#{question_no}][full_score]", v["score"], class: "form-control w-100 d-inline question-score-value", id: "question-score-text-#{question_no}" %>
+                    </div>
+                </div>
+
+                <div class="media-questions text-center" id="div-media-<%= question_no %>">
+                    <% if v["question_media"].attached? %>
+                        <% if v["question_media"].content_type.include?("image") %>
+                            <div class="btn-group-img-size mb-3" id="div-image-resize-<%= question_no %>">
+                                <div class="btn-group" role="group" aria-label="image-size">
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "", v["image_thumbnail"].blank? , class: "btn-check", id: "original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content"} ) %>
+                                    <label class="btn btn-outline-primary" for="original-size-<%= question_no %>">Original</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "924x476", v["image_thumbnail"] == "924x476", class: "btn-check", id: "924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="924x476-<%= question_no %>">16:9</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "668x476", v["image_thumbnail"] == "668x476", class: "btn-check", id: "668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="668x476-<%= question_no %>">4:3</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "476x476", v["image_thumbnail"] == "476x476", class: "btn-check", id: "476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="476x476-<%= question_no %>">1:1</label>
+                                </div>
+                            </div>
+                            <% if v["image_thumbnail"].blank? %>
+                                <% set_size = "" %>
+                            <% else %>
+                                <% width, height = v["image_thumbnail"].split("x") %>
+                                <% set_size = "width: #{width}px; height: #{height}px" %>
+                            <% end %>
+                            <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden; <%= set_size %>">
+                                <img id="picture-question-<%= question_no %>" src=<%= url_for(v["question_media"]) %> />
+                            </div>
+                        <% elsif v["question_media"].content_type.include?("video") %>
+                            <video src=<%= url_for(v["question_media"]) %> id="video-player-<%= question_no %>" autoplay=true controls=true style="width: 500px; height: 250px;"><video>
+                        <% elsif v["question_media"].content_type.include?("audio") %>
+                            <div id="div-audio-<%= question_no%>" class="div-audio text-center m-auto rounded-3 ms-3 active">
+                                <audio id="audio-player-<%= question_no%>" src=<%= url_for(v["question_media"]) %> controls = true style="width: 75%"></audio>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="media-questions text-center" id="div-media-<%= question_no %>">
+                            <div class="btn-group-img-size mb-3" id="div-image-resize-<%= question_no %>" style="display: none;">
+                                <div class="btn-group" role="group" aria-label="image-size">
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "", true, class: "btn-check", id: "original-size-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "100%", "homework-height-param": "fit-content"} ) %>
+                                    <label class="btn btn-outline-primary" for="original-size-<%= question_no %>">Original</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "924x476", false, class: "btn-check", id: "924x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "924px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="924x476-<%= question_no %>">16:9</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "668x476", false, class: "btn-check", id: "668x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "668px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="668x476-<%= question_no %>">4:3</label>
+
+                                    <%= radio_button_tag("form_questions[question#{question_no}][image_thumbnail]", "476x476", false, class: "btn-check", id: "476x476-#{question_no}", autocomplete: "off", data: { action: "click->homework#resizeImage", "homework-question-no-param": question_no, "homework-width-param": "476px", "homework-height-param": "476px"} ) %>
+                                    <label class="btn btn-outline-primary" for="476x476-<%= question_no %>">1:1</label>
+                                </div>
+                            </div>
+                            <div class="div-image m-auto" id="div-image-<%= question_no %>" style="justify-content: center; overflow: hidden;">
+                                <img id="picture-question-<%= question_no %>"/>
+                            </div>
+                        </div>
+                    <% end %>
+                    <%= hidden_field_tag "form_questions[question#{question_no}][update_question_media]", false, id: "update-question-media-#{question_no}" %>
+                </div>
+            </div>
+            
+            
+            <!-- Answer -->
+            <div class="mb-3">
+                <label class="form-label me-3">Answer: </label>
+            </div>
+
+            <%= hidden_field_tag "form_questions[question#{question_no}][selected_format]", v["answer_format"], id: "selected-format-#{question_no}" %>
+            <% correct_answer = v["correct_answer"].blank? ? [] : v["correct_answer"].split(",") %>
+
+            <div class="mb-3 selected-answer-<%= question_no %>">
+                <% case v["answer_format"].to_i %>
+                <% when 1 %>
+                    <%= hidden_field_tag "form_questions[question#{question_no}][id]", v["id"], id: "question_id" %>
+                    <%= render partial: "homework/select_chord", locals: {question_no: question_no, answer: v["chords"], correct_answer: correct_answer} %>
+                    <% arr_answer = [] %>
+                    <% v["chords"].split(",").each {|c| arr_answer << [c, c.downcase]} %>
+                <% when 2 %>
+                    <%= render partial: "homework/select_choices", locals: {question_no: question_no, answer: v["choice"]} %>
+                    <% arr_answer = [] %>
+                    <% v["choice"].each {|c| arr_answer << c[1]} %>
+                <% when 3 %>
+                    <%= hidden_field_tag "form_questions[question#{question_no}][id]", v["id"], id: "question_id" %>
+                    <%= render partial: "homework/upload_file", locals: {question_no: question_no, option: v["option"], reveal: v["reveal"]} %>
+                    <% arr_answer = [] %>
+                <% end %>
+            </div>
+
+            <% unless v["answer_format"].to_i == 3 %>
+                <div class="mb-3">
+                    <label class="form-label me-3">Correct answer: </label>
+                    <%= select_tag "form_questions[question#{question_no}][correct_answers]", options_for_select(arr_answer.uniq, correct_answer) , {class: "form-control select-answer", id: "select-answer-#{question_no}", multiple: true} %>
+                </div>
+            <% end %>
+        </div>
+        <% end %>
+    <% end %>
+<% end %>

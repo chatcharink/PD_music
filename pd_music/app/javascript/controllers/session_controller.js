@@ -11,7 +11,6 @@ export default class extends Controller {
     const counter = setInterval(function () {
       session_timeout += 1;
       let application_path = document.getElementById("application-path");
-      // console.log(session_timeout);
       if (session_timeout >= 3600){
           document.getElementById("session-timeout-btn").click();
           let url = application_path.value+"/login/logout?state=session_timeout";
@@ -20,6 +19,15 @@ export default class extends Controller {
                 return response.text();
             }
           });
+          let countdown = parseInt(document.getElementById("countdown-logout").innerHTML);
+          const force_redirect = setInterval(function (){
+            countdown -= 1
+            document.getElementById("countdown-logout").innerHTML = countdown;
+            if (countdown == 0){
+              window.location.replace(application_path.value+"/login");
+              clearInterval(force_redirect);
+            }
+          }, 1000);
           clearInterval(counter);
       }
         

@@ -1,18 +1,28 @@
 <% @subject.each do |sj| %>
     <div class="col">
         <div class="card mb-3 me-3">
-            <img src="<%= APP_CONFIG[:application_path] %>/pictures/37130.jpg" class="card-img-top">
-            <div class="card-body div-card-body" data-action="click->homework#showHomework" data-homework-subject-param="<%= sj.subject_name %>" data-homework-url-param="<%= homework_path(id: sj.id) %>">
+            <div class="delete-subject position-absolute end-0 pe-2">
+                <% if can_view_menu?([25])%>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square text-white icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createSubject" data-action="click->homework#editSubject" data-homework-name-param="<%= sj.subject_name %>" data-homework-description-param="<%= sj.description %>" data-homework-class-period-param="<%= sj.class_periods %>" data-homework-subject-id-param="<%= sj.id %>">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                <% end %>
+                <% if can_view_menu?([26])%>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill text-white icon delete" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal" data-action="click->homework#setDeleteId" data-homework-subject-id-param="<%= sj.id %>" data-homework-name-param="<%= sj.subject_name %>">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                    </svg>
+                <% end %>
+            </div>
+            <% rand_img = rand(1..5) %>
+            <img src="<%= APP_CONFIG[:application_path] %>/pictures/banners/music_banner_<%= rand_img %>.png" class="card-img-top">
+            <div class="card-body div-card-body" data-action="click->homework#showHomework" data-homework-url-param="<%= homework_path(id: sj.id, subject: sj.subject_name, banner: rand_img) %>">
                 <div class="user-created-profile">
-                    <% if sj.profile_pic.blank? %>
-                        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "img-profile-subject border rounded-circle position-absolute end-0 me-3", width: "100px", height: "100px") %>
-                    <% else %>    
-                        <%= image_tag(sj.profile_pic.attached? ? url_for(sj.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "img-profile-subject rounded-circle position-absolute end-0 me-3", width: "100px", height: "100px") %>
-                    <% end %>
+                    <%= image_tag(sj.profile_pic.attached? ? url_for(sj.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "img-profile-subject rounded-circle position-absolute end-0 me-3", width: "100px", height: "100px") %>
                 </div>
                 <h5 class="card-title"><%= sj.subject_name %></h5>
                 <p class="card-text"><%= sj.description %></p>
-                <p class="card-text float-end"><small class="text-muted"><%= sj.created_at.strftime("%d/%m/%Y") %></small></p>
+                <p class="card-text float-end position-absolute bottom-0" style="right: 20px"><%= sj.created_at.strftime("%d/%m/%Y") %></p>
             </div>
         </div>
     </div>

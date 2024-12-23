@@ -36,7 +36,7 @@ class MenuDatatable < ApplicationDatatable
 
     def get_status menu_id, status
         is_check = status == "active" ? "checked" : ""
-        is_disable = can_view_menu?([35]) ? "" : "disabled"
+        is_disable = can_view_menu?([50]) ? "" : "disabled"
         checkbox = []
         checkbox << "<div class=\"form-check form-switch\">"
         checkbox << "<input class=\"form-check-input\" type=\"checkbox\" id=\"menu-status-#{menu_id}\" value=\"#{menu_id}\" data-action=\"change->menu#changeStatus\" data-menu-id-param=\"#{menu_id}\" data-menu-url-param=\"#{ food_menu_update_status_path }\" #{is_check} #{is_disable}>"

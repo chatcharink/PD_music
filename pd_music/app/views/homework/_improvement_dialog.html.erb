@@ -1,0 +1,64 @@
+
+<button type="button" class="btn btn-primary btn-show-improve-dialog d-none" data-bs-toggle="modal" data-bs-target="#improveDialog">
+    improveDialog
+</button>
+
+<div class="modal fade" id="improveDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="improveDialogLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <%= form_for :form_improvement, url: homework_add_improvement_path(format: :json, tag_id: tag_id), method: :POST, class: "w-100", html: { data: { "action": "submit->homework#submitImprovement" } } do |f| %>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="improveDialogLabel">Add development of student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close-improvement-dialog"></button>
+            </div>
+            <div class="modal-body">
+                <% if user.blank? %>
+                    <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+                        <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+                        <p>No student in this lesson, Please add the student</p>
+                    </div>
+                <% else %>
+                <div class="table-student-improve m-auto mt-5" style="width: 90%;">
+                    <table class="table table-hover table-check-list">
+                        <thead>
+                            <tr>
+                                <th class="column-0"></th>
+                                <th class="column-1">Name</th>
+                                <th class="column-2">Class/Room</th>
+                                <th class="column-3 text-center">สมาธิ</th>
+                                <th class="column-4 text-center">พัฒนาการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% date = DateTime.now().strftime("%Y-%m-%d") %>
+                            <% user.each do |u| %>
+                            <tr>
+                                <td><%= image_tag(u.profile_pic.attached? ? url_for(u.profile_pic) : "#{APP_CONFIG[:application_path]}/pictures/no_image.jpg", class: "rounded-circle", width: "75px", height: "75px")  %></td>
+                                <td class="truncate">
+                                    <%= u.firstname %> <%= u.lastname %>
+                                    <% update_id = development_data[u.id].blank? ? "" : development_data[u.id]["id"] %>
+                                    <%= f.hidden_field "#{u.id}[update_id]", value: update_id %>
+                                </td>
+                                <td><%= u.study_class %>/<%= u.room %></td>
+                                <td class="text-center">
+                                    <% meditate = development_data.dig(u.id, date).blank? ? 0 : development_data[u.id][date]["meditate"] %>
+                                    <%= f.text_field "#{u.id}[meditate]", value: meditate, class: "form-control development-field", id: "meditate-#{u.id}" %>
+                                </td>
+                                <td class="text-center">
+                                    <% development = development_data.dig(u.id, date).blank? ? 0 : development_data[u.id][date]["development"] %>
+                                    <%= f.text_field "#{u.id}[development]", value: development, class: "form-control development-field", id: "development-#{u.id}" %>
+                                </td>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+                <% end %>
+            </div>
+            <div class="modal-footer">
+                <%= f.submit "Save", class: "btn btn-primary" %>
+            </div>
+        </div>
+        <% end %>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 class NotificationController < ApplicationController
     def index
-        return redirect_to path_to_root unless can_view_menu?([9, 10, 11, 12, 13])
+        return redirect_to path_to_root unless can_view_menu?([59])
         noti_permission = Permission.where(controller_name: "Notification")
         arr_permission_id = noti_permission.pluck(:id)
         noti_permission_roles = PermissionAndRole.where(permission_id: arr_permission_id)
@@ -15,7 +15,10 @@ class NotificationController < ApplicationController
             noti_permission_of_role["#{pr.permission_id}"] = pr.id
         end
         
-        noti_permission.each { |noti| @notification["#{noti.id}_#{noti.function_name}"] = noti_permission_of_role["#{noti.id}"] }
+        noti_permission.each { |noti| 
+            @notification[noti.function_name] ||= Hash.new
+            @notification[noti.function_name][noti.action] = [noti.id, noti_permission_of_role["#{noti.id}"]]
+        }
     end
 
     def save_notification_setting
@@ -66,5 +69,21 @@ class NotificationController < ApplicationController
             formats: [:html, :js, :json, :url_encoded_form],
             locals: {notification: noti}
         )
+    end
+
+    def update_noti
+        begin
+            noti = Notification.update(params["id"], status: 1)
+            redirect_path = case params["type"]
+                            when "behaviour" then root_path()
+                            else homework_index_path()
+                            end 
+        rescue => e
+            p e.message
+            redirect_path = root_path()
+        end
+        respond_to do |format|
+            format.json { render :json => {redirect_path: redirect_path} }
+        end
     end
 end

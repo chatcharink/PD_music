@@ -60,24 +60,28 @@
             
             <% if session["current_user"]["role"] == 1 %>
                 <% h_behaviour = Hash.new() %>
-                <% @comment.each do |c| %>
-                    <% h_behaviour["#{c.firstname} #{c.lastname}"] ||= {} %>
-                     <% h_behaviour["#{c.firstname} #{c.lastname}"]["id"] = c.student_id %>
-                    <% h_behaviour["#{c.firstname} #{c.lastname}"]["negative_times"] ||= 0 %>
-                    <% h_behaviour["#{c.firstname} #{c.lastname}"]["negative_times"] += 1 if c.rating <= 3 %>
-                    <% h_behaviour["#{c.firstname} #{c.lastname}"]["status"] = c.status.capitalize %>
-                    <% if h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"].blank? %>
-                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] = DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) %>
-                    <% else %>
-                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] = DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) if h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] < DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) %>
+                <% if @comment.blank? %>
+                    <p class="text-center">No negative comment</p>
+                <% else %>
+                    <% @comment.each do |c| %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"] ||= {} %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["id"] = c.student_id %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["negative_times"] ||= 0 %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["negative_times"] += 1 if c.rating <= 3 %>
+                        <% h_behaviour["#{c.firstname} #{c.lastname}"]["status"] = c.status.capitalize %>
+                        <% if h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"].blank? %>
+                            <% h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] = DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) %>
+                        <% else %>
+                            <% h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] = DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) if h_behaviour["#{c.firstname} #{c.lastname}"]["latest_comment"] < DateTime.parse(c.updated_at.strftime("%d/%m/%Y %H:%M:%S")) %>
+                        <% end %>
                     <% end %>
+                    <%= render partial: "expand_comment_admin_dialog", locals: {behaviour: h_behaviour} %>
+                    <%= render partial: "show_comment_admin", locals: {behaviour: h_behaviour} %>
                 <% end %>
-                <%= render partial: "expand_comment_admin_dialog", locals: {behaviour: h_behaviour} %>
-                <%= render partial: "show_comment_admin", locals: {behaviour: h_behaviour} %>
 
             <% elsif session["current_user"]["role"] == 2 %>
                 <%= render partial: "expand_comment_dialog" %>
-                <%= render partial: "comment_dialog" %>
+                <%= render partial: "comment_dialog" if can_view_menu?([6])  %>
                 <div class="comment-table">
                     <%= render partial: "show_comment" %>
                 </div>
@@ -87,27 +91,6 @@
                     <%= render partial: "show_comment" %>
                 </div>
             <% end %>
-            <!-- <span class="title-summary-box"><%= @category.name_en.capitalize %> Score</span>
-            <div class="cat-value score text-center mb-3">
-                <h1 class="d-inline"><%= @data["specific_category"]["score"] %></h1><span class="ms-1">/<%= @data["specific_category"]["full_score"] %><span>
-            </div>
-
-
-            <span class="title-summary-box mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style="color: #ffe800">
-                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                </svg>
-                Top 3 scores
-            </span>
-            <% reverse_data = @data["specific_category"]["scores"].present? ? @data["specific_category"]["scores"].reverse : [] %>
-            <% for i in 0..2 do %>
-                <% break if reverse_data[i].blank? %>
-                <% if session["current_user"]["role"] == 3 %>
-                    <p class="p-task-name mt-2 border-bottom">Task : <%= reverse_data[i][0] %><span class="ms-3">Score : <%= reverse_data[i][1] %></span></p>
-                <% else %>
-                    <p class="p-task-name mt-2 border-bottom">Name : <%= user[reverse_data[i][2]]["firstname"] %> <%= user[reverse_data[i][2]]["lastname"] %><br> Task : <%= reverse_data[i][0] %><span class="ms-3">Score : <%= reverse_data[i][1] %></span></p>
-                <% end %>
-            <% end %> -->
         </div>
     </div>
 </div>

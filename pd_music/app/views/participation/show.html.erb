@@ -26,12 +26,12 @@
 
             </div>
             <div class="div-card-subject mt-3 mx-3 d-flex row row-cols-1 row-cols-md-3 g-4 h-90">
-                <% if can_view_menu?([15]) %>
-                    <%= render partial: "subject_list", locals: {data: @subject, type: "subject", permission: [15, 17]} %>
+                <% if can_view_menu?([18]) %>
+                    <%= render partial: "subject_list", locals: {data: @subject, type: "subject", permission: [18, 20]} %>
                 <% end %>
             </div>
 
-            <% if can_view_menu?([15, 16]) %>
+            <% if can_view_menu?([18, 19]) %>
                 <%= render partial: "add_subject" %>
             <% end %>
         </div>
@@ -50,12 +50,12 @@
                 </div>    
             </div>
             <div class="div-card-event mt-3 mx-3 d-flex row row-cols-1 row-cols-md-3 g-4 h-90">
-                <% if can_view_menu?([15]) %>
-                    <%= render partial: "subject_list", locals: {data: @event, type: "event", permission: [15, 17]} %>
+                <% if can_view_menu?([18]) %>
+                    <%= render partial: "subject_list", locals: {data: @event, type: "event", permission: [18, 20]} %>
                 <% end %>
             </div>
 
-            <% if can_view_menu?([15, 16]) %>
+            <% if can_view_menu?([18, 19]) %>
                 <%= render partial: "add_event" %>
             <% end %>
         </div>

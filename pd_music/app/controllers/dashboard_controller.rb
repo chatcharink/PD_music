@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
     
     def index
         return redirect_to path_to_root unless can_view_menu?([1])
-        @category = Category.all.index_by(&:id)
+        @category = Category.where(status: "active").index_by(&:id)
         @assign_hw = HomeworkUserMapping.get_hw_user_mapping(session)
         if session["current_user"]["role"] != 3
             @assign_hw = @assign_hw.where("users.study_class = ? and users.status = ?", session["current_user"]["study_class"], "active").joins("left join users on users.id = homework_user_mappings.user_id")
@@ -34,6 +34,7 @@ class DashboardController < ApplicationController
     end
 
     def filter_report
+        return if can_view_menu?([3])
         case params["type"]
         when "week"
             date_from = Date.today.beginning_of_week(:monday)
@@ -62,7 +63,7 @@ class DashboardController < ApplicationController
         end
 
         if params["category_id"].blank?
-            @category = Category.all.index_by(&:id)
+            @category = Category.where(status: "active").index_by(&:id)
         else
             @category = Category.find(params["category_id"])
         end
@@ -106,7 +107,7 @@ class DashboardController < ApplicationController
         tab = params["tab"]
         case tab
         when "all"
-            @category = Category.all.index_by(&:id)
+            @category = Category.where(status: "active").index_by(&:id)
             @assign_hw = HomeworkUserMapping.get_hw_user_mapping(session)
             locals = {teacher_mode: false}
             if params["group_id"].present?
@@ -188,10 +189,17 @@ class DashboardController < ApplicationController
         begin
             comment = Comment.insert_comment(form, session["current_user"]["id"])
             user = User.find(form["comment_to"])
-            noti = Notification.insert_notification(form, session["current_user"]["id"])
-            # if session["permission_roles"].include?(11) && form["rating"].to_i <= 3
-            #     CommentBehaviourMailer.comment(user, comment).deliver_now
-            # end
+
+            ### Send notification
+            if can_view_menu?([14])
+                noti = Notification.insert_notification(form, session["current_user"]["id"])
+            end
+
+            ### Send email
+            if can_view_menu?([62])
+                CommentBehaviourMailer.comment(user, comment).deliver_now
+            end
+
             flash[:success] = "Comment to #{user.firstname} #{user.lastname} successfully."
         rescue => e
             p e.message
@@ -241,6 +249,21 @@ class DashboardController < ApplicationController
             end
         end
 
+    end
+
+    def add_exam_date
+        form_exam_date = params["form_add_exam_date"]
+        begin
+            exam_date = Date.parse(form_exam_date["exam_date"])
+            user = User.update(form_exam_date["student_id"], exam_date: exam_date)
+            save_activity("Add", "Success", "Add exam date: #{exam_date.strftime("%d/%m/%Y")} to #{user.firstname} #{user.lastname} successfully")
+            flash["success"] = "Add exam date to #{user.firstname} #{user.lastname} successfully"
+        rescue => e
+            p e.message
+            save_activity("Add", "Fail", "Your exam date is invalid format or something was wrong")
+            flash["error"] = "Your exam date is invalid format or something was wrong"
+        end
+        redirect_to root_path()
     end
 
     private

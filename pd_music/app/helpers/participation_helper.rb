@@ -103,16 +103,16 @@ module ParticipationHelper
 
     def get_check_permission type
         arr_permission = case type
-                         when "event" then [15, 18, 19]
-                         else [15, 18, 19]
+                         when "event" then [18, 21, 22]
+                         else [18, 21, 22]
                          end
         return arr_permission
     end
 
     def get_add_user_permission type
         arr_permission = case type
-                         when "event" then [17, 18]
-                         else [17, 18]
+                         when "event" then [20, 21]
+                         else [20, 21]
                          end
         return arr_permission
     end

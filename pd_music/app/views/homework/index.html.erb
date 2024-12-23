@@ -1,51 +1,57 @@
 <% is_user_logged_in? %>
 
-<div class="h-100" data-controller="homework" id="div-body-subject">
-    <div class="title-subject w-100 p-3 border-bottom"><h5>Subject</h5></div>
-    <div class="div-card-subject mt-3 mx-3 d-flex row row-cols-1 row-cols-md-3 g-4">
-        <%= render partial: "subject_list" %>
-    </div>
-
-    <div class="div-add-subject position-absolute bottom-0 end-0 me-3 mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-circle-fill icon" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#createSubject">
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-        </svg>
-    </div>
-
-    <div class="modal fade" id="createSubject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createSubjectLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createSubjectLabel">Create subject</h5>
-                    <button type="button" class="btn-close" id="close-icon-create-subject-dialog" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="h-100" data-controller="do-homework" id="div-body-subject">
+    <% if session["current_user"]["role"] == 3 %>
+        <div class="title-subject w-100 p-3 border-bottom"><h5>Homework</h5></div>
+        <% if @homework.present? %>
+            <div class="w-100" id="scroll-container">
+                <div id="scroll-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-megaphone-fill me-3" viewBox="0 0 16 16">
+                        <path d="M13 2.5a1.5 1.5 0 0 1 3 0v11a1.5 1.5 0 0 1-3 0zm-1 .724c-2.067.95-4.539 1.481-7 1.656v6.237a25 25 0 0 1 1.088.085c2.053.204 4.038.668 5.912 1.56zm-8 7.841V4.934c-.68.027-1.399.043-2.008.053A2.02 2.02 0 0 0 0 7v2c0 1.106.896 1.996 1.994 2.009l.496.008a64 64 0 0 1 1.51.048m1.39 1.081q.428.032.85.078l.253 1.69a1 1 0 0 1-.983 1.187h-.548a1 1 0 0 1-.916-.599l-1.314-2.48a66 66 0 0 1 1.692.064q.491.026.966.06"/>
+                    </svg> You have task is overdue date !
                 </div>
-                <div class="modal-body">
-                    <%= form_for :form_create_homework, url: homework_index_path(format: :json), method: :POST, data: { action: "submit->homework#createSubject" } do |f| %>
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject :</label>
-                            <%= f.text_field :subject, value: params[:subject], class: "form-control", id: "subject" %>
-                        </div>
+            </div>
+        <% end %>
+        <%= render partial: "table_do_homework_list" %>
+    <% else %>
+        <div class="h-100" data-controller="homework-detail">
+            <ul class="nav nav-tabs nav-tabs-homework-detail z-index-99 position-sticky top-0 bg-white">
+                <li class="nav-item" role="presentation" style="width: 105px;">
+                    <button class="nav-link active" id="homework-tab" data-bs-toggle="tab" data-bs-target="#homework" type="button" role="tab" aria-controls="homework" aria-selected="true">Homework</button>
+                </li>
+                <li class="nav-item" role="presentation" style="width: 105px;">
+                    <button class="nav-link" id="score-tab" data-bs-toggle="tab" data-bs-target="#score-panel" type="button" role="tab" aria-controls="score-panel" aria-selected="false" data-action="click->homework-detail#detailScore" data-homework-detail-url-param="<%= homework_do_detail_score_datatable_path() %>">Score</button>
+                </li>
+            </ul>
 
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description <i>-(optional)</i> :</label>
-                            <%= f.text_field :description, value: params[:description], class: "form-control", id: "description" %>
-                        </div>
+            <input type="hidden" value="" id="store-checked-user">
 
-                        <div class="mb-3">
-                            <label for="classroom" class="form-label">Classroom : </label>
-                            <%= f.text_field :classroom, value: params[:classroom], class: "form-control", id: "classroom" %>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="homework" role="tabpanel" aria-labelledby="homework-tab">
+                    <% if can_view_menu?([38]) %>
+                        <div class="div-filter-content-homework position-absolute border-bottom bg-white" style="top: 100px;">
+                            <%= render partial: "filter_for_teacher" %>
                         </div>
-
-                        <div class="mb-3 m-auto">
-                            <%= f.submit "Create", class: "btn btn-primary" %>
+                        <div class="filter-icon text-center position-absolute start-50 z-index-99">
+                            <button class="btn btn-primary rounded-bottom" style="border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;" data-action="click->homework-detail#clickFilter">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg> Filter
+                            </button>
                         </div>
                     <% end %>
+                    <div class="div-table-detail-homework">
+                        <%= render partial: "table_detail_homework_list" %>
+                    </div>
                 </div>
-                <%# <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create</button>
-                </div> %>
+
+                <div class="tab-pane fade" id="score-panel" role="tabpanel" aria-labelledby="score-tab">
+        
+                </div>
             </div>
+            <div class="div-check-homework-dialog"></div>
         </div>
-    </div>
+    <% end %>
+    <input type="hidden" value=<%= can_view_menu?([39]) %> id="permission-review" />
+    <input type="hidden" value=<%= can_view_menu?([40]) %> id="permission-do-homework" />
 </div>

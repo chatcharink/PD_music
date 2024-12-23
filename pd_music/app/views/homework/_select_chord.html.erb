@@ -6,8 +6,20 @@
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
     </svg>
 </div>
-<div class="div-select-chord border rounded-3 p-3 text-center" id="div-select-chord-<%= question_no %>">
-    <span class="no-chord-choices" id="no-chord-<%= question_no %>">No chord choices</span>
+<div class="div-select-chord border rounded-3 p-3" id="div-select-chord-<%= question_no %>">
+    <% if answer.blank? %>
+        <span class="no-chord-choices m-auto" id="no-chord-<%= question_no %>">No chord choices</span>
+    <% else %>
+        <% chords = answer.split(",") %>
+        <% chords.each_with_index do |ch| %>
+            <% is_checek = correct_answer.include?(ch.downcase) ? "checked" : "" %>
+            <div class="d-inline" id="div-chord-<%= ch.gsub(" ", "-") %>-<%= question_no %>">
+                <input type="checkbox" class="btn-check bx--checkbox" id="btn-check-chord-<%= ch %>-<%= question_no %>" value="<%= ch.downcase %>" autocomplete="off" data-action="change->homework#isChordActiveButton" data-homework-chord-param="<%= ch %>" data-homework-length-param="<%= question_no %>" <%= is_checek %>>
+                <label class="btn btn-outline-primary btn-check-chord mx-1 mb-3" for="btn-check-chord-<%= ch %>-<%= question_no %>"><%= ch %></label>
+                <span class="d-inline-block badge rounded-pill delete-chord-x-icon" data-action="click->homework#removeChordButton" data-homework-chord-param="<%= ch %>" data-homework-no-param="<%= question_no %>">x</span>
+            </div>
+        <% end %>
+    <% end %>
 </div>
 
-<%= hidden_field_tag "form_questions[question#{question_no}][answers]", "", id: "all-chord-#{question_no}" %>
+<%= hidden_field_tag "form_questions[question#{question_no}][answers]", answer, id: "all-chord-#{question_no}" %>
