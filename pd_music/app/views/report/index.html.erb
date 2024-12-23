@@ -1,51 +1,58 @@
 <div class="h-100" data-controller="report">
-    <div class="row border-bottom" id="div-filter-content-report">
-        <div class="col-12" id="nav-text-subject">
-            <% if can_view_menu?([42]) %>
-                <% select_user = @user.pluck(:firstname, :id) %>
-                <span id="user-name-text">User: <%= select_user[0][0] %>,</span>
-            <% end %>
-            <% select_subject = @subject.pluck(:subject_name, :id) %>
-            <span id="subject-name-text" class="ms-3">Subject: <%= select_subject[0][0] %></span>
-        </div>
-        <div class="col-12" id="nav-select-subject" style="display: none;">
-            <div class="row p-3">
+    <% if @tag.present? %>
+        <div class="row border-bottom" id="div-filter-content-report">
+            <div class="col-12" id="nav-text-subject">
                 <% if can_view_menu?([42]) %>
-                    <div class="col-3 mb-3">
-                        <label for="filter-user" class="form-label">User: </label>
-                        <%= select_tag "user", options_for_select(select_user, selected: select_user[0][1]), include_blank: false, prompt: "Please select user", class: "form-select", id: "filter-user", "data-action": "change->report#selectUserOrSubject", "data-report-url-param": report_filter_category_path() %>
-                    </div>
+                    <% select_user = @user.pluck(:firstname, :id) %>
+                    <span id="user-name-text">User: <%= select_user[0][0] %>,</span>
                 <% end %>
-                <div class="col-3 mb-3">
-                    <label for="filter-subject" class="form-label">Subject: </label>
-                    <%= select_tag "subject", options_for_select(select_subject, selected: select_subject[0][1]), include_blank: false, prompt: "Please select subject", class: "form-select", id: "filter-subject", "data-action": "change->report#selectUserOrSubject", "data-report-url-param": report_filter_category_path() %>
-                </div>
+                <% select_subject = @subject.pluck(:subject_name, :id) %>
+                <span id="subject-name-text" class="ms-3">Subject: <%= select_subject[0][0] %></span>
+            </div>
+            <div class="col-12" id="nav-select-subject" style="display: none;">
+                <div class="row p-3">
+                    <% if can_view_menu?([42]) %>
+                        <div class="col-3 mb-3">
+                            <label for="filter-user" class="form-label">User: </label>
+                            <%= select_tag "user", options_for_select(select_user, selected: select_user[0][1]), include_blank: false, prompt: "Please select user", class: "form-select", id: "filter-user", "data-action": "change->report#selectUserOrSubject", "data-report-url-param": report_filter_category_path() %>
+                        </div>
+                    <% end %>
+                    <div class="col-3 mb-3">
+                        <label for="filter-subject" class="form-label">Subject: </label>
+                        <%= select_tag "subject", options_for_select(select_subject, selected: select_subject[0][1]), include_blank: false, prompt: "Please select subject", class: "form-select", id: "filter-subject", "data-action": "change->report#selectUserOrSubject", "data-report-url-param": report_filter_category_path() %>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
-    <div class="filter-icon-report text-center position-absolute start-50" style="z-index: 100">
-        <button class="btn btn-primary rounded-bottom" style="border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;" data-action="click->report#selectSubject">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
-            </svg> Filter
-        </button>
-    </div>
-    <ul class="nav nav-tabs nav-tabs-dashboard z-index-99">
-        <% category_id = 1 %>
-        <% @category.each_with_index do |(k, v), index| %>
-            <% is_active = index == 0 ? "active" : "" %>
-            <% category_id = v["id"] if index == 0 %>
-            <li class="nav-item text-center">
-                <a class="nav-link report-tab <%= is_active %>" id="report-tab-<%= v["name_en"] %>" data-action="click->report#selectTab" data-report-select-tab-param=<%= v["name_en"] %> data-report-url-param="<%= report_filter_category_path(category: v["id"]) %>"><%= v["name_en"].capitalize %></a>
-            </li>
-        <% end %>
-    </ul>
+        <div class="filter-icon-report text-center position-absolute start-50" style="z-index: 100">
+            <button class="btn btn-primary rounded-bottom" style="border-top-left-radius: 0px !important; border-top-right-radius: 0px !important;" data-action="click->report#selectSubject">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                </svg> Filter
+            </button>
+        </div>
+        <ul class="nav nav-tabs nav-tabs-dashboard z-index-99">
+            <% category_id = 1 %>
+            <% @category.each_with_index do |(k, v), index| %>
+                <% is_active = index == 0 ? "active" : "" %>
+                <% category_id = v["id"] if index == 0 %>
+                <li class="nav-item text-center">
+                    <a class="nav-link report-tab <%= is_active %>" id="report-tab-<%= v["name_en"] %>" data-action="click->report#selectTab" data-report-select-tab-param=<%= v["name_en"] %> data-report-url-param="<%= report_filter_category_path(category: v["id"]) %>"><%= v["name_en"].capitalize %></a>
+                </li>
+            <% end %>
+        </ul>
 
-    <input type="hidden" id="hide-category" value="" />
+        <input type="hidden" id="hide-category" value="" />
 
-    <div class="div-summary mt-3 mb-5 h-100" id="div-summary-report">
-        <% user_id = can_view_menu?([42]) ? select_user[0][1] : session["current_user"]["id"] %>
-        <%= render partial: "summary", locals: {homework: @assign_homework, user: user_id, subject: select_subject[0][1], category: category_id, selected_tag: nil, filter_graph: nil} %>
-    </div>
+        <div class="div-summary mt-3 mb-5 h-100" id="div-summary-report">
+            <% user_id = can_view_menu?([42]) ? select_user[0][1] : session["current_user"]["id"] %>
+            <%= render partial: "summary", locals: {homework: @assign_homework, user: user_id, subject: select_subject[0][1], category: category_id, selected_tag: nil, filter_graph: nil} %>
+        </div>
+    <% else %>
+        <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+            <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+            <p>No lesson, Please add the lesson</p>
+        </div>
+    <% end %>
 </div>

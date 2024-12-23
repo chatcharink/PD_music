@@ -102,9 +102,13 @@ export default class extends Controller {
   }
 
   clearSubject(){
-    document.getElementById("subject").value = "";
+    let subject_name = document.getElementById("subject");
+    let class_period = document.getElementById("class-periods");
+    subject_name.value = "";
+    class_period.value = "";
+    this.valid_value(subject_name);
+    this.valid_value(class_period);
     document.getElementById("description").value = "";
-    document.getElementById("class-periods").value = "";
     document.getElementById("update-subject-id").value = "";
     document.getElementById("btn-submit-form-create-subject").value = "Create";
   }
