@@ -27,14 +27,14 @@ class DetailHomeworkDatatable < ApplicationDatatable
                 subject: record.subject_name,
                 homework: record.task_name,
                 status: get_status(record),
-                estimatedDate: record.estimate_date.strftime("%d/%m/%Y") #get_dead_line(record.estimate_date, record.homework_type_id) #record.estimate_date.
+                estimatedDate: record.deadline_date.strftime("%d/%m/%Y") #get_dead_line(record.estimate_date, record.homework_type_id) #record.estimate_date.
             }
         end
     end
   
     def get_raw_records
         # insert query here
-        homework = User.select("users.id, users.firstname, users.lastname, users.profile_pic, homeworks.id as homework_id, homeworks.task_name, homeworks.estimate_date, homeworks.full_score, homeworks.homework_type_id, homework_user_mappings.id as homework_mapping_id, homework_user_mappings.status, subjects.subject_name")
+        homework = User.select("users.id, users.firstname, users.lastname, users.profile_pic, homeworks.id as homework_id, homeworks.task_name, homeworks.estimate_date, homeworks.full_score, homeworks.homework_type_id, homework_user_mappings.id as homework_mapping_id, homework_user_mappings.status, homework_user_mappings.deadline_date, subjects.subject_name")
         homework = homework.joins("right join homework_user_mappings on homework_user_mappings.user_id = users.id")
         homework = homework.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
         homework = homework.joins("left join subjects on subjects.id = homeworks.subject_id")
