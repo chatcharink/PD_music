@@ -178,12 +178,13 @@ class UserController < ApplicationController
         homework = Homework.where(status: "active", is_default: 1)
         #### add default homework
         homework.each do |hw|
-            HomeworkUserMapping.create(homework_id: hw.id, user_id: id, status: "open", score: 0)
+            deadline_date = DateTime.now() + (hw.estimate_date.to_i).days
+            homework_mapping = HomeworkUserMapping.create(homework_id: hw.id, user_id: id, status: "open", score: 0, deadline_date: deadline_date)
 
             ### Send notification
             if can_view_menu?([12])
                 Notification.create(subject: "Assign homework", 
-                    message: "You have new homework: #{hw.task_name} assignment. Please do it before #{hw.estimate_date.strftime("%d/%m/%Y")}",
+                    message: "You have new homework: #{hw.task_name} assignment. Please do it before #{deadline_date.strftime("%d/%m/%Y")}",
                     status: 0,
                     send_by: session["current_user"]["id"],
                     user_id: id,
@@ -194,7 +195,7 @@ class UserController < ApplicationController
             ### Send email
             if can_view_menu?([60])
                 user = User.find(id)
-                HomeworkMailer.new_assignment(user, [hw.task_name, hw.estimate_date.strftime("%d/%m/%Y")]).deliver_now
+                HomeworkMailer.new_assignment(user, [hw.task_name, deadline_date.strftime("%d/%m/%Y")]).deliver_now
             end
         end
     end

@@ -105,12 +105,12 @@ class ReportController < ApplicationController
                 arr_data[hw.tag_name]["total_weekly"] = 0
                 if hw.status == "checked" && hw.homework_type_id == 1
                     arr_data[hw.tag_name]["total_daily"] += 1
-                    arr_data[hw.tag_name]["ส่งการบ้านรายวัน"] += frequency_daily_score(((hw.estimate_date - hw.send_date)/3600).round)
+                    arr_data[hw.tag_name]["ส่งการบ้านรายวัน"] += frequency_daily_score(((hw.deadline_date - hw.send_date)/3600).round)
                 end
                 arr_data[hw.tag_name]["ส่งการบ้านรายสัปดาห์"] ||= 0
                 if hw.status == "checked" && hw.homework_type_id == 2
                     arr_data[hw.tag_name]["total_weekly"] += 1
-                    arr_data[hw.tag_name]["ส่งการบ้านรายสัปดาห์"] += frequency_weekly_score(((hw.estimate_date - hw.send_date)).round)
+                    arr_data[hw.tag_name]["ส่งการบ้านรายสัปดาห์"] += frequency_weekly_score(((hw.deadline_date - hw.send_date)).round)
                 end
             end
             if development.present?
@@ -136,11 +136,11 @@ class ReportController < ApplicationController
                     arr_data[hw.tag_name]["total_weekly"] = 0
                     if f == "ส่งการบ้านรายวัน" && hw.status == "checked" && hw.homework_type_id == 1
                         arr_data[hw.tag_name]["total_daily"] += 1
-                        arr_data[hw.tag_name]["ส่งการบ้านรายวัน"] += frequency_daily_score(((hw.estimate_date - hw.send_date)/3600).round)
+                        arr_data[hw.tag_name]["ส่งการบ้านรายวัน"] += frequency_daily_score(((hw.deadline_date - hw.send_date)/3600).round)
                     end
                     if f == "ส่งการบ้านรายสัปดาห์" && hw.status == "checked" && hw.homework_type_id == 2
                         arr_data[hw.tag_name]["total_weekly"] += 1
-                        arr_data[hw.tag_name]["ส่งการบ้านรายสัปดาห์"] += frequency_weekly_score(((hw.estimate_date - hw.send_date)).round)
+                        arr_data[hw.tag_name]["ส่งการบ้านรายสัปดาห์"] += frequency_weekly_score(((hw.deadline_date - hw.send_date)).round)
                     end
                 end
 

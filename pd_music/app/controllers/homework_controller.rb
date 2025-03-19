@@ -10,7 +10,7 @@ class HomeworkController < ApplicationController
             @homework = HomeworkUserMapping.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
             @homework = @homework.where(user_id: session["current_user"]["id"])
             @homework = @homework.where("homeworks.status = ?", "active")
-            @homework = @homework.where("homeworks.estimate_date < ?", DateTime.now().strftime("%Y-%m-%d %H:%M:%S")).limit(1)
+            @homework = @homework.where("homework_user_mappings.deadline < ?", DateTime.now().strftime("%Y-%m-%d %H:%M:%S")).limit(1)
         else
             @subject = Subject.where(status: "active", subject_type: "homework")
             @homework_list = Homework.where(status: "active")
@@ -54,7 +54,7 @@ class HomeworkController < ApplicationController
     end
 
     def get_detail_score
-        user = User.select("users.id, users.firstname, users.lastname, users.profile_pic, homeworks.id as homework_id, homeworks.task_name, homeworks.estimate_date, homeworks.full_score, homework_user_mappings.id as homework_mapping_id, homework_user_mappings.score, homework_user_mappings.status, homework_user_mappings.send_date, subjects.subject_name")
+        user = User.select("users.id, users.firstname, users.lastname, users.profile_pic, homeworks.id as homework_id, homeworks.task_name, homeworks.estimate_date, homeworks.full_score, homework_user_mappings.id as homework_mapping_id, homework_user_mappings.score, homework_user_mappings.status, homework_user_mappings.send_date, homework_user_mappings.deadline_date, subjects.subject_name")
         user = user.joins("right join homework_user_mappings on homework_user_mappings.user_id = users.id")
         user = user.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
         user = user.joins("left join subjects on subjects.id = homeworks.subject_id")
@@ -66,7 +66,7 @@ class HomeworkController < ApplicationController
         user.each do |u|
             data["#{u.firstname.capitalize} #{u.lastname.capitalize}"] ||= {}
             begin
-                if (u.send_date <= u.estimate_date)
+                if (u.send_date <= u.deadline_date)
                     status = "sent"
                     status = "need_review" if u.status == "send"
                 else
@@ -677,7 +677,7 @@ class HomeworkController < ApplicationController
             homework = homework.joins("left join homeworks on homeworks.id on homework_user_mappings.homework_id")
             db_user = homework.pluck(:user_id)
             tag = homework.pluck(:tag_id)
-            homework_name = homework.pluck(:task_name, :estimate_date).uniq.flatten
+            homework_name = homework.pluck(:task_name, :deadline_date).uniq.flatten
 
             case params["type"]
             when "user"
@@ -711,8 +711,9 @@ class HomeworkController < ApplicationController
 
                 ### Send notification
                 if can_view_menu?([12])
+                    msg_noti = homework_name[1].blank? ? "You have new homework: #{homework_name[0]} assignment." : "You have new homework: #{homework_name[0]} assignment. Please do it before #{homework_name[1].strftime("%d/%m/%Y")}"
                     Notification.create(subject: "Assign homework", 
-                        message: "You have new homework: #{homework_name[0]} assignment. Please do it before #{homework[1].strftime("%d/%m/%Y")}",
+                        message: msg_noti,
                         status: 0,
                         send_by: session["current_user"]["id"],
                         user_id: u,

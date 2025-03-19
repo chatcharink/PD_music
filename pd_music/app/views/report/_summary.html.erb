@@ -17,7 +17,7 @@
                     <% total_daily += 1 if hw.homework_type_id == 1 %>
                     <% total_weekly += 1 if hw.homework_type_id == 2 %>
                     <% if hw.send_date.present? %>
-                        <% if hw.status == "checked" && hw.send_date <= hw.estimate_date %>
+                        <% if hw.status == "checked" && hw.send_date <= hw.deadline_date %>
                             <% daily += 1 if hw.homework_type_id == 1 %>
                             <% weekly += 1 if hw.homework_type_id == 2 %>
                         <% end %>
