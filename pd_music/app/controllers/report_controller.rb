@@ -4,19 +4,21 @@ class ReportController < ApplicationController
         @category = Category.where(status: "active").order(:id).index_by(&:id)
         @user = User.where(status: "active", role: 3).order(:id)
         @subject = Subject.where(subject_type: "homework", status: "active").order(:id)
-        tag = Tag.where(status: "active").order(:id)
-        selected_tag = tag.first.id
-        selected_user = @user.first.id
-        selected_category = @category.keys
-        selected_subject = @subject.first.id
+        @tag = Tag.where(status: "active").order(:id)
+        if @tag.present?
+            selected_tag = @tag.first.id
+            selected_user = @user.first.id
+            selected_category = @category.keys
+            selected_subject = @subject.first.id
 
-        homework = Homework.where(subject_id: selected_subject, status: "active").pluck(:id)
-        @assign_homework = HomeworkUserMapping.select("tags.tag_name, homeworks.task_name, homeworks.tag_id, homeworks.homework_type_id, homeworks.estimate_date, homework_user_mappings.*").where(user_id: params["user"], homework_id: homework)
-        @assign_homework = @assign_homework.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
-        @assign_homework = @assign_homework.joins("left join tags on tags.id = homeworks.tag_id")
+            homework = Homework.where(subject_id: selected_subject, status: "active").pluck(:id)
+            @assign_homework = HomeworkUserMapping.select("tags.tag_name, homeworks.task_name, homeworks.tag_id, homeworks.homework_type_id, homeworks.estimate_date, homework_user_mappings.*").where(user_id: params["user"], homework_id: homework)
+            @assign_homework = @assign_homework.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
+            @assign_homework = @assign_homework.joins("left join tags on tags.id = homeworks.tag_id")
 
-        @progress = get_progress(@assign_homework, selected_tag)
-        @graph = get_graph(@assign_homework, params["user"], selected_tag)
+            @progress = get_progress(@assign_homework, selected_tag)
+            @graph = get_graph(@assign_homework, params["user"], selected_tag)
+        end
     end
 
     def filter_category

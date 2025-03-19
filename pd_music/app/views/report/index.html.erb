@@ -21,7 +21,6 @@
                     <label for="filter-subject" class="form-label">Subject: </label>
                     <%= select_tag "subject", options_for_select(select_subject, selected: select_subject[0][1]), include_blank: false, prompt: "Please select subject", class: "form-select", id: "filter-subject", "data-action": "change->report#selectUserOrSubject", "data-report-url-param": report_filter_category_path() %>
                 </div>
-
             </div>
         </div>
     </div>
