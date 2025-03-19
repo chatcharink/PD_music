@@ -20,6 +20,11 @@
         <% tag.each do |t| %>
             
             <div class="col tag-card m-3">
+                <% if can_view_menu?([30])%>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill text-white mx-2 icon delete float-end" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#deleteTagModal" data-action="click->homework#setDeleteTagId" data-homework-url-param="<%= homework_tag_delete_tag_path(id: t.id, name: t.tag_name) %>" data-homework-tag-param="<%= t.tag_name %>">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                    </svg>
+                <% end %>
                 <% if can_view_menu?([31]) %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill-up icon float-end" viewBox="0 0 16 16" data-action="click->homework#getImprovementDetail" data-homework-url-param="<%= homework_show_get_improvement_detail_path(tag_id: t.id) %>">
                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.354-5.854 1.5 1.5a.5.5 0 0 1-.708.708L13 11.707V14.5a.5.5 0 0 1-1 0v-2.793l-.646.647a.5.5 0 0 1-.708-.708l1.5-1.5a.5.5 0 0 1 .708 0M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
@@ -62,3 +67,21 @@
 </div>
 
 <div class="div-give-improvement"></div>
+
+<div class="modal fade" id="deleteTagModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteTagLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteTagLabel">Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <span>Are you want to delete <span id="delete-tag-name"></span></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger text-white" id="confirm-delete-tag" data-action="click->homework#deleteTag">Delete</button>
+            <button type="button" class="btn btn-outline-primary" id="close-confirm-delete-tag" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>

@@ -116,6 +116,7 @@ class ReportController < ApplicationController
             if development.present?
                 development.each do |dev|
                     # json = JSON.parse(dev.development)
+                    arr_data[dev.tag_name] ||= {}
                     arr_data[dev.tag_name]["สมาธิ"] ||= 0
                     arr_data[dev.tag_name]["พัฒนาการ"] ||= 0
                     json = dev.development
