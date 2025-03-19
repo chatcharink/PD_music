@@ -5,7 +5,7 @@ import DataTable from 'datatables.net-bs5'
 export default class extends Controller {
     connect() {
         // this.element.textContent = "Hello World!"
-        document.getElementById("category").classList.add("active");
+        document.getElementById("category-menu").classList.add("active");
         let setting = document.getElementById("settingMenu");
         if (!setting.classList.contains("show")){
             setting.classList.add("show");
@@ -95,6 +95,7 @@ export default class extends Controller {
             document.getElementById("colorPicker").value = "#"+result["color"];
             document.getElementById("update-category-id").value = id;
             document.getElementById("btn-submit-form-create-category").value = "Update";
+            document.getElementById("createCategoryLabel").innerHTML = "Update category"; 
         })
 
     }
@@ -105,8 +106,7 @@ export default class extends Controller {
         document.getElementById("colorPicker").value = "#000000";
         document.getElementById("update-category-id").value = "";
         document.getElementById("btn-submit-form-create-category").value = "Create";
-        let form = document.getElementById("form_create_category");
-        form.setAttribute("data-action", "click->category#createCategory")
+        document.getElementById("createCategoryLabel").innerHTML = "Create category"; 
     }
 
     setDeleteId(event){

@@ -18,7 +18,7 @@ export default class extends Controller {
     datatable(){
         let table = $("#table-detail-homework-list").DataTable({
             pagingType: "full_numbers",    
-            pageLength: 15,
+            pageLength: 10,
             destroy: true,
             processing: true,
             serverSide: true,

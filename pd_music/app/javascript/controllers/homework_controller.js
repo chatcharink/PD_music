@@ -84,6 +84,15 @@ export default class extends Controller {
     document.getElementById("confirm-delete-subject").setAttribute("data-name", name);
   }
 
+  setDeleteTagId(event){
+    let url = event.params["url"];
+    let name = event.params["tag"];
+
+    document.getElementById("delete-tag-name").innerHTML = " : "+name;
+    document.getElementById("confirm-delete-tag").setAttribute("data-homework-name-param", name);
+    document.getElementById("confirm-delete-tag").setAttribute("data-homework-url-param", url);
+  }
+
   setDeleteHomeworkId(event){
     let url = event.params["url"];
     let name = event.params["name"];
@@ -137,6 +146,35 @@ export default class extends Controller {
           $(".div-card-subject").html(data);
           this.alert("success", "Delete : "+name+" successfully");
           // $("#div-body-subject").html(data);
+      }
+    });
+  }
+
+  deleteTag(event){
+    let url = event.params["url"];
+    const delete_tag = fetch(url, {
+      method: 'DELETE',
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": this.getCsrfToken()
+      },
+      // body: JSON.stringify({ "name": name }),
+    }).then(response => {
+      if (response.ok) {
+          return response.text();
+      }
+    });
+
+    delete_tag.then((data) => {
+      try{
+        let result = JSON.parse(data);
+        if (result["status"] == "success"){
+          window.location.replace(result["redirect_path"]);
+        }else{
+          this.alert(result["status"], result["message"]);
+        }
+      } catch(error) {
+        console.log(error);
       }
     });
   }

@@ -94,15 +94,17 @@ export default class extends Controller {
             document.getElementById("description").value = result["description"];
             document.getElementById("update-homework-type-id").value = id;
             document.getElementById("btn-submit-form-create-homework-type").value = "Update";
+            document.getElementById("createHomeworkTypeLabel").innerHTML = "Update homework type"; 
         })
 
     }
 
-    clearCategory(){
+    clearHomeworkType(){
         document.getElementById("homework-type").value = "";
         document.getElementById("description").value = "";
         document.getElementById("update-homework-type-id").value = "";
         document.getElementById("btn-submit-form-create-homework-type").value = "Create";
+        document.getElementById("createHomeworkTypeLabel").innerHTML = "Create homework type";
     }
 
     setDeleteId(event){

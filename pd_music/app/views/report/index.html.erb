@@ -1,5 +1,6 @@
 <div class="h-100" data-controller="report">
-    <div class="row border-bottom" id="div-filter-content-report">
+  <% if @tag.present? %>
+    <div class="row border-bottom position-sticky top-0" style="z-index: 200;" id="div-filter-content-report">
         <div class="col-12" id="nav-text-subject">
             <% if can_view_menu?([42]) %>
                 <% select_user = @user.pluck(:firstname, :id) %>
@@ -48,4 +49,10 @@
         <% user_id = can_view_menu?([42]) ? select_user[0][1] : session["current_user"]["id"] %>
         <%= render partial: "summary", locals: {homework: @assign_homework, user: user_id, subject: select_subject[0][1], category: category_id, selected_tag: nil, filter_graph: nil} %>
     </div>
+    <% else %>
+        <div class="no-subject-image h-100 m-auto text-center" style="align-content: center;">
+            <%= image_tag("#{APP_CONFIG[:application_path]}/pictures/no-subject.png", width: "200px", height: "200px") %>
+            <p>No lesson, Please add the lesson</p>
+        </div>
+    <% end %>
 </div>

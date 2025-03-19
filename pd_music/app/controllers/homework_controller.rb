@@ -293,9 +293,10 @@ class HomeworkController < ApplicationController
 
             ### Send notification
             if can_view_menu?([15])
-                homework_info = Homework.select("subjects.subject_name, subjects.created_by, homeworks.task_name").find(answer.homework_id).joins("left join subjects on subjects.id = homeworks.subject_id")
-                Notification.create(subject: "Do homework successfully", 
-                    message: "Your homework: #{homework_info.task_name} was rejected. Please update youe answer again.",
+                homework_info = Homework.find(answer.homework_id)
+                comment = params["reason"].blank? ? "" : " with comment: #{params["reason"]}"
+                Notification.create(subject: "Do homework successfully",
+                    message: "Your homework: #{homework_info.task_name} was rejected#{comment}. Please update youe answer again.",
                     status: 0,
                     send_by: session["current_user"]["id"],
                     user_id: answer.user_id,
@@ -830,40 +831,81 @@ class HomeworkController < ApplicationController
         begin
             homework = Homework.update_homework(params["form_homework"])
             questions = params["form_questions"]
+            arr_insert = []
             questions.each do |key, value|
+                question = {}
+                question["question_no"] = key.gsub("question", "").to_i
+                question["score"] = value["full_score"].to_i
+                question["question"] = value["text"]
+                question["question_media"] = value["media"]
+                question["image_thumbnail"] = value["image_thumbnail"]
+
                 answer_format = value["selected_format"]
+                question["answer_format"] = answer_format
+                question["homework_id"] = params["form_homework"]["homework_id"]
+                
                 case answer_format.to_i
                 when 1
                     ### Update questions
-                    @import_question = Homework.update_question_chord(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["update_question_media"], value["answers"], value["correct_answers"].join(","))
+                    if value["id"].present?
+                        @import_question = Homework.update_question_chord(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["update_question_media"], value["answers"], value["correct_answers"].join(","))
+                    else
+                        question["chords"] = value["answers"]
+                        question["correct_answer"] = value["correct_answers"].join(",")
 
+                        ### Insert questions
+                        arr_insert << question
+                    end
                 when 2
                     answers = value["answers"]
-                    answers.each do |k, v|
-                        if !v.blank?
-                            # question = Question.find(value["id"])
-                            if value["update_question_media"] == "true"
-                                @import_question = Homework.update_question_with_new_media(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["correct_answers"].join(","), v)
-                            else
-                                @import_question = Homework.update_question(value["id"], value["text"], value["image_thumbnail"], value["full_score"], value["correct_answers"].join(","), v)
+                    if value["id"].present?
+                        answers.each do |k, v|
+                            if !v.blank?
+                                # question = Question.find(value["id"])
+                                if value["update_question_media"] == "true"
+                                    @import_question = Homework.update_question_with_new_media(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["correct_answers"].join(","), v)
+                                else
+                                    @import_question = Homework.update_question(value["id"], value["text"], value["image_thumbnail"], value["full_score"], value["correct_answers"].join(","), v)
+                                end
                             end
+                        end
+                    else
+                        answers.each do |k, v|
+                            hash_answer = {}
+                            name, choice_no = k.split("_")
+                            hash_answer["choice_no"] = choice_no
+                            if v["media"].class == ActionDispatch::Http::UploadedFile
+                                hash_answer["answer"] = v["media"]
+                                hash_answer["answer_image_thumbnail"] = v["answer_image_thumbnail"]
+                            else
+                                hash_answer["answer_text"] = v["media"]
+                            end
+                            hash_answer["correct_answer"] = value["correct_answers"].join(",")
+
+                            ### Insert questions
+                            arr_insert << hash_answer.merge(question)
                         end
                     end
                 when 3
                     answer_option = value["option"] == "reveal" ? 1 : 0
-                    if answer_option == 0
-                        @import_question = Homework.update_question_not_reveal(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["update_question_media"], answer_option)
+                    if value["id"].present?
+                        if answer_option == 0
+                            @import_question = Homework.update_question_not_reveal(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["update_question_media"], answer_option)
+                        else
+                            @import_question = Homework.update_question_upload(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["update_question_media"], answer_option, value)
+                        end
                     else
-                        @import_question = Homework.update_question_upload(value["id"], value["text"], value["media"], value["image_thumbnail"], value["full_score"], value["update_question_media"], answer_option, value)
+                        question["option"] = answer_option
+                        question["reveal"] = value["reveal"]
+                        question["answer_image_thumbnail"] = value["reveal_image_thumbnail"]
+
+                        ### Insert question
+                        arr_insert << question
                     end
-                        # question["option"] = answer_option
-                    # question["reveal"] = value["reveal"]
-                    
-                    ### Insert question
-                    # arr_insert << question
                 end
             end
 
+            Question.create(arr_insert) if arr_insert.length > 0
             if @import_question
                 save_activity("Update", "Success", "Update homework: #{params["form_homework"]["name"]} successfully")
                 state = "success"
@@ -920,6 +962,26 @@ class HomeworkController < ApplicationController
             subject = Homework.find(params["id"]).update(status: "deleted")
             save_activity("Delete", "Success", "Delete homework: #{params["name"]} successfully")
             flash["success"] = "Delete homework: #{params["name"]} successfully"
+            respond_to do |format|
+                format.json { render json: {status: "success", redirect_path: homework_subject_list_url()} }
+            end
+        rescue => e
+            save_activity("Delete", "Fail", "Cannot delete data")
+            respond_to do |format|
+                format.json { render json: {status: "error", message: "Something was wrong. Please contact admin"} }
+            end
+        end
+    end
+
+    def delete_tag
+        unless can_view_menu?([30])
+            flash["error"] = "You don't have permission to delete tag"
+            return redirect_to path_to_root
+        end
+        begin
+            tag = Tag.find(params["id"]).update(status: "deleted")
+            save_activity("Delete", "Success", "Delete tag: #{params["name"]} successfully")
+            flash["success"] = "Delete tag: #{params["name"]} successfully"
             respond_to do |format|
                 format.json { render json: {status: "success", redirect_path: homework_subject_list_url()} }
             end
