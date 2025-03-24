@@ -31,8 +31,8 @@
             <% end %>
 
             <td class="py-3 text-center">
-                <% if hw.deadline_date.present? %>
-                    <%= hw.deadline_date.strftime("%d/%m/%Y") %>
+                <% if hw.estimate_date.present? %>
+                    <span>After active <%= hw.estimate_date.to_i %> day(s)</span>
                 <% end %>
             </td>
             <td class="text-center" style="align-content: center;">

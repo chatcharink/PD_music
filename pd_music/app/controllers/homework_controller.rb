@@ -10,7 +10,7 @@ class HomeworkController < ApplicationController
             @homework = HomeworkUserMapping.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
             @homework = @homework.where(user_id: session["current_user"]["id"])
             @homework = @homework.where("homeworks.status = ?", "active")
-            @homework = @homework.where("homework_user_mappings.deadline < ?", DateTime.now().strftime("%Y-%m-%d %H:%M:%S")).limit(1)
+            @homework = @homework.where("homework_user_mappings.deadline_date < ?", DateTime.now().strftime("%Y-%m-%d %H:%M:%S")).limit(1)
         else
             @subject = Subject.where(status: "active", subject_type: "homework")
             @homework_list = Homework.where(status: "active")
@@ -199,9 +199,12 @@ class HomeworkController < ApplicationController
                 flash["success"] = "Do homework successfully, your score: #{params["score"]}"
 
                 recheck_message = check_questions.include?(3) ? " Please review and give the score." : ""
+                homework_info = Homework.select("subjects.subject_name, subjects.created_by, homeworks.*").joins("left join subjects on subjects.id = homeworks.subject_id").find(params["id"])
+                if status == "checked" && (homework_info.priority.to_i > 0)
+                    find_next_priority(homework_info.priority.to_i, homework_info.homework_type_id, session["current_user"]["id"])
+                end
                 ### Send notification
                 if can_view_menu?([15])
-                    homework_info = Homework.select("subjects.subject_name, subjects.created_by, homeworks.task_name").find(params["id"]).joins("left join subjects on subjects.id = homeworks.subject_id")
                     Notification.create(subject: "Do homework successfully", 
                         message: "#{session["current_user"]["firstname"]} #{session["current_user"]["lastname"]} do homework: #{homework_info.task_name} of #{homework_info.subject_name} successfully.#{recheck_message}",
                         status: 0,
@@ -246,6 +249,8 @@ class HomeworkController < ApplicationController
                     if !next_answer.blank?
                         hash_question["no_#{hw.question_no}"]["answer_id"] = next_answer.id
                         hash_question["no_#{hw.question_no}"]["answer"] = next_answer.answer.blank? ? [] : next_answer.answer.split(",")
+                    else
+                        hash_question["no_#{hw.question_no}"]["answer"] = []
                     end
                     hash_question["no_#{hw.question_no}"]["chords"] = hw.chords
                     hash_question["no_#{hw.question_no}"]["choice"] ||= []
@@ -336,10 +341,11 @@ class HomeworkController < ApplicationController
                 sum_score = params["current_score"].to_i + score.to_i
                 homework.update(score: sum_score)
                 homework.update(status: "checked")
-
+                homework_info = Homework.select("subjects.subject_name, subjects.created_by, homeworks.*").joins("left join subjects on subjects.id = homeworks.subject_id").find(params["id"])
+                
+                find_next_priority(homework_info.priority.to_i, homework_info.homework_type_id, answer[0].user_id)
                 ### Send notification
                 if can_view_menu?([15])
-                    homework_info = Homework.select("subjects.subject_name, subjects.created_by, homeworks.task_name").find(params["id"]).joins("left join subjects on subjects.id = homeworks.subject_id")
                     Notification.create(subject: "Review homework successfully", 
                         message: "Your homework: #{homework_info.task_name} was reviewed with score: #{score}.",
                         status: 0,
@@ -351,7 +357,7 @@ class HomeworkController < ApplicationController
 
                 ### Send email
                 if can_view_menu?([63])
-                    user = User.find(answer.user_id)
+                    user = User.find(answer[0].user_id)
                     subject = "Review homework successfully"
                     message = "Your homework: #{homework_info.task_name} was reviewed with score: #{score}."
                     HomeworkMailer.change_status(user, subject, message).deliver_now
@@ -581,7 +587,7 @@ class HomeworkController < ApplicationController
     end
 
     def new
-        homework = Homework.where(status: "active", subject_id: params["subject"]).where("priority is not NULL").maximum(:priority)
+        homework = Homework.where(status: "active", subject_id: params["subject"], homework_type_id: params["type"]).where("priority is not NULL").maximum(:priority)
         @priority = homework+1
     end
 
@@ -673,11 +679,15 @@ class HomeworkController < ApplicationController
     def add_user_to_homework
         begin
             # return redirect_to path_to_root unless can_view_menu?([17])
-            homework = HomeworkUserMapping.select("homework.task_name, homework.estimate_date, homework_user_mappings.*").where(homework_id: params["homework_id"])
-            homework = homework.joins("left join homeworks on homeworks.id on homework_user_mappings.homework_id")
+            homework = HomeworkUserMapping.select("homeworks.task_name, homeworks.status, homeworks.estimate_date, homework_user_mappings.homework_id, homework_user_mappings.deadline_date, homework_user_mappings.user_id")
+            homework = homework.joins("left join homeworks on homeworks.id = homework_user_mappings.homework_id")
+            homework = homework.where(homework_id: params["homework_id"])
             db_user = homework.pluck(:user_id)
             tag = homework.pluck(:tag_id)
-            homework_name = homework.pluck(:task_name, :deadline_date).uniq.flatten
+
+            homework_user = homework.index_by(&:user_id)
+            
+            homework_data = Homework.find(params["homework_id"])
 
             case params["type"]
             when "user"
@@ -695,12 +705,18 @@ class HomeworkController < ApplicationController
 
             arr_user = []
             arr_development = []
+            hw_status = case homework_data.status
+                        when "active" then "open"
+                        when "inactive" then "inactive"
+                        end
             remain_user.each do |u|
                 h_user = {}
                 h_user["user_id"] = u
                 h_user["homework_id"] = params["homework_id"].to_i
-                h_user["status"] = "open"
+                h_user["status"] = hw_status
                 h_user["score"] = 0
+                deadline_date = DateTime.now() + (homework_data.estimate_date.to_i).days
+                h_user["deadline_date"] = deadline_date if hw_status == "open"
                 arr_user << h_user
                 tag.each do |t|
                     development = {}
@@ -711,7 +727,7 @@ class HomeworkController < ApplicationController
 
                 ### Send notification
                 if can_view_menu?([12])
-                    msg_noti = homework_name[1].blank? ? "You have new homework: #{homework_name[0]} assignment." : "You have new homework: #{homework_name[0]} assignment. Please do it before #{homework_name[1].strftime("%d/%m/%Y")}"
+                    msg_noti = homework_user[u].blank? ? "You have new homework: #{homework_data.task_name} assignment." : "You have new homework: #{homework_data.task_name} assignment. Please do it before #{homework_user[u]["deadline_date"].strftime("%d/%m/%Y")}"
                     Notification.create(subject: "Assign homework", 
                         message: msg_noti,
                         status: 0,
@@ -724,7 +740,7 @@ class HomeworkController < ApplicationController
                 ### Send email
                 if can_view_menu?([60])
                     user = User.find(u)
-                    HomeworkMailer.new_assignment(user, homework_name).deliver_now
+                    HomeworkMailer.new_assignment(user, homework_data.task_name, homework_user[u]["deadline_date"]).deliver_now
                 end
             end
             
@@ -739,7 +755,7 @@ class HomeworkController < ApplicationController
         rescue => e
             p e.message
             p e.backtrace.first
-            save_activity("Homework", "Fail", "Cannot add user to homework successfully")
+            save_activity("Homework", "Fail", "Cannot add user to homework. Please contact admin")
             respond_to do |format|
                 format.json { render json: {status: "error", message: "Something was wrong. Please contact admin"} }
             end
@@ -831,6 +847,14 @@ class HomeworkController < ApplicationController
     def update
         begin
             homework = Homework.update_homework(params["form_homework"])
+            hw_mapping_status = params["form_homework"]["lock_homework"] == "unlock" ? "open" : "inactive"
+            update_homework_mapping = HomeworkUserMapping.where(homework_id: params["form_homework"]["homework_id"], status: ["open", "inactive"])
+            if params["form_homework"]["lock_homework"] == "unlock"
+                deadline_date = DateTime.now() + (params["form_homework"]["estimate_date"].to_i).days
+                update_homework_mapping.update_all(status: hw_mapping_status, deadline_date: deadline_date)
+            else
+                update_homework_mapping.update_all(status: hw_mapping_status)
+            end
             questions = params["form_questions"]
             arr_insert = []
             questions.each do |key, value|
@@ -1056,5 +1080,18 @@ class HomeworkController < ApplicationController
         end
 
         h_homework
+    end
+
+    def find_next_priority priority, type_id, user_id
+        if priority.present?
+            find_next_homework = Homework.find_by(priority: priority+1, homework_type_id: type_id)
+            if find_next_homework.present?
+                hw_status = case find_next_homework.status 
+                            when "active" then "open"
+                            when "inactive" then "inactive"
+                            end
+                HomeworkUserMapping.where(homework_id: find_next_homework.id, user_id: user_id, status: ["open", "inactive"]).update_all(status: hw_status)
+            end
+        end
     end
 end

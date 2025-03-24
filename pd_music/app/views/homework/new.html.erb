@@ -35,11 +35,11 @@
         <div class="mb-3 row g-4">
             <div class="col-2">
                 <label for="estimate-date" class="visually-hidden">Estimate date</label>
-                <input type="text" readonly class="form-control-plaintext" id="estimate-date" value="Deadline after:">
+                <input type="text" readonly class="form-control-plaintext" id="estimate-date" value="Deadline after active:">
             </div>
             <div class="col-3">
                 <label for="estimate-date-text" class="visually-hidden">Estimated field</label>
-                <%= f.text_field :estimate_date, value: @h_homework["estimate_date"], class: "form-control" , id: "estimate-date-text" %>
+                <%= f.text_field :estimate_date, value: "", class: "form-control" , id: "estimate-date-text" %>
             </div>
             <div class="col-1">
                 <label for="estimate-date" class="visually-hidden">Day</label>

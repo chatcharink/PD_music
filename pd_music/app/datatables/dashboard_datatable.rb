@@ -21,7 +21,7 @@ class DashboardDatatable < ApplicationDatatable
         score: "#{record.score}/#{record.full_score}",
         category: @category[record.category_id]["name_en"],
         status: status_btn(record.status),
-        estimate_date: record.deadline_date.strftime("%d/%m/%Y")
+        estimate_date: get_dead_line(record.deadline_date)
       }
     end
   end
@@ -116,6 +116,15 @@ class DashboardDatatable < ApplicationDatatable
         exam_date = "users.exam_date >= #{today_str}"
     end
     exam_date
+  end
+
+  def get_dead_line estimate_date
+    date = ""
+    if estimate_date.present?
+        date = estimate_date.strftime("%d/%m/%Y")
+    end
+    
+    return date
   end
 
 end

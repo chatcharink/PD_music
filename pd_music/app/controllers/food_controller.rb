@@ -14,6 +14,7 @@ class FoodController < ApplicationController
             order = Menu.select("orders.date, orders.optional, orders.has_second_order, orders.second_menu_id, orders.total_price, orders.more_detail, orders.meal, menus.*, restaurants.restaurant_name")
             order = order.joins("left join restaurants on restaurants.id = menus.restaurant_id")
             order = order.joins("right join orders on orders.menu_id = menus.id")
+            order = order.where("orders.date between ? and ?", DateTime.now().strftime("%Y-%m-%d"), (DateTime.now()+(@order_setting["pre_order"].to_i).days).strftime("%Y-%m-%d"))
             order = order.where("orders.user_id = ?", session["current_user"]["id"])
             order = order.order("orders.date DESC")
 
@@ -31,6 +32,8 @@ class FoodController < ApplicationController
             order = order.joins("right join orders on orders.user_id = users.id")
             order = order.joins("left join menus on menus.id = orders.menu_id")
             order = order.joins("left join restaurants on restaurants.id = menus.restaurant_id")
+            order = order.where("orders.date between ? and ?", DateTime.now().strftime("%Y-%m-%d"), (DateTime.now()+(@order_setting["pre_order"].to_i).days).strftime("%Y-%m-%d"))
+            order = order.where("users.status = ?", "active")
             order = order.order("orders.date DESC")
             
             if order.present?
