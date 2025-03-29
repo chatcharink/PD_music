@@ -25,7 +25,7 @@ class HomeworkDatatable < ApplicationDatatable
                 taskName: record.task_name,
                 status: get_status(record.status, record.homework_id),
                 fullScore: get_score(record.score, record.full_score),
-                estimatedDate: get_dead_line(record.estimate_date, record.homework_type_id, record.status) #record.estimate_date.strftime("%d/%m/%Y")
+                estimatedDate: get_dead_line(record.deadline_date, record.homework_type_id, record.status) #record.estimate_date.strftime("%d/%m/%Y")
             }
         end
     end

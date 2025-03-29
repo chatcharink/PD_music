@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   post "homework/do/reject_homework", to: "homework#reject_homework"
   get "homework/subject/list", to: "homework#subject_list" 
   post "homework/create_tag", to: "homework#create_tag"
+  delete "homework/tag/delete_tag", to: "homework#delete_tag"
   get "homework/show/get_improvement_detail", to: "homework#get_improvement"
   post "homework/add_improvement", to: "homework#add_improvement"
   get "homework/show/homework_table", to: "homework#show_homework_table"

@@ -72,9 +72,9 @@ class DashboardController < ApplicationController
         
         graph.each do |hw|
             if params["category_id"].present?
-                store_score = store_frequency_score(store_score, hw.estimate_date, hw.send_date, date_from, date_to, hw.status)
+                store_score = store_frequency_score(store_score, hw.deadline_date, hw.send_date, date_from, date_to, hw.status)
             else
-                store_score = store_frequency_score(store_score, hw.estimate_date, hw.send_date, date_from, date_to, hw.status, hw.category_id)
+                store_score = store_frequency_score(store_score, hw.deadline_date, hw.send_date, date_from, date_to, hw.status, hw.category_id)
             end
         end
 
@@ -287,7 +287,7 @@ class DashboardController < ApplicationController
                 all_assign_hw[key]["done"] += 1
             end
 
-            estimated_date = hw.estimate_date
+            estimated_date = hw.deadline_date
             diff_date = (Date.parse(estimated_date.strftime("%Y/%m/%d")) - Date.parse(time_now.strftime("%Y/%m/%d"))).round
             
             if diff_date < 0 && (hw.status == "open" || hw.status == "reject")

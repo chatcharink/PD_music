@@ -1283,20 +1283,14 @@ export default class extends Controller {
     }else {
       this.valid_value(homework_name);
     }
-
-    try{
-      if (estimate_date.value == ""){
-        is_valid.push(false);
-        this.invalid_value(estimate_date);
-        this.alert("error", "Estimated date should not be blank");
-      } else {
-        let estimate_d = new Date(estimate_date.value);
-        this.valid_value(estimate_date);
-      }
-    }catch(error){
+    
+    if (/[0-9]/.test(estimate_date.value)){
+      this.valid_value(estimate_date);
+    } else {
+      // let estimate_d = new Date(estimate_date.value);
       is_valid.push(false);
       this.invalid_value(estimate_date);
-      this.alert("error", "Estimated date is invalid format");
+      this.alert("error", "Deadline date is require to input with number only");
     }
 
     if (/[0-9]/.test(full_score.value)){

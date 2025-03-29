@@ -5,7 +5,7 @@ class CreateHomeworks < ActiveRecord::Migration[7.0]
       t.bigint :category_id, limit: 20
       t.bigint :question_id, limit: 20
       t.column :status, "ENUM('active', 'inactive', 'deleted') DEFAULT 'active'"
-      t.datetime :estimate_date
+      t.string :estimate_date, limit: 50
       t.timestamps
     end
   end

@@ -16,12 +16,12 @@ class DashboardDatatable < ApplicationDatatable
   def data
     records.map do |record|
       {
-        caution: caution(record.estimate_date, record.status),
+        caution: caution(record.deadline_date, record.status),
         task_name: record.task_name,
         score: "#{record.score}/#{record.full_score}",
         category: @category[record.category_id]["name_en"],
         status: status_btn(record.status),
-        estimate_date: record.estimate_date.strftime("%d/%m/%Y")
+        estimate_date: get_dead_line(record.deadline_date)
       }
     end
   end
@@ -34,13 +34,13 @@ class DashboardDatatable < ApplicationDatatable
     is_not_send = false
 
     if params["goingOverdue"] == "true" && params["overdue"] == "true"
-      hw = hw.where("estimate_date between ? and ? OR estimate_date < ?", DateTime.now(), Date.today.beginning_of_week(:monday)+7, DateTime.now())
+      hw = hw.where("deadline_date between ? and ? OR deadline_date < ? OR deadline_date is null", DateTime.now(), Date.today.beginning_of_week(:monday)+7, DateTime.now())
       is_not_send = true
     elsif params["goingOverdue"] == "true"
-      hw = hw.where("estimate_date between ? and ?", DateTime.now(), Date.today.beginning_of_week(:monday)+7).order(estimate_date: :ASC)
+      hw = hw.where("deadline_date between ? and ? OR deadline_date is null", DateTime.now(), Date.today.beginning_of_week(:monday)+7).order(deadline_date: :ASC)
       is_not_send = true
     elsif params["overdue"] == "true"
-      hw = hw.where("estimate_date < ?", DateTime.now())
+      hw = hw.where("deadline_date < ?", DateTime.now())
       is_not_send = true
     end
 
@@ -116,6 +116,15 @@ class DashboardDatatable < ApplicationDatatable
         exam_date = "users.exam_date >= #{today_str}"
     end
     exam_date
+  end
+
+  def get_dead_line estimate_date
+    date = ""
+    if estimate_date.present?
+        date = estimate_date.strftime("%d/%m/%Y")
+    end
+    
+    return date
   end
 
 end
